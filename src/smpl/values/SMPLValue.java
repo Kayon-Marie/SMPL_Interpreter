@@ -1,6 +1,6 @@
 package smpl.values;
 
-import smpl.exceptions.VisitException;
+import smpl.exceptions.TypeException;
 
 /**
  *
@@ -58,103 +58,103 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * Add the given value to this value
      * @param arg The value to be added.
      * @return The sum of the two values as a new instance of FnPlotValue.
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under addition
      */
     public FnPlotValue<?> add(FnPlotValue<?> arg) throws FnPlotException {
-        throw new TypeFnPlotException("Operation div called with non-numeric type");
+        throw new TTypeException("Operation div called with non-numeric type");
     }
 
     /**
      * Subtract the given value from this value.
      * @param arg The value to be subtracted
      * @return The difference as a new instance of FnPlotValue
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
      */
-    // public FnPlotValue<?> sub(FnPlotValue<?> arg) throws FnPlotException {
-    //         throw new TypeFnPlotException("Operation sub called with non-numeric type");
-    // }
+    public FnPlotValue<?> sub(FnPlotValue<?> arg) throws FnPlotException {
+        throw new TypeException("Operation sub called with non-numeric type");
+    }
 
     /**
      * Negate the given value from this value.
      * @return The difference as a new instance of FnPlotValue
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
      */
-//     public FnPlotValue<?> neg() throws FnPlotException {
-//         throw new TypeFnPlotException("Operation sub called with non-numeric type");
-// }
+    public FnPlotValue<?> neg() throws FnPlotException {
+        throw new TypeException("Operation sub called with non-numeric type");
+    }
 
     /**
      * Multiply the given value by this value.
      * @param arg The multiplicand
      * @return The product as a new instance of FnPlotValue
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under multiplication
      */
-    // public FnPlotValue<?> mul(FnPlotValue<?> arg) throws FnPlotException {
-    //         throw new TypeFnPlotException("Operation mul called with non-numeric type");
-    // }
+    public FnPlotValue<?> mul(FnPlotValue<?> arg) throws FnPlotException {
+            throw new TypeException("Operation mul called with non-numeric type");
+    }
 
     /**
      * Divide the given value by this value.
      * @param arg The divisor
      * @return The quotient as a new instance of FnPlotValue
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under division
      */
-    // public FnPlotValue<?> div(FnPlotValue<?> arg) throws FnPlotException {
-    //     throw new TypeFnPlotException("Operation div called with non-numeric type");
-    // }
+    public FnPlotValue<?> div(FnPlotValue<?> arg) throws FnPlotException {
+        throw new TypeException("Operation div called with non-numeric type");
+    }
     
     /**
      * Compute the remainder of dividing this value by the given value.
      * @param arg The divisor
      * @return The residue modulo arg as a new instance of FnPlotValue
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under division
      */
-    // public FnPlotValue<?> mod(FnPlotValue<?> arg) throws FnPlotException {
-    //     throw new TypeFnPlotException("Operation mod called with non-numeric type");
-    // }
+    public FnPlotValue<?> mod(FnPlotValue<?> arg) throws FnPlotException {
+        throw new TypeException("Operation mod called with non-numeric type");
+    }
 
     /**
      * Compute the exponent by raising this value to the power of the given
      * value.
      * @param arg The exponent
      * @return The base raised by the exponent as an FnPlotValue instance
-     * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
+     * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under exponentiation
      */
-    // public FnPlotValue<?> pow(FnPlotValue<?> arg) throws FnPlotException {
-    //     throw new TypeFnPlotException("Operation pow called with non-numeric type");
-    // }
+    public FnPlotValue<?> pow(FnPlotValue<?> arg) throws FnPlotException {
+        throw new TypeException("Operation pow called with non-numeric type");
+    }
 
     /**
      *
      * @return The integer value wrapped in this FnPlot value
-     * @throws TypeFnPlotException If there is no such integer
+     * @throws smpl.exceptions.TypeException If there is no such integer
      */
-    // public int intValue() throws TypeFnPlotException {
-    //     throw new TypeFnPlotException(FnPlotType.INTEGER, getType());
-    // }
+    public int intValue() throws TypeFnPlotException {
+        throw new TypeException(SMPLType.INTEGER, getType());
+    }
 
     /**
      *
      * @return The real value wrapped in this FnPlot value
-     * @throws TypeFnPlotException if there is no such real value.
+     * @throws smpl.exceptions.TypeException if there is no such real value.
      */
-    // public double doubleValue() throws TypeFnPlotException {
-    //     throw new TypeFnPlotException(FnPlotType.REAL, getType());
-    // }
+    public double doubleValue() throws TypeFnPlotException {
+        throw new TypeException(SMPLType.REAL, getType());
+    }
 
     /**
      *
      * @return The user defined function wrapped in this FnPlot value.
-     * @throws TypeFnPlotException if there is no such function
+     * @throws smpl.exceptions.TypeException if there is no such function
      */
-    // public FnPlotFunction funValue() throws TypeFnPlotException {
-    //     throw new TypeFnPlotException(FnPlotType.FUNCTION, getType());
-    // }
+    public FnPlotFunction funValue() throws TypeFnPlotException {
+        throw new TypeException(SMPLType.FUNCTION, getType());
+    }
 }
