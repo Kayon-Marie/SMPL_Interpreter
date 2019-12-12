@@ -17,6 +17,6 @@ public enum SMPLType {
 
     @Override
     public String toString() {
-        return String("<" + this.docString + ">");
+        return new String("<" + this.docString + ">");
     }
 }

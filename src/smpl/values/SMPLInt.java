@@ -18,7 +18,7 @@ public class SMPLInt extends SMPLValue<SMPLInt> {
     }
 
     @Override
-    public SMPLtValue<?> add(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
         if (arg.isReal()) { // SMPLInt + SMPLReal
             return make(this.value + arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLInt + SMPLInt

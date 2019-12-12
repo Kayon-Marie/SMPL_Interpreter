@@ -1,5 +1,7 @@
 package smpl.values;
 
+import smpl.exceptions.SMPLException;
+
 public class SMPLReal extends SMPLValue<SMPLReal> {
 
     double value;
@@ -16,7 +18,7 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
     }
 
     @Override
-    public SMPLtValue<?> add(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
         if (arg.isReal()) { // SMPLReal + SMPLReal
             return make(this.value + arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal + SMPLInt
@@ -88,12 +90,12 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
 
     @Override
     public int intValue() throws SMPLException {
-        return this.value;
+        return (int)this.value;
     }
 
     @Override
     public double doubleValue() throws SMPLException {
-        return (double) this.value;
+        return this.value;
     }
 
     @Override

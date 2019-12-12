@@ -1,6 +1,6 @@
-package smpl.values;
+package smpl.exceptions;
 
-import smpl.exceptions.VisitException;
+import smpl.values.SMPLType;
 
 public class TypeException extends VisitException {
 

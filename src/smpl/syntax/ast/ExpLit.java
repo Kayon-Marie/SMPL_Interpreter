@@ -3,18 +3,30 @@ package smpl.syntax.ast;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.Exp;
-
+import smpl.values.SMPLValue;
 import smpl.semantics.Visitor;
 
+/**
+ * Class representing numeric literals in SMPL
+ * @author --group name--
+ */
 public class ExpLit extends Exp {
 
-    int val;
+    SMPLValue<?> val;
 
-    public ExpLit(Integer v) {
-	    val = v.intValue();
+    public ExpLit(SMPLValue<?> value) {
+        val = value;
     }
 
-    public int getVal() {
+    public ExpLit(Integer value) {
+	    val = SMPLValue.make(value);
+    }
+
+    public ExpLit(Double value) {
+	    val = SMPLValue.make(value);
+    }
+
+    public SMPLValue<?> getVal() {
 	    return val;
     }
 
@@ -23,7 +35,7 @@ public class ExpLit extends Exp {
     }
 
     public String toString() {
-	    return Integer.toString(val);
+	    return val.toString();
     }
 }
 

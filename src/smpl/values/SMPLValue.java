@@ -62,8 +62,8 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under addition
      */
-    public SMPLtValue<?> add(SMPLValue<?> arg) throws SMPLException {
-        throw new TTypeException("Operation div called with non-numeric type");
+    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
+        throw new TypeException("Operation div called with non-numeric type");
     }
 
     /**

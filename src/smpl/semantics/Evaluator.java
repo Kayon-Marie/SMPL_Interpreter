@@ -6,6 +6,7 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.values.SMPLValue;
 import smpl.syntax.ast.Statement;
 import smpl.syntax.ast.StmtSequence;
 import smpl.syntax.ast.StmtDefinition;
@@ -115,9 +116,9 @@ public class Evaluator implements Visitor<Environment, Integer> {
                 val2.intValue());
     }
 
-    public Integer visitExpLit(ExpLit exp, Environment arg)
+    public SMPLValue<?> visitExpLit(ExpLit exp, Environment arg)
 	throws VisitException {
-	    return new Integer(exp.getVal());
+	    return exp.getVal();
     }
 
     public Integer visitExpVar(ExpVar exp, Environment env)
