@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
 
-import smpl.syntax.ast.core.ArithProgram;
+import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.Statement;
 import smpl.syntax.ast.StmtSequence;
 import smpl.syntax.ast.StmtDefinition;
@@ -34,7 +34,7 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     // program
-    public String visitArithProgram(ArithProgram p, Void arg)
+    public String visitSMPLProgram(SMPLProgram p, Void arg)
 	throws VisitException {
         result = (String) p.getSeq().visit(this, arg);
         return result;

@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
 
-import smpl.syntax.ast.core.ArithProgram;
+import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.Statement;
 import smpl.syntax.ast.StmtSequence;
 import smpl.syntax.ast.StmtDefinition;
@@ -35,7 +35,7 @@ public class Evaluator implements Visitor<Environment, Integer> {
 	    return Environment.makeGlobalEnv();
     }
 
-    public Integer visitArithProgram(ArithProgram p, Environment arg)
+    public Integer visitSMPLProgram(SMPLProgram p, Environment arg)
 	throws VisitException {
         result = p.getSeq().visit(this, arg);
         return result;

@@ -1,7 +1,7 @@
 package smpl.semantics;
 
 import smpl.exceptions.VisitException;
-import smpl.syntax.ast.core.ArithProgram;
+import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.Statement;
 import smpl.syntax.ast.StmtSequence;
 import smpl.syntax.ast.StmtDefinition;
@@ -25,7 +25,7 @@ public interface Visitor<S, T> {
     public S getDefaultState();
 
     // program
-    public T visitArithProgram(ArithProgram p, S arg) throws VisitException;
+    public T visitSMPLProgram(SMPLProgram p, S arg) throws VisitException;
 
     // statements
     public T visitStatement(Statement exp, S arg) throws VisitException ;

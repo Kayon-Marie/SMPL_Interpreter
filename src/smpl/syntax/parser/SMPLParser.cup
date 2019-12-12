@@ -7,7 +7,7 @@ import java.util.*;
 import smpl.syntax.lexer.SMPLLexer;
 
 import smpl.syntax.ast.core.Exp;
-import smpl.syntax.ast.core.ArithProgram;
+import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.*;
 
 /* Preliminaries to set up and use the scanner.  */
@@ -59,9 +59,10 @@ terminal PLUS, MINUS, MUL, DIV, MOD, ASSIGN;
 // terminals with values
 terminal Integer INT;
 terminal String VAR;
+terminal Double REAL;
 
 /* Non terminals */
-non terminal ArithProgram program;
+non terminal SMPLProgram program;
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtDefinition definition;
@@ -72,7 +73,7 @@ non terminal empty;
 
 /* Grammar rules */
 
-program ::= stmtList:s {: RESULT = new ArithProgram(s); :};
+program ::= stmtList:s {: RESULT = new SMPLProgram(s); :};
 
 stmtList ::= stmtList:lst stmt:s {:
 		lst.add(s); 

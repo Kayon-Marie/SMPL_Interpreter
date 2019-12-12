@@ -60,6 +60,8 @@ alpha = [a-zA-Z_]
 
 alphanum = {alpha}|[0-9]
 
+num = [0-9]
+
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -78,12 +80,18 @@ alphanum = {alpha}|[0-9]
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
 
-<YYINITIAL>    [0-9]+ {
+<YYINITIAL>    {num}+ {
 	       // INTEGER
 	       return new Symbol(sym.INT, 
 				 new Integer(yytext()));
 		}
 
+<YYINITIAL>   {num}*\.{num}+ {
+			// REAL
+			return new Symbol(sym.REAL,
+				 new Double(yytext()));
+		}
+		
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
