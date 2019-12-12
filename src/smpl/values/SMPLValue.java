@@ -1,11 +1,11 @@
 package smpl.values;
 
-// import fnplot.sys.FnPlotException;
+import smpl.exceptions.VisitException;
 
 /**
  *
  * @param <T> The type of base Java value wrapped by this class
- * @author zdmwi
+ * @author --group name here--
  * Created on 10-Dec-2019 at 6:00 PM
  */
 public abstract class SMPLValue<T extends SMPLValue<T>> {
@@ -13,37 +13,46 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Create a FnPlot value wrapping a Java double
-     * @param v the double value to be wrapped
-     * @return The FnPlotValue instance to represent that double precision value
+     * Create a SMPLValue wrapping a Integer
+     * @param value
+     * @return SMPLValue instance to represent a Integer precision value
      */
-    // public static FnPlotReal make(Double v) {
-    //     return new FnPlotReal(v);
-    // }
-    
+    public static SMPLInt make(Integer value) {
+        return new SMPLInt(value);
+    }
+
     /**
-     * Create a FnPlot value wrapping a Java integer
-     * @param v The int value to be wrapped
-     * @return The FnPlotValue instance to represent that integer value.
+     * Create a SMPLValue wrapping a Double
+     * @param value
+     * @return SMPLValue instance to represent a Double precision value
      */
-    // public static FnPlotInt make(Integer v) {
-    //     return new FnPlotInt(v);
-    // }
+    public static SMPLReal make(Double value) {
+        return new SMPLReal(value);
+    }
     
     /**
      *
      * @return The type of this value.
-     */
-    // public abstract FnPlotType getType();
+     */ 
+    public abstract FnPlotType getType();
     
     /**
      *
      * @return <code>true</code> if and only if this value is numerically
      * equivalent to an integer
      */
-    // public boolean isInteger() {
-    //     return getType() == FnPlotType.INTEGER;
-    // }
+    public boolean isInteger() {
+        return getType() == SMPLType.INTEGER;
+    }
+
+    /**
+     *
+     * @return <code>true</code> if and only if this value is numerically
+     * equivalent to a real value
+     */
+    public boolean isReal() {
+        return getType() == SMPLType.REAL;
+    }
 
     /**
      * Add the given value to this value
@@ -52,9 +61,9 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws fnplot.sys.FnPlotException if there is a type incompatibility 
      * between this value and the argument value under addition
      */
-    // public FnPlotValue<?> add(FnPlotValue<?> arg) throws FnPlotException {
-    //     throw new TypeFnPlotException("Operation div called with non-numeric type");
-    // }
+    public FnPlotValue<?> add(FnPlotValue<?> arg) throws FnPlotException {
+        throw new TypeFnPlotException("Operation div called with non-numeric type");
+    }
 
     /**
      * Subtract the given value from this value.
