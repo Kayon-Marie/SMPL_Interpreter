@@ -105,6 +105,7 @@ term ::= term:t MUL factor:f {:
 	 factor:f {: RESULT = f; :};
 
 factor ::= INT:ilit {: RESULT = new ExpLit(ilit); :} |
+	   REAL:rlit {: RESULT = new ExpLit(rlit); :} |
 	   VAR:var {: RESULT = new ExpVar(var); :} |
 	   LPAREN expression:e RPAREN {: RESULT = e; :}	;
 
