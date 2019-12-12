@@ -15,10 +15,8 @@ public enum SMPLType {
         this.docString = docString;
     }
 
-    /**
-     * @return the docString
-     */
-    public String getDocString() {
-        return docString;
+    @Override
+    public String toString() {
+        return String("<" + this.docString + ">");
     }
 }

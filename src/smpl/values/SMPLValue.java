@@ -1,5 +1,6 @@
 package smpl.values;
 
+import smpl.exceptions.SMPLException;
 import smpl.exceptions.TypeException;
 
 /**
@@ -34,7 +35,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      *
      * @return The type of this value.
      */ 
-    public abstract FnPlotType getType();
+    public abstract SMPLType getType();
     
     /**
      *
@@ -61,7 +62,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under addition
      */
-    public FnPlotValue<?> add(FnPlotValue<?> arg) throws FnPlotException {
+    public SMPLtValue<?> add(SMPLValue<?> arg) throws SMPLException {
         throw new TTypeException("Operation div called with non-numeric type");
     }
 
@@ -72,7 +73,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
      */
-    public FnPlotValue<?> sub(FnPlotValue<?> arg) throws FnPlotException {
+    public SMPLValue<?> sub(SMPLValue<?> arg) throws SMPLException {
         throw new TypeException("Operation sub called with non-numeric type");
     }
 
@@ -82,7 +83,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
      */
-    public FnPlotValue<?> neg() throws FnPlotException {
+    public SMPLValue<?> neg() throws SMPLException {
         throw new TypeException("Operation sub called with non-numeric type");
     }
 
@@ -93,7 +94,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under multiplication
      */
-    public FnPlotValue<?> mul(FnPlotValue<?> arg) throws FnPlotException {
+    public SMPLValue<?> mul(SMPLValue<?> arg) throws SMPLException {
             throw new TypeException("Operation mul called with non-numeric type");
     }
 
@@ -104,7 +105,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under division
      */
-    public FnPlotValue<?> div(FnPlotValue<?> arg) throws FnPlotException {
+    public SMPLValue<?> div(SMPLValue<?> arg) throws SMPLException {
         throw new TypeException("Operation div called with non-numeric type");
     }
     
@@ -115,7 +116,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under division
      */
-    public FnPlotValue<?> mod(FnPlotValue<?> arg) throws FnPlotException {
+    public SMPLValue<?> mod(SMPLValue<?> arg) throws SMPLException {
         throw new TypeException("Operation mod called with non-numeric type");
     }
 
@@ -127,7 +128,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under exponentiation
      */
-    public FnPlotValue<?> pow(FnPlotValue<?> arg) throws FnPlotException {
+    public SMPLValue<?> pow(SMPLValue<?> arg) throws SMPLException {
         throw new TypeException("Operation pow called with non-numeric type");
     }
 
@@ -136,7 +137,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return The integer value wrapped in this FnPlot value
      * @throws smpl.exceptions.TypeException If there is no such integer
      */
-    public int intValue() throws TypeFnPlotException {
+    public int intValue() throws SMPLException {
         throw new TypeException(SMPLType.INTEGER, getType());
     }
 
@@ -145,7 +146,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return The real value wrapped in this FnPlot value
      * @throws smpl.exceptions.TypeException if there is no such real value.
      */
-    public double doubleValue() throws TypeFnPlotException {
+    public double doubleValue() throws SMPLException {
         throw new TypeException(SMPLType.REAL, getType());
     }
 
@@ -154,7 +155,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return The user defined function wrapped in this FnPlot value.
      * @throws smpl.exceptions.TypeException if there is no such function
      */
-    public FnPlotFunction funValue() throws TypeFnPlotException {
-        throw new TypeException(SMPLType.FUNCTION, getType());
-    }
+    // public SMPLFunction funValue() throws SMPLException {
+    //     throw new TypeException(SMPLType.FUNCTION, getType());
+    // }
 }

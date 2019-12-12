@@ -4,6 +4,8 @@ import smpl.exceptions.VisitException;
 
 public class TypeException extends VisitException {
 
+    private static final long serialVersionUID = 1L;
+
     public TypeException() {
         super("Type Error");
     }
