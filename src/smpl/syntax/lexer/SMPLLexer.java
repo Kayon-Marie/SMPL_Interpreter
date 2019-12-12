@@ -26,6 +26,7 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
 
   /** initial size of the lookahead buffer */
   private static final int ZZ_BUFFERSIZE = 16384;
+  private static final String ZZ_NL = System.getProperty("line.separator");
 
   /** lexical states */
   public static final int YYINITIAL = 0;
@@ -284,6 +285,23 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
       do map[j++] = value; while (--count > 0);
     }
     return map;
+  }
+
+  private static String zzToPrintable(String str) {
+    StringBuilder builder = new StringBuilder();
+    for (int n = 0 ; n < str.length() ; ) {
+      int ch = str.codePointAt(n);
+      int charCount = Character.charCount(ch);
+      n += charCount;
+      if (ch > 31 && ch < 127) {
+        builder.append((char)ch);
+      } else if (charCount == 1) {
+        builder.append(String.format("\\u%04X", ch));
+      } else {
+        builder.append(String.format("\\U%06X", ch));
+      }
+    }
+    return builder.toString();
   }
 
 
@@ -632,64 +650,92 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [69] { //skip newline, but reset char counter"+ZZ_NL+"\t\t\t yychar = 0; }");
             { //skip newline, but reset char counter
 			 yychar = 0;
             }
           case 15: break;
           case 2: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [72] { // skip whitespace }");
             { // skip whitespace
             }
           case 16: break;
           case 3: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [97] { // VAR"+ZZ_NL+"\t       return new Symbol(sym.VAR, yytext()); }");
             { // VAR
 	       return new Symbol(sym.VAR, yytext());
             }
           case 17: break;
           case 4: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [85] { // INTEGER"+ZZ_NL+"\t       return new Symbol(sym.INT, "+ZZ_NL+"\t\t\t\t new Integer(yytext())); }");
             { // INTEGER
 	       return new Symbol(sym.INT, 
 				 new Integer(yytext()));
             }
           case 18: break;
           case 5: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [75] { return new Symbol(sym.PLUS); }");
             { return new Symbol(sym.PLUS);
             }
           case 19: break;
           case 6: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [76] { return new Symbol(sym.MINUS); }");
             { return new Symbol(sym.MINUS);
             }
           case 20: break;
           case 7: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [77] { return new Symbol(sym.MUL); }");
             { return new Symbol(sym.MUL);
             }
           case 21: break;
           case 8: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [78] { return new Symbol(sym.DIV); }");
             { return new Symbol(sym.DIV);
             }
           case 22: break;
           case 9: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [79] { return new Symbol(sym.MOD); }");
             { return new Symbol(sym.MOD);
             }
           case 23: break;
           case 10: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [81] { return new Symbol(sym.ASSIGN); }");
             { return new Symbol(sym.ASSIGN);
             }
           case 24: break;
           case 11: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [82] { return new Symbol(sym.LPAREN); }");
             { return new Symbol(sym.LPAREN);
             }
           case 25: break;
           case 12: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [83] { return new Symbol(sym.RPAREN); }");
             { return new Symbol(sym.RPAREN);
             }
           case 26: break;
           case 13: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [102] { // error situation"+ZZ_NL+"\t       String msg = String.format(\"Unrecognised Token: %s\", yytext());"+ZZ_NL+"\t       throw new TokenException(msg); }");
             { // error situation
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
             }
           case 27: break;
           case 14: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [91] { // REAL"+ZZ_NL+"\t\t\treturn new Symbol(sym.REAL,"+ZZ_NL+"\t\t\t\t new Double(yytext())); }");
             { // REAL
 			return new Symbol(sym.REAL,
 				 new Double(yytext()));
@@ -697,6 +743,59 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
           case 28: break;
           default:
             zzScanError(ZZ_NO_MATCH);
+        }
+      }
+    }
+  }
+
+  /**
+   * Runs the scanner on input files.
+   *
+   * This main method is the debugging routine for the scanner.
+   * It prints debugging information about each returned token to
+   * System.out until the end of file is reached, or an error occured.
+   *
+   * @param argv   the command line, contains the filenames to run
+   *               the scanner on.
+   */
+  public static void main(String argv[]) {
+    if (argv.length == 0) {
+      System.out.println("Usage : java SMPLLexer [ --encoding <name> ] <inputfile(s)>");
+    }
+    else {
+      int firstFilePos = 0;
+      String encodingName = "UTF-8";
+      if (argv[0].equals("--encoding")) {
+        firstFilePos = 2;
+        encodingName = argv[1];
+        try {
+          java.nio.charset.Charset.forName(encodingName); // Side-effect: is encodingName valid? 
+        } catch (Exception e) {
+          System.out.println("Invalid encoding '" + encodingName + "'");
+          return;
+        }
+      }
+      for (int i = firstFilePos; i < argv.length; i++) {
+        SMPLLexer scanner = null;
+        try {
+          java.io.FileInputStream stream = new java.io.FileInputStream(argv[i]);
+          java.io.Reader reader = new java.io.InputStreamReader(stream, encodingName);
+          scanner = new SMPLLexer(reader);
+          do {
+            System.out.println(scanner.next_token());
+          } while (!scanner.zzAtEOF);
+
+        }
+        catch (java.io.FileNotFoundException e) {
+          System.out.println("File not found : \""+argv[i]+"\"");
+        }
+        catch (java.io.IOException e) {
+          System.out.println("IO error scanning file \""+argv[i]+"\"");
+          System.out.println(e);
+        }
+        catch (Exception e) {
+          System.out.println("Unexpected exception:");
+          e.printStackTrace();
         }
       }
     }

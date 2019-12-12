@@ -2,7 +2,7 @@ package smpl.exceptions;
 
 import smpl.values.SMPLType;
 
-public class TypeException extends VisitException {
+public class TypeException extends SMPLException {
 
     private static final long serialVersionUID = 1L;
 

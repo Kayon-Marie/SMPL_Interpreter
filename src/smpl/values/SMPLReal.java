@@ -14,11 +14,12 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
 
     @Override
     public SMPLType getType() {
-        return SMPLType.INTEGER;
+        return SMPLType.REAL;
     }
 
     @Override
     public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
+        System.out.println(arg);
         if (arg.isReal()) { // SMPLReal + SMPLReal
             return make(this.value + arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal + SMPLInt
