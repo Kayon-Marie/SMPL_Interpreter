@@ -66,62 +66,54 @@ non terminal SMPLProgram program;
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtDefinition definition;
-
-// Expressions
-non terminal Exp arithExp;
 non terminal Exp expression;
 non terminal Exp term;
 non terminal Exp factor;
-non terminal Double number;
 non terminal empty;
+
+/* Grammar Values */
+non terminal SMPLValue number;
 
 /* Grammar rules */
 
-program ::= stmtList:s {: RESULT = new SMPLProgram(s); :};
+program ::= 	stmtList:s {: RESULT = new SMPLProgram(s); :};
 
-stmtList ::= stmtList:lst stmt:s {:
-		lst.add(s); 
-		RESULT = lst;
-		:} |
-	     stmt:s {:
-		RESULT = new StmtSequence(s);
-		:};
+stmtList ::=	stmtList:lst stmt:s {:
+					lst.add(s); 
+					RESULT = lst;
+				:} |
+	     		stmt:s {:
+					RESULT = new StmtSequence(s);
+				:};
 
-stmt ::= definition:d {: RESULT = d; :} |
-		expression:e {: RESULT = new Statement(e); :};
+stmt ::=	definition:d {: RESULT = d; :} |
+	 		expression:e {: RESULT = new Statement(e); :};
 
-definition ::= VAR:v ASSIGN expression:e {:
-		   RESULT = new StmtDefinition(v, e);
-		:};
+definition ::= 	VAR:v ASSIGN expression:e {:
+		   			RESULT = new StmtDefinition(v, e);
+				:};
 
-expression ::= 	arithExp e: {: RESULT = e; :};
+expression ::= 	expression:e PLUS term:t {:
+					RESULT = new ExpAdd(e, t); :} |
+				expression:e MINUS term:t {:
+					RESULT = new ExpSub(e, t); :} |
+				term:t {: RESULT = t; :};
 
-arithExp ::= arithExp:e PLUS term:t {:
-					RESULT = new ExpAdd(e, t); 
-			:} |
-			arithExp:e MINUS term:t {:
-				RESULT = new ExpSub(e, t); 
-			:} |
-			term:t {: RESULT = t; :};
+term ::= 	term:t MUL factor:f {:
+				RESULT = new ExpMul(t, f); :} |
+	 		term:t DIV factor:f {:
+				RESULT = new ExpDiv(t, f); :} |
+	 		term:t MOD factor:f {:
+				RESULT = new ExpMod(t, f); :} |
+	 		factor:f {: RESULT = f; :};
 
-term ::= term:t MUL factor:f {:
-			RESULT = new ExpMul(t, f); 
-		:} |
-	 	term:t DIV factor:f {:
-			RESULT = new ExpDiv(t, f); 
-		:} |
-		term:t MOD factor:f {:
-			RESULT = new ExpMod(t, f); 
-		:} |
-	 	factor:f {: RESULT = f; :};
-
-factor ::= 	number: num {: RESULT = num; :} |
+factor ::=	number: num {: RESULT = new ExpLit(num); :} |
 	   		VAR:var {: RESULT = new ExpVar(var); :} |
-	   		LPAREN expression:e RPAREN {: RESULT = e; :};
+	   		LPAREN expression:e RPAREN {: RESULT = e; :}	;
 
-number ::= 	INT: ilit {: RESULT = new Integer(ilit); :} |
-			MINUS INT: ilit {: RESULT = new Integer(ilit * -1); :} |
-			REAL: ilit {: RESULT = new Double(ilit); :} |
-			MINUS REAL: ilit {: RESULT = new Double(ilit * -1); :};
+number ::= 	MINUS INT: ilit {: RESULT = SMPLValue.make(ilit * -1); :} |
+			MINUS REAL: rlit {: RESULT = SMPLValue.make(rlit * -1); :} |
+			INT: ilit {: RESULT = SMPLValue.make(ilit); :} 	|
+			REAL: rlit {: RESULT = SMPLValue.make(rlit); :};
 
 empty ::= ;
