@@ -73,40 +73,40 @@ non terminal empty;
 
 /* Grammar rules */
 
-program ::= stmtList:s {: RESULT = new SMPLProgram(s); :};
+program ::=	stmtList:s {: RESULT = new SMPLProgram(s); :};
 
-stmtList ::= stmtList:lst stmt:s {:
-		lst.add(s); 
-		RESULT = lst;
-		:} |
-	     stmt:s {:
-		RESULT = new StmtSequence(s);
-		:};
+stmtList ::=	stmtList:lst stmt:s {:
+					lst.add(s); 
+					RESULT = lst;
+				:} |
+	     		stmt:s {:
+					RESULT = new StmtSequence(s);
+				:};
 
-stmt ::= definition:d {: RESULT = d; :} |
-	 expression:e {: RESULT = new Statement(e); :};
+stmt ::=	definition:d {: RESULT = d; :} |
+	 		expression:e {: RESULT = new Statement(e); :};
 
-definition ::= VAR:v ASSIGN expression:e {:
-		   RESULT = new StmtDefinition(v, e);
-		:};
+definition ::=	VAR:v ASSIGN expression:e {:
+		   			RESULT = new StmtDefinition(v, e);
+				:};
 
-expression ::= 	expression:e PLUS term:t {:
-			RESULT = new ExpAdd(e, t); :} |
-		expression:e MINUS term:t {:
-			RESULT = new ExpSub(e, t); :} |
-		term:t {: RESULT = t; :};
+expression ::=	expression:e PLUS term:t {:
+					RESULT = new ExpAdd(e, t); :} |
+				expression:e MINUS term:t {:
+					RESULT = new ExpSub(e, t); :} |
+				term:t {: RESULT = t; :};
 
-term ::= term:t MUL factor:f {:
-		RESULT = new ExpMul(t, f); :} |
-	 term:t DIV factor:f {:
-		RESULT = new ExpDiv(t, f); :} |
-	 term:t MOD factor:f {:
-		RESULT = new ExpMod(t, f); :} |
-	 factor:f {: RESULT = f; :};
+term ::=	term:t MUL factor:f {:
+				RESULT = new ExpMul(t, f); :} |
+	 		term:t DIV factor:f {:
+				RESULT = new ExpDiv(t, f); :} |
+	 		term:t MOD factor:f {:
+				RESULT = new ExpMod(t, f); :} |
+	 		factor:f {: RESULT = f; :};
 
-factor ::= INT:ilit {: RESULT = new ExpLit(ilit); :} |
-	   REAL:rlit {: RESULT = new ExpLit(rlit); :} |
-	   VAR:var {: RESULT = new ExpVar(var); :} |
-	   LPAREN expression:e RPAREN {: RESULT = e; :}	;
+factor ::=	INT:ilit {: RESULT = new ExpLit(ilit); :} |
+	   		REAL:rlit {: RESULT = new ExpLit(rlit); :} |
+	   		VAR:var {: RESULT = new ExpVar(var); :} |
+	   		LPAREN expression:e RPAREN {: RESULT = e; :}	;
 
 empty ::= ;
