@@ -84,7 +84,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * between this value and the argument value under subtraction
      */
     public SMPLValue<?> neg() throws SMPLException {
-        throw new TypeException("Operation sub called with non-numeric type");
+        throw new TypeException("Operation neg called with non-numeric type");
     }
 
     /**

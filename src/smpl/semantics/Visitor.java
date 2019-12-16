@@ -12,6 +12,7 @@ import smpl.syntax.ast.ExpSub;
 import smpl.syntax.ast.ExpMul;
 import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
+import smpl.syntax.ast.ExpNeg;
 
 /**
  * The generic Visitor interface for the Arithmetic parser
@@ -33,11 +34,12 @@ public interface Visitor<S, T> {
     public T visitStmtDefinition(StmtDefinition sd, S arg) throws VisitException;
 
     // expressions
-    public T visitExpAdd(ExpAdd exp, S arg) throws VisitException ;
+    public T visitExpAdd(ExpAdd exp, S arg) throws VisitException;
     public T visitExpSub(ExpSub exp, S arg) throws VisitException;
     public T visitExpMul(ExpMul exp, S arg) throws VisitException;
     public T visitExpDiv(ExpDiv exp, S arg) throws VisitException;
     public T visitExpMod(ExpMod exp, S arg) throws VisitException;
     public T visitExpLit(ExpLit exp, S arg) throws VisitException;
     public T visitExpVar(ExpVar exp, S arg) throws VisitException;
+    public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
 }
