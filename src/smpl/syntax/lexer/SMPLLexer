@@ -32,6 +32,8 @@ import smpl.syntax.parser.sym;
 %column
 %line
 
+%debug
+
 %{
     public int getChar() {
 	return yychar + 1;

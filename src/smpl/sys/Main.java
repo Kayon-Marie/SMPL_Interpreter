@@ -17,6 +17,8 @@ import smpl.semantics.Visitor;
 import smpl.semantics.Evaluator;
 import smpl.semantics.PersistentWalker;
 
+import smpl.values.SMPLValue;
+
 public class Main {
 
     public static final String PROMPT = "> ";
@@ -65,7 +67,7 @@ public class Main {
         try {
             PersistentWalker<?, ?> walker;	// to be set by switch statement
             if (walkerName.equals("")) {
-                walker = new PersistentWalker<Environment, Integer>
+                walker = new PersistentWalker<Environment, SMPLValue<?>>
                     (new Evaluator());
             } else {
                 Class<? extends Visitor<S, T>> wclass =
