@@ -64,6 +64,8 @@ alphanum = {alpha}|[0-9]
 
 num = [0-9]
 
+real = {num}*\.{num} | {num}+\.{num}*
+
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -88,7 +90,7 @@ num = [0-9]
 				 new Integer(yytext()));
 		}
 
-<YYINITIAL>   {num}*\.{num}+ {
+<YYINITIAL>   {real} {
 			// REAL
 			return new Symbol(sym.REAL,
 				 new Double(yytext()));

@@ -16,6 +16,7 @@ import smpl.syntax.ast.ExpSub;
 import smpl.syntax.ast.ExpMul;
 import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
+import smpl.syntax.ast.ExpNeg;
 
 public class ToScheme implements Visitor<Void, String> {
 
@@ -109,6 +110,11 @@ public class ToScheme implements Visitor<Void, String> {
         return "(mod " + left + " " + right + ")";
     }
 
+    public String visitExpNeg(ExpNeg exp, Void arg)
+	throws VisitException {
+	    return "(-" + exp.getExp();
+    }
+
     public String visitExpLit(ExpLit exp, Void arg)
 	throws VisitException {
 	    return "" + exp.getVal();
@@ -118,4 +124,5 @@ public class ToScheme implements Visitor<Void, String> {
 	throws VisitException {
 	    return exp.getVar();
     }
+
 }
