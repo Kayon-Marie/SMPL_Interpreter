@@ -60,6 +60,8 @@ terminal PLUS, MINUS, MUL, DIV, MOD, ASSIGN;
 terminal Integer INT;
 terminal String VAR;
 terminal Double REAL;
+terminal Boolean TRUE;
+terminal Boolean FALSE;
 
 /* Non terminals */
 non terminal SMPLProgram program;
@@ -107,6 +109,8 @@ term ::=	term:t MUL factor:f {:
 factor ::=	INT:ilit {: RESULT = new ExpLit(ilit); :} |
 	   		REAL:rlit {: RESULT = new ExpLit(rlit); :} |
 	   		VAR:var {: RESULT = new ExpVar(var); :} |
-	   		LPAREN expression:e RPAREN {: RESULT = e; :}	;
+			TRUE: t {: RESULT = new ExpBool(t); :} |
+			FALSE: f {: RESULT = new ExpBool(f); :} |
+	   		LPAREN expression:e RPAREN {: RESULT = e; :};
 
 empty ::= ;

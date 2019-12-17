@@ -64,6 +64,9 @@ alphanum = {alpha}|[0-9]
 
 num = [0-9]
 
+true = "#t"
+false = "#f"
+
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -82,6 +85,7 @@ num = [0-9]
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
 
+// Numerical Values
 <YYINITIAL>    {num}+ {
 	       // INTEGER
 	       return new Symbol(sym.INT, 
@@ -93,11 +97,16 @@ num = [0-9]
 			return new Symbol(sym.REAL,
 				 new Double(yytext()));
 		}
-		
+
+// Strings and Chars	
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
 		}
+
+// Boolean
+<YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
+<YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
 <YYINITIAL>    \S+		{ // error situation
 	       String msg = String.format("Unrecognised Token: %s", yytext());
