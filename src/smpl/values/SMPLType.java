@@ -7,6 +7,7 @@ package smpl.values;
 public enum SMPLType {
     INTEGER("int"),
     REAL("real"),
+    BOOLEAN("bool"),
     FUNCTION("function");
 
     private final String docString;

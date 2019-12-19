@@ -64,6 +64,9 @@ alphanum = {alpha}|[0-9]
 
 num = [0-9]
 
+true = "#t"
+false = "#f"
+
 real = {num}*\.{num} | {num}+\.{num}*
 
 %%
@@ -84,6 +87,7 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
 
+// Numerical Values
 <YYINITIAL>    {num}+ {
 	       // INTEGER
 	       return new Symbol(sym.INT, 
@@ -95,11 +99,16 @@ real = {num}*\.{num} | {num}+\.{num}*
 			return new Symbol(sym.REAL,
 				 new Double(yytext()));
 		}
-		
+
+// Strings and Chars	
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
 		}
+
+// Boolean
+<YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
+<YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
 <YYINITIAL>    \S+		{ // error situation
 	       String msg = String.format("Unrecognised Token: %s", yytext());

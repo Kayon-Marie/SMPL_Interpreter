@@ -12,6 +12,7 @@ import smpl.syntax.ast.StmtDefinition;
 import smpl.syntax.ast.ExpLit;
 import smpl.syntax.ast.ExpVar;
 import smpl.syntax.ast.ExpAdd;
+import smpl.syntax.ast.ExpBool;
 import smpl.syntax.ast.ExpSub;
 import smpl.syntax.ast.ExpMul;
 import smpl.syntax.ast.ExpDiv;
@@ -125,4 +126,8 @@ public class ToScheme implements Visitor<Void, String> {
 	    return exp.getVar();
     }
 
+    @Override
+    public String visitExpBool(ExpBool exp, Void arg) throws VisitException {
+        return "" + exp.getBool();
+    }
 }

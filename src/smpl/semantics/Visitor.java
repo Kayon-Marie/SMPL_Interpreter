@@ -12,6 +12,7 @@ import smpl.syntax.ast.ExpSub;
 import smpl.syntax.ast.ExpMul;
 import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
+import smpl.syntax.ast.ExpBool;
 import smpl.syntax.ast.ExpNeg;
 
 /**
@@ -41,5 +42,6 @@ public interface Visitor<S, T> {
     public T visitExpMod(ExpMod exp, S arg) throws VisitException;
     public T visitExpLit(ExpLit exp, S arg) throws VisitException;
     public T visitExpVar(ExpVar exp, S arg) throws VisitException;
+    public T visitExpBool(ExpBool exp, S arg) throws VisitException;
     public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
 }

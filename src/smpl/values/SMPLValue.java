@@ -30,6 +30,15 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     public static SMPLReal make(Double value) {
         return new SMPLReal(value);
     }
+
+    /**
+     * 
+     * @param value
+     * @return SMPLValue instance to represent a boolean value (true #t or false #f)
+     */
+    public static SMPLBool make(Boolean value) {
+        return new SMPLBool(value);
+    }
     
     /**
      *
@@ -53,6 +62,14 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      */
     public boolean isReal() {
         return getType() == SMPLType.REAL;
+    }
+
+    /**
+     * 
+     * @return <code>true</code> if and only if this value is a boolean value
+     */
+    public boolean isBool() {
+        return getType() == SMPLType.BOOLEAN;
     }
 
     /**

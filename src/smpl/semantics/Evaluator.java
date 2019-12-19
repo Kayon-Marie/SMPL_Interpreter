@@ -13,6 +13,7 @@ import smpl.syntax.ast.StmtDefinition;
 import smpl.syntax.ast.ExpLit;
 import smpl.syntax.ast.ExpVar;
 import smpl.syntax.ast.ExpAdd;
+import smpl.syntax.ast.ExpBool;
 import smpl.syntax.ast.ExpSub;
 import smpl.syntax.ast.ExpMul;
 import smpl.syntax.ast.ExpNeg;
@@ -124,6 +125,11 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return val;
     }
 
+    @Override
+    public SMPLValue<?> visitExpBool(ExpBool exp, Environment arg) throws VisitException {
+        return exp.getBool();
+    }
+    
     public SMPLValue<?> visitExpNeg(ExpNeg exp, Environment env) throws VisitException {
         SMPLValue<?> numval = exp.getExp().visit(this, env);
         return numval.neg();
