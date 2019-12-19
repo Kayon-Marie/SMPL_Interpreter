@@ -67,6 +67,8 @@ num = [0-9]
 true = "#t"
 false = "#f"
 
+real = {num}*\.{num} | {num}+\.{num}*
+
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -92,7 +94,7 @@ false = "#f"
 				 new Integer(yytext()));
 		}
 
-<YYINITIAL>   {num}*\.{num}+ {
+<YYINITIAL>   {real} {
 			// REAL
 			return new Symbol(sym.REAL,
 				 new Double(yytext()));

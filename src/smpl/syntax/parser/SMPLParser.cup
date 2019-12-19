@@ -104,13 +104,15 @@ term ::=	term:t MUL factor:f {:
 				RESULT = new ExpDiv(t, f); :} |
 	 		term:t MOD factor:f {:
 				RESULT = new ExpMod(t, f); :} |
+			LPAREN MINUS factor: f RPAREN {:
+				RESULT = new ExpNeg(f); :}		|
 	 		factor:f {: RESULT = f; :};
 
 factor ::=	INT:ilit {: RESULT = new ExpLit(ilit); :} |
 	   		REAL:rlit {: RESULT = new ExpLit(rlit); :} |
 	   		VAR:var {: RESULT = new ExpVar(var); :} |
-			TRUE: t {: RESULT = new ExpBool(t); :} |
-			FALSE: f {: RESULT = new ExpBool(f); :} |
+			  TRUE: t {: RESULT = new ExpBool(t); :} |
+			  FALSE: f {: RESULT = new ExpBool(f); :} |
 	   		LPAREN expression:e RPAREN {: RESULT = e; :};
 
 empty ::= ;
