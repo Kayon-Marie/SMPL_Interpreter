@@ -14,6 +14,7 @@ import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
 import smpl.syntax.ast.ExpBool;
 import smpl.syntax.ast.ExpNeg;
+import smpl.syntax.ast.ExpPow;
 
 /**
  * The generic Visitor interface for the Arithmetic parser
@@ -44,4 +45,5 @@ public interface Visitor<S, T> {
     public T visitExpVar(ExpVar exp, S arg) throws VisitException;
     public T visitExpBool(ExpBool exp, S arg) throws VisitException;
     public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
+    public T visitExpPow(ExpPow exp, S ard) throws VisitException;
 }

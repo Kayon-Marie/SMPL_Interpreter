@@ -19,6 +19,7 @@ import smpl.syntax.ast.ExpMul;
 import smpl.syntax.ast.ExpNeg;
 import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
+import smpl.syntax.ast.ExpPow;
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
@@ -133,5 +134,13 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitExpNeg(ExpNeg exp, Environment env) throws VisitException {
         SMPLValue<?> numval = exp.getExp().visit(this, env);
         return numval.neg();
+    }
+
+    public SMPLValue<?> visitExpPow(ExpPow exp, Environment arg)
+	throws VisitException {
+        SMPLValue<?> val, pow;
+        val = exp.getExp().visit(this, arg);
+        pow = exp.getPower().visit(this, arg);
+        return val.pow(pow);
     }
 }

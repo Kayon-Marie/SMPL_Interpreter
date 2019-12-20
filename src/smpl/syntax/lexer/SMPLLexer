@@ -82,6 +82,7 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL>	"*"	{return new Symbol(sym.MUL);}
 <YYINITIAL>	"/"	{return new Symbol(sym.DIV);}
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
+<YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
 <YYINITIAL>	"="	{return new Symbol(sym.ASSIGN);}
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
