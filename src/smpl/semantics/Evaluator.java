@@ -20,6 +20,7 @@ import smpl.syntax.ast.ExpNeg;
 import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
 import smpl.syntax.ast.ExpPow;
+import smpl.syntax.ast.ExpRelOp;
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
@@ -142,5 +143,15 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         val = exp.getExp().visit(this, arg);
         pow = exp.getPower().visit(this, arg);
         return val.pow(pow);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpRelOp(ExpRelOp exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        String sign = exp.getSign();
+        return left.cmp(right, sign);
+
     }
 }

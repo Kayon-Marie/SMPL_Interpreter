@@ -175,4 +175,15 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     // public SMPLFunction funValue() throws SMPLException {
     //     throw new TypeException(SMPLType.FUNCTION, getType());
     // }
+
+    /**
+     * For comparing SMPLValue types
+     * @param arg
+     * @param sign
+     * @return boolean of successful comparison btw 2 SMPLValues
+     * @throws SMPLException
+     */
+    public SMPLValue<?> cmp(SMPLValue<?> arg, String sign) throws SMPLException{
+        throw new TypeException("Data type is valid in no comparisons");
+    }
 }

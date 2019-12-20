@@ -62,6 +62,8 @@ terminal String VAR;
 terminal Double REAL;
 terminal Boolean TRUE;
 terminal Boolean FALSE;
+terminal String RELOP;
+terminal String LOGOP;
 
 /* Non terminals */
 non terminal SMPLProgram program;
@@ -72,6 +74,9 @@ non terminal Exp expression;
 non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp value;
+non terminal Exp arithExp;
+non terminal Exp relop;
+// non terminal Exp relopSeq;
 non terminal empty;
 
 /* Grammar rules */
@@ -93,9 +98,23 @@ definition ::=	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtDefinition(v, e);
 				:};
 
-expression ::=	expression:e PLUS term:t {:
+expression ::=	arithExp: ae {: RESULT = ae; :} |
+				relop: r {: RESULT = r; :};
+
+relop ::= 	arithExp: left RELOP: sign arithExp: right {:
+				RESULT = new ExpRelOp(left, right, sign);
+			:};
+			
+/*
+relOp ::= 	relOp: left RELOP: sign arithExp: right {:
+				RESULT = new ExpRelOp(left, right, sign);
+			:} | 
+			arithExp: ae {: RESULT = ae; :};
+*/
+
+arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpAdd(e, t); :} |
-				expression:e MINUS term:t {:
+				arithExp:e MINUS term:t {:
 					RESULT = new ExpSub(e, t); :} |
 				term:t {: RESULT = t; :};
 
@@ -115,7 +134,6 @@ factor ::=	factor:f POWER value:v {:
 			FALSE: f {: RESULT = new ExpBool(f); :} |
 			value:v {: RESULT = v; :};
 	   		
-
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
 			REAL:rlit {: RESULT = new ExpLit(rlit); :} |
 			VAR:var {: RESULT = new ExpVar(var); :} |

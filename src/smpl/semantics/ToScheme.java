@@ -19,6 +19,7 @@ import smpl.syntax.ast.ExpDiv;
 import smpl.syntax.ast.ExpMod;
 import smpl.syntax.ast.ExpNeg;
 import smpl.syntax.ast.ExpPow;
+import smpl.syntax.ast.ExpRelOp;
 
 public class ToScheme implements Visitor<Void, String> {
 
@@ -136,5 +137,13 @@ public class ToScheme implements Visitor<Void, String> {
         String left = exp.getExp().visit(this, arg);
         String right = exp.getPower().visit(this, arg);
         return "(^ " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpRelOp(ExpRelOp exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        String sign = exp.getSign();
+        return "(" + sign + " " + left + " " + right + ")";
     }
 }
