@@ -134,7 +134,7 @@ public class SMPLInt extends SMPLValue<SMPLInt> {
                 break;
             
             default:
-                break;
+                throw new SMPLException("Illegal comparison for data types: " + this.getType() + " and " + arg.getType());
         }
 
         return result;

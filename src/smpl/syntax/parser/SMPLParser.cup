@@ -54,7 +54,10 @@ scan with {:
 terminal LPAREN, RPAREN;
 
 // arithmetic operators
-terminal PLUS, MINUS, MUL, DIV, MOD, ASSIGN, POWER;
+terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
+
+//logical operators
+terminal AND, OR, NOT;
 
 // terminals with values
 terminal Integer INT;
@@ -63,7 +66,7 @@ terminal Double REAL;
 terminal Boolean TRUE;
 terminal Boolean FALSE;
 terminal String RELOP;
-terminal String LOGOP;
+terminal String ASSIGN;
 
 /* Non terminals */
 non terminal SMPLProgram program;
@@ -75,7 +78,10 @@ non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp value;
 non terminal Exp arithExp;
-non terminal Exp relop;
+non terminal Exp relops;
+non terminal String relsign;
+non terminal Exp logops;
+non terminal Exp bool;
 // non terminal Exp relopSeq;
 non terminal empty;
 
@@ -98,18 +104,31 @@ definition ::=	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtDefinition(v, e);
 				:};
 
-expression ::=	arithExp: ae {: RESULT = ae; :} |
-				relop: r {: RESULT = r; :};
+expression ::=	logops: l {: RESULT = l; :};
+
+logops ::= 	logops: l AND relops: r {: RESULT = new ExpAnd(l, r); :} |
+			logops: l OR relops: r {: RESULT = new ExpOr(l, r); :}	|
+			relops: r {: RESULT = r; :};
+
+relops ::= 	NOT arithExp: ae {: RESULT = new ExpNot(ae); :} |
+			arithExp: ae {: RESULT = ae; :};
+
+/*
+
+relops ::= 	relops: r RELOP: sign arithExp: ae {:
+				RESULT = r.add(ae, sign);
+			:} |
+			arithExp: ae {:
+				RESULT = new ExpRelOps(ae);
+			:};	
+
+logop ::=	relop: left LOGOP: op relop: right {:
+				RESULT = new ExpLogOp(left, right, op);
+			:};
 
 relop ::= 	arithExp: left RELOP: sign arithExp: right {:
 				RESULT = new ExpRelOp(left, right, sign);
 			:};
-			
-/*
-relOp ::= 	relOp: left RELOP: sign arithExp: right {:
-				RESULT = new ExpRelOp(left, right, sign);
-			:} | 
-			arithExp: ae {: RESULT = ae; :};
 */
 
 arithExp ::=	arithExp:e PLUS term:t {:
@@ -128,15 +147,19 @@ term ::=	term:t MUL factor:f {:
 				RESULT = new ExpNeg(f); :}	|
 	 		factor:f {: RESULT = f; :};
 
-factor ::=	factor:f POWER value:v {:
-				RESULT = new ExpPow(f, v); :} |
-			TRUE: t {: RESULT = new ExpBool(t); :} |
-			FALSE: f {: RESULT = new ExpBool(f); :} |
+factor ::=	factor:f POWER value:v {: RESULT = new ExpPow(f, v); :} |
+			bool: b {: RESULT = b; :} |
 			value:v {: RESULT = v; :};
+
+bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
+			FALSE: f {: RESULT = new ExpBool(f); :};
 	   		
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
 			REAL:rlit {: RESULT = new ExpLit(rlit); :} |
 			VAR:var {: RESULT = new ExpVar(var); :} |
 			LPAREN expression:e RPAREN {: RESULT = e; :};
+
+relsign ::= RELOP: sign {: RESULT = sign; :} |
+			ASSIGN: sign {: RESULT = sign; :};
 			
 empty ::= ;

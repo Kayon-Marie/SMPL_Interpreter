@@ -2,20 +2,7 @@ package smpl.semantics;
 
 import smpl.exceptions.VisitException;
 import smpl.syntax.ast.core.SMPLProgram;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpPow;
-import smpl.syntax.ast.ExpRelOp;
+import smpl.syntax.ast.*;
 
 /**
  * The generic Visitor interface for the Arithmetic parser
@@ -37,15 +24,26 @@ public interface Visitor<S, T> {
     public T visitStmtDefinition(StmtDefinition sd, S arg) throws VisitException;
 
     // expressions
+
+    //arithmetic
     public T visitExpAdd(ExpAdd exp, S arg) throws VisitException;
     public T visitExpSub(ExpSub exp, S arg) throws VisitException;
     public T visitExpMul(ExpMul exp, S arg) throws VisitException;
     public T visitExpDiv(ExpDiv exp, S arg) throws VisitException;
     public T visitExpMod(ExpMod exp, S arg) throws VisitException;
+    public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
+    public T visitExpPow(ExpPow exp, S ard) throws VisitException;  
+
+    // iterals and variables
     public T visitExpLit(ExpLit exp, S arg) throws VisitException;
     public T visitExpVar(ExpVar exp, S arg) throws VisitException;
     public T visitExpBool(ExpBool exp, S arg) throws VisitException;
-    public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
-    public T visitExpPow(ExpPow exp, S ard) throws VisitException;
+    
+    //relational and logic expressions
+    public T visitExpAnd(ExpAnd exp, S arg) throws VisitException;
+    public T visitExpOr(ExpOr exp, S arg) throws VisitException;
+    public T visitExpNot(ExpNot exp, S arg) throws VisitException;
     public T visitExpRelOp(ExpRelOp exp, S arg) throws VisitException;
+    public T visitExpRelOps(ExpRelOps exp, S arg) throws VisitException;
+    public T visitExpLogOp(ExpLogOp exp, S arg) throws VisitException;
 }

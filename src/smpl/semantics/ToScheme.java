@@ -6,20 +6,7 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpPow;
-import smpl.syntax.ast.ExpRelOp;
+import smpl.syntax.ast.*;
 
 public class ToScheme implements Visitor<Void, String> {
 
@@ -145,5 +132,38 @@ public class ToScheme implements Visitor<Void, String> {
         String right = exp.getRight().visit(this, arg);
         String sign = exp.getSign();
         return "(" + sign + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpAnd(ExpAnd exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "and" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpOr(ExpOr exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "or" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpNot(ExpNot exp, Void arg) throws VisitException {
+        String left = exp.getExp().visit(this, arg);
+        return "(" + "not" + " " + left + ")";
+    }
+
+    @Override
+    public String visitExpRelOps(ExpRelOps exp, Void arg) throws VisitException {
+        return "";
+    }
+
+    @Override
+    public String visitExpLogOp(ExpLogOp exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        String op = exp.getOp();
+        return "(" + op + " " + left + " " + right + ")";
     }
 }

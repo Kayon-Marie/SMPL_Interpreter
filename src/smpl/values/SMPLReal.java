@@ -135,7 +135,7 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
                 break;
             
             default:
-                break;
+                throw new SMPLException("Illegal comparison for data types: " + this.getType() + " and " + arg.getType());
         }
 
         return result;

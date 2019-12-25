@@ -72,10 +72,6 @@ real = {num}*\.{num} | {num}+\.{num}*
 // relational operators - excluding "=" AKA sym.ASSIGN
 rel_op = "<"|"<="|">"|">="|"!="
 
-// logical operators
-log_op = "and"|"or"|"not"
-
-
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -87,7 +83,10 @@ log_op = "and"|"or"|"not"
 			
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
-<YYINITIAL> {log_op} {return new Symbol(sym.LOGOP, yytext());}
+<YYINITIAL>	"="		{return new Symbol(sym.ASSIGN, yytext());} // also used as rel. op
+<YYINITIAL> "and"	{return new Symbol(sym.AND);}
+<YYINITIAL> "or"	{return new Symbol(sym.OR);}
+<YYINITIAL> "not"	{return new Symbol(sym.NOT);}
 
 // arithmetic operators
 <YYINITIAL>	"+"	{return new Symbol(sym.PLUS);}
@@ -97,7 +96,6 @@ log_op = "and"|"or"|"not"
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
-<YYINITIAL>	"="	{return new Symbol(sym.ASSIGN);} // also used as rel. op
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
 
