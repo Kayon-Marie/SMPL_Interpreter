@@ -13,6 +13,7 @@ public class ExpRelOps extends Exp {
 
     public ExpRelOps(Exp exp) {
         this.exp = exp;
+        this.ops = new ArrayList<>();
     }
 
     public ExpRelOps(ArrayList<ExpRelOp> ops) {
@@ -35,6 +36,7 @@ public class ExpRelOps extends Exp {
 
     public void add(Exp right, String sign) {
         this.ops.add(new ExpRelOp(this.exp, right, sign));
+        this.exp = right;
     }
     
 

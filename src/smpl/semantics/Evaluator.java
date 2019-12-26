@@ -6,26 +6,9 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.values.SMPLBool;
 import smpl.values.SMPLValue;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpLogOp;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpAnd;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpNot;
-import smpl.syntax.ast.ExpOr;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpPow;
-import smpl.syntax.ast.ExpRelOp;
-import smpl.syntax.ast.ExpRelOps;
+import smpl.syntax.ast.*;
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
@@ -161,12 +144,18 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpRelOps(ExpRelOps exp, Environment arg) throws VisitException {
-        Boolean status = true;
-        /*
+        SMPLValue<?> status = SMPLValue.make(true);
         ArrayList<ExpRelOp> operations = exp.getOps();
-        ExpLogOps logops = new ExpLogOps(operations, "and");
-        return logops.visit(this, arg); */
-        return null;
+
+        if (operations.size() < 1)
+            return exp.getExp().visit(this, arg);
+
+        for (ExpRelOp op: operations) {
+            status = op.visit(this, arg);
+            if (status.boolValue() == false) 
+                break;
+        }
+        return status;
     }
 
     @Override
@@ -190,26 +179,5 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         SMPLValue<?> left;
         left = exp.getExp().visit(this, arg);
         return left.not();
-    }
-
-    @Override
-    public SMPLValue<?> visitExpLogOp(ExpLogOp exp, Environment arg) throws VisitException {
-        SMPLValue<?> left = exp.getLeft().visit(this, arg);
-        SMPLValue<?> right = exp.getRight().visit(this, arg);
-        SMPLValue<?> result;
-        switch(exp.getOp()) {
-            case "and":
-                result = left.and(right);
-                break;
-            case "or":
-                result = left.or(right);
-                break;
-            case "not":
-                result = left.not();
-                break;
-            default:
-                result = null;
-        }
-        return result;   
     }
 }
