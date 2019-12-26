@@ -1,6 +1,7 @@
 package smpl.exceptions;
 
 import smpl.values.SMPLType;
+import smpl.values.SMPLValue;
 
 public class TypeException extends SMPLException {
 
@@ -16,6 +17,10 @@ public class TypeException extends SMPLException {
 
     public TypeException(SMPLType expected, SMPLType received) {
         super("Type Error: Expected " + expected + " but got " + received);
+    }
+
+    public TypeException(String op, SMPLValue<?> left, SMPLValue<?> right) {
+        super("Operation " + op + "not allowed between types " + left.getType() + " and " + right.getType());
     }
     
     public TypeException(String message, Throwable cause) {

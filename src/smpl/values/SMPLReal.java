@@ -89,6 +89,58 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
         }     
     }
 
+    /* Comparisons based on sign */
+    @Override
+    public SMPLBool cmp(SMPLValue<?> arg, String sign) throws SMPLException {
+        SMPLBool result = make(false);
+        class Exc { void raise(SMPLValue<?> left, SMPLValue<?> right, String sign) throws SMPLException{ 
+            throw new SMPLException("Cannot compare " + left + " and " + right + " using " + sign + " operator"); 
+        }}
+        
+        switch (sign) {
+            case "<":
+                if (arg.isInteger() | arg.isBool()) result = make(value < arg.intValue());
+                else if (arg.isReal())              result = make(value < arg.doubleValue());
+                else                                new Exc().raise(this, arg, sign);
+                break;
+
+            case "<=":
+                if (arg.isInteger() | arg.isBool()) result = make(value <= arg.intValue());
+                else if (arg.isReal())              result = make(value <= arg.doubleValue());
+                else                                new Exc().raise(this, arg, sign);
+                break;
+
+            case ">":
+                if (arg.isInteger() | arg.isBool()) result = make(value > arg.intValue());
+                else if (arg.isReal())              result = make(value > arg.doubleValue());
+                else                                new Exc().raise(this, arg, sign);
+                break;
+
+            case ">=":
+                if (arg.isInteger() | arg.isBool()) result = make(value > arg.intValue());
+                else if (arg.isReal())              result = make(value > arg.doubleValue());
+                else                                new Exc().raise(this, arg, sign);
+                break;
+
+            case "=":
+                if (arg.isInteger() | arg.isBool()) result = make(value == arg.intValue());
+                else if (arg.isReal())              result = make(value == arg.doubleValue());
+                else                                new Exc().raise(this, arg, sign);
+                break;
+
+            case "!=":
+                if (arg.isInteger() | arg.isBool()) result = make(value != arg.intValue());
+                else if (arg.isReal())              result = make(value != arg.doubleValue());
+                else                                new Exc().raise(this, arg, sign);
+                break;
+            
+            default:
+                throw new SMPLException("Illegal comparison for data types: " + this.getType() + " and " + arg.getType());
+        }
+
+        return result;
+    }
+
     @Override
     public int intValue() throws SMPLException {
         return (int)this.value;

@@ -69,6 +69,9 @@ false = "#f"
 
 real = {num}*\.{num} | {num}+\.{num}*
 
+// relational operators - excluding "=" AKA sym.ASSIGN
+rel_op = "<"|"<="|">"|">="|"!="
+
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -77,6 +80,15 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL>	{ws}	{
 			 // skip whitespace
 			}
+			
+// Relational and Logical operators
+<YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
+<YYINITIAL>	"="		{return new Symbol(sym.ASSIGN, yytext());} // also used as rel. op
+<YYINITIAL> "and"	{return new Symbol(sym.AND);}
+<YYINITIAL> "or"	{return new Symbol(sym.OR);}
+<YYINITIAL> "not"	{return new Symbol(sym.NOT);}
+
+// arithmetic operators
 <YYINITIAL>	"+"	{return new Symbol(sym.PLUS);}
 <YYINITIAL>	"-"	{return new Symbol(sym.MINUS);}
 <YYINITIAL>	"*"	{return new Symbol(sym.MUL);}
@@ -84,7 +96,6 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
-<YYINITIAL>	"="	{return new Symbol(sym.ASSIGN);}
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
 

@@ -6,20 +6,9 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.values.SMPLBool;
 import smpl.values.SMPLValue;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpPow;
+import smpl.syntax.ast.*;
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
@@ -142,5 +131,53 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         val = exp.getExp().visit(this, arg);
         pow = exp.getPower().visit(this, arg);
         return val.pow(pow);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpRelOp(ExpRelOp exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        String sign = exp.getSign();
+        return left.cmp(right, sign);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpRelOps(ExpRelOps exp, Environment arg) throws VisitException {
+        SMPLValue<?> status = SMPLValue.make(true);
+        ArrayList<ExpRelOp> operations = exp.getOps();
+
+        if (operations.size() < 1)
+            return exp.getExp().visit(this, arg);
+
+        for (ExpRelOp op: operations) {
+            status = op.visit(this, arg);
+            if (status.boolValue() == false) 
+                break;
+        }
+        return status;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpAnd(ExpAnd exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        return left.and(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpOr(ExpOr exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        return left.or(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpNot(ExpNot exp, Environment arg) throws VisitException {
+        SMPLValue<?> left;
+        left = exp.getExp().visit(this, arg);
+        return left.not();
     }
 }
