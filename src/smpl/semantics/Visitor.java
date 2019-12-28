@@ -45,5 +45,4 @@ public interface Visitor<S, T> {
     public T visitExpNot(ExpNot exp, S arg) throws VisitException;
     public T visitExpRelOp(ExpRelOp exp, S arg) throws VisitException;
     public T visitExpRelOps(ExpRelOps exp, S arg) throws VisitException;
-    public T visitExpLogOp(ExpLogOp exp, S arg) throws VisitException;
 }
