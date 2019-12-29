@@ -88,6 +88,14 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL> "or"	{return new Symbol(sym.OR);}
 <YYINITIAL> "not"	{return new Symbol(sym.NOT);}
 
+//Bitwise operators
+<YYINITIAL> "&"	{return new Symbol(sym.BAND);}
+<YYINITIAL> "|"	{return new Symbol(sym.BOR);}
+<YYINITIAL> "~"	{return new Symbol(sym.NEG);}
+
+
+
+
 // arithmetic operators
 <YYINITIAL>	"+"	{return new Symbol(sym.PLUS);}
 <YYINITIAL>	"-"	{return new Symbol(sym.MINUS);}
@@ -112,6 +120,20 @@ rel_op = "<"|"<="|">"|">="|"!="
 				 new Double(yytext()));
 		}
 
+<YYINITIAL>   "#b"[01]+ {
+			// BINARY
+			String i = yytext().substring(2);
+			return new Symbol(sym.INT,
+				 Integer.parseInt(i, 2));
+		}
+
+<YYINITIAL>   "#x"{alphanum}+ {
+			// HEX
+			String i = yytext().substring(2);
+			return new Symbol(sym.INT,
+				 Integer.parseInt(i,16));
+		}
+
 // Strings and Chars	
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
@@ -122,7 +144,9 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
 <YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
-<YYINITIAL>    \S+		{ // error situation
+
+// error situation
+<YYINITIAL>   [^]		{ 
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
 	       }

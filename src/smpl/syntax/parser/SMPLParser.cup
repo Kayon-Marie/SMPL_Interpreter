@@ -56,6 +56,9 @@ terminal LPAREN, RPAREN;
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
 
+//bitwise operators 
+terminal BAND, BOR, NEG;
+
 //logical operators
 terminal AND, OR, NOT;
 
@@ -78,11 +81,14 @@ non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp value;
 non terminal Exp arithExp;
-non terminal ExpRelOps relop;
+non terminal Exp relop;
 non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
+non terminal Exp bitOp;
 non terminal empty;
+
+
 
 /* Grammar rules */
 
@@ -103,6 +109,7 @@ definition ::=	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtDefinition(v, e);
 				:};
 
+
 expression ::=	logop: l {: RESULT = l; :};
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
@@ -112,13 +119,16 @@ logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 negation ::= 	NOT relop: r {: RESULT = new ExpNot(r); :} |
 				relop: r {: RESULT = r; :};
 
-relop ::= 	relop: r RELOP: sign arithExp: ae {:
-				r.add(ae, sign);
-				RESULT = r;
+relop ::= 	relop:r  RELOP:sign arithExp: ae {:
+				RESULT = new ExpRelOp(r,ae,sign);
 			:} |
-			arithExp: ae {:
-				RESULT = new ExpRelOps(ae);
+			bitOp: b {:
+				RESULT = b;
 			:};
+
+bitOp ::= bitOp:b BAND arithExp: e {: RESULT = new ExpBAnd(b,e); :} |
+		  bitOp:b BOR arithExp: e {: RESULT = new ExpBOr(b,e); :} |
+		  arithExp:e {: RESULT = e; :};	
 
 arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpAdd(e, t); :} |
