@@ -10,9 +10,7 @@ public class ExpRelOp extends Exp {
 
     Exp left, right;
     String sign;
-
-    public ExpRelOp(){ this(new ExpLit(0), new ExpLit(0), ">"); }
-
+    
     public ExpRelOp(Exp left, Exp right, String sign) {
         this.left = left;
         this.right = right;

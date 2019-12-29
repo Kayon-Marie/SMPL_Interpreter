@@ -245,4 +245,30 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     public SMPLValue<?> cmp(SMPLValue<?> arg, String sign) throws SMPLException{
         throw new TypeException("Data type is valid in no comparisons");
     }
+
+     // =========================== //
+    // == BITWISE OPERATIONS == //
+    // =========================== //
+
+    /**
+     * For bitwise AND of SMPLValues
+     * @param arg
+     * @param sign
+     * @return int rep of result
+     * @throws SMPLException
+     */
+    public SMPLValue<?> BAnd(SMPLValue<?> arg) throws SMPLException{
+        throw new TypeException("Incorrect type used");
+    }
+
+     /**
+     * For bitwise OR of SMPLValues
+     * @param arg
+     * @param sign
+     * @return int rep of result
+     * @throws SMPLException
+     */
+    public SMPLValue<?> BOr(SMPLValue<?> arg) throws SMPLException{
+        throw new TypeException("Incorrect type used");
+    }
 }
