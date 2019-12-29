@@ -20,6 +20,7 @@ import smpl.syntax.ast.ExpMod;
 import smpl.syntax.ast.ExpNeg;
 import smpl.syntax.ast.ExpPow;
 import smpl.syntax.ast.ExpChar;
+import smpl.syntax.ast.ExpString;
 
 public class ToScheme implements Visitor<Void, String> {
 
@@ -141,5 +142,9 @@ public class ToScheme implements Visitor<Void, String> {
 
     public String visitExpChar(ExpChar exp, Void arg) throws VisitException {
         return "#c" + exp.getChar();
+    }
+
+    public String visitExpString(ExpString exp, Void arg) throws VisitException {
+        return "\"" + exp.getString() + "\"";
     }
 }

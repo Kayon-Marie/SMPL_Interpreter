@@ -1,15 +1,14 @@
 package smpl.values;
 
-import java.io.*;
 import smpl.exceptions.SMPLException;
 
 public class SMPLChar extends SMPLValue<SMPLChar>{
 
-    String value;
+    Character value;
 
-    public SMPLChar() { this("a"); }
+    public SMPLChar() { this('a'); }
 
-    public SMPLChar(String value) {
+    public SMPLChar(Character value) {
         this.value = value;
     }
 
@@ -20,7 +19,7 @@ public class SMPLChar extends SMPLValue<SMPLChar>{
 
     @Override
     public String toString() {
-        return new String(getType().toString() + this.value);
+        return new String(getType().toString() + "#c" + this.value);
     }
 
 }

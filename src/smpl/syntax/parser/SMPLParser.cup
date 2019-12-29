@@ -63,6 +63,7 @@ terminal Double REAL;
 terminal Boolean TRUE;
 terminal Boolean FALSE;
 terminal String CHAR;
+terminal String STRING;
 
 /* Non terminals */
 non terminal SMPLProgram program;
@@ -115,6 +116,7 @@ factor ::=	factor:f POWER value:v {:
 			TRUE: t {: RESULT = new ExpBool(t); :} |
 			FALSE: f {: RESULT = new ExpBool(f); :} |
 			CHAR: c {: RESULT = new ExpChar(c); :} |
+			STRING: s {: RESULT = new ExpString(s); :} |
 			value:v {: RESULT = v; :};
 	   		
 

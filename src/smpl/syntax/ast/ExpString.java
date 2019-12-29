@@ -1,31 +1,30 @@
 package smpl.syntax.ast;
 
-import java.io.*;
 import smpl.exceptions.TypeException;
 import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 import smpl.values.SMPLValue;
 
-public class ExpChar extends Exp {
+public class ExpString extends Exp {
 
-    SMPLValue<?> chr;
+    SMPLValue<?> string;
 
-    public ExpChar(String val) {
-        this.chr = SMPLValue.make(val.charAt(2));
+    public ExpString(String val) {
+        this.string = SMPLValue.make(val);
     }
  
-    public SMPLValue<?> getChar() {
-        return chr;
+    public SMPLValue<?> getString() {
+        return string;
     }
 
     @Override
     public <S, T> T visit(Visitor<S, T> v, S arg) throws VisitException {
-        return v.visitExpChar(this, arg);
+        return v.visitExpString(this, arg);
     }
 
     @Override
     public String toString() {
-        return "#c" + this.chr.toString();
+        return "\"" + this.string.toString() + "\"";
     }
 }

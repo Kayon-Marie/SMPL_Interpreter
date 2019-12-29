@@ -71,6 +71,8 @@ false = "#f"
 
 char = "#c"{alpha}
 
+string = [\"]{alphanum}*[\"]
+
 real = {num}*\.{num} | {num}+\.{num}*
 
 %%
@@ -105,7 +107,7 @@ real = {num}*\.{num} | {num}+\.{num}*
 				 new Double(yytext()));
 		}
 
-// Strings	
+// Variables	
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
@@ -117,6 +119,11 @@ real = {num}*\.{num} | {num}+\.{num}*
 			return new Symbol(sym.CHAR, yytext());
 		}
 
+// String
+<YYINITIAL> {string} {
+			// Strings
+			return new Symbol(sym.STRING, yytext());
+		}
 
 // Boolean
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
