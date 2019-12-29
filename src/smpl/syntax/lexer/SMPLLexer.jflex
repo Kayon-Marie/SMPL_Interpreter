@@ -71,7 +71,7 @@ false = "#f"
 
 char = "#c"{alpha}
 
-string = \"({alphanum}|{ws})*\"
+string = \".*\"
 
 real = {num}*\.{num} | {num}+\.{num}*
 

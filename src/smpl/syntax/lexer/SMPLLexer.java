@@ -45,12 +45,12 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\10\5\1\25\1\2\1\1\1\0\1\2\1\1\22\5\1\2\1\5"+
-    "\1\12\1\6\1\5\1\20\2\5\1\23\1\24\1\16\1\14\1\5"+
-    "\1\15\1\13\1\17\12\4\3\5\1\22\3\5\32\3\1\5\1\5"+
-    "\1\5\1\21\1\3\1\5\2\3\1\11\2\3\1\10\15\3\1\7"+
-    "\6\3\12\5\1\0\32\5\1\0\u15df\5\1\0\u097f\5\13\0\35\5"+
-    "\2\0\5\5\1\0\57\5\1\0\u0fa0\5\1\0\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\uffff\5\ud00f\5";
+    "\10\6\1\2\1\3\1\1\1\14\1\15\1\1\22\6\1\3\1\6"+
+    "\1\13\1\7\1\6\1\23\2\6\1\26\1\27\1\21\1\17\1\6"+
+    "\1\20\1\16\1\22\12\5\3\6\1\25\3\6\32\4\1\6\1\6"+
+    "\1\6\1\24\1\4\1\6\2\4\1\12\2\4\1\11\15\4\1\10"+
+    "\6\4\12\6\1\14\32\6\1\0\u15df\6\1\0\u097f\6\13\0\35\6"+
+    "\1\14\1\14\5\6\1\0\57\6\1\0\u0fa0\6\1\0\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\uffff\6\ud00f\6";
 
   /** 
    * Translates characters to character classes
@@ -63,10 +63,9 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\3\1\4\4\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\2"+
-    "\1\17\1\20\1\21\1\5\1\0\1\22\1\17\1\23"+
-    "\1\22";
+    "\1\0\1\1\2\2\1\3\1\4\4\5\1\6\1\7"+
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\1\5\1\0\1\22\1\17\1\23\1\22";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[28];
@@ -94,10 +93,10 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\26\0\26\0\54\0\102\0\130\0\156\0\204"+
-    "\0\232\0\130\0\130\0\130\0\130\0\130\0\130\0\130"+
-    "\0\130\0\130\0\130\0\260\0\130\0\130\0\306\0\334"+
-    "\0\130\0\130\0\130\0\26";
+    "\0\0\0\30\0\60\0\30\0\110\0\140\0\60\0\170"+
+    "\0\220\0\250\0\60\0\60\0\60\0\60\0\60\0\60"+
+    "\0\60\0\60\0\60\0\300\0\60\0\60\0\330\0\360"+
+    "\0\220\0\60\0\60\0\360";
 
   private static int [] zzUnpackRowMap() {
     int [] result = new int[28];
@@ -123,18 +122,21 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\0\1\2\1\3\1\4\1\5\1\6\1\7\3\4"+
-    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
-    "\1\20\1\21\1\22\1\23\31\0\2\4\2\6\3\4"+
-    "\14\6\3\0\1\6\1\5\6\6\1\24\12\6\3\0"+
-    "\23\6\3\0\4\6\1\25\1\26\1\27\14\6\1\0"+
-    "\2\30\2\10\2\6\3\10\1\31\12\6\1\10\3\0"+
-    "\1\6\1\32\21\6\3\0\1\6\1\24\21\6\3\0"+
-    "\1\33\3\6\3\33\14\6\1\0\4\30\2\0\3\30"+
-    "\1\34\12\0\1\30";
+    "\1\0\1\2\1\3\1\4\1\5\1\6\1\7\1\10"+
+    "\3\5\1\11\1\0\1\4\1\12\1\13\1\14\1\15"+
+    "\1\16\1\17\1\20\1\21\1\22\1\23\32\0\1\7"+
+    "\1\0\10\7\2\0\12\7\2\0\1\7\1\0\2\5"+
+    "\2\7\3\5\1\7\2\0\12\7\2\0\1\7\1\0"+
+    "\1\7\1\6\6\7\2\0\1\24\11\7\2\0\1\7"+
+    "\1\0\4\7\1\25\1\26\1\27\1\7\2\0\12\7"+
+    "\1\30\1\0\1\11\1\30\7\11\1\31\2\0\12\11"+
+    "\2\0\1\7\1\0\1\7\1\32\6\7\2\0\12\7"+
+    "\2\0\1\7\1\0\1\7\1\24\6\7\2\0\12\7"+
+    "\2\0\1\7\1\0\1\33\3\7\3\33\1\7\2\0"+
+    "\12\7\1\30\1\0\11\30\1\34\2\0\12\30";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[242];
+    int [] result = new int[264];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -172,7 +174,7 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\24\1\1\0\3\1\1\11";
+    "\1\0\1\11\1\1\1\11\23\1\1\0\4\1";
 
   private static int [] zzUnpackAttribute() {
     int [] result = new int[28];
@@ -288,7 +290,7 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 148) {
+    while (i < 150) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
