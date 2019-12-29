@@ -3,7 +3,6 @@ package smpl.semantics;
 import smpl.exceptions.VisitException;
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.*;
-
 /**
  * The generic Visitor interface for the Arithmetic parser
  * example.
