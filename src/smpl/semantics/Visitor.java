@@ -24,7 +24,7 @@ public interface Visitor<S, T> {
 
     // expressions
 
-    //arithmetic
+    // arithmetic
     public T visitExpAdd(ExpAdd exp, S arg) throws VisitException;
     public T visitExpSub(ExpSub exp, S arg) throws VisitException;
     public T visitExpMul(ExpMul exp, S arg) throws VisitException;
@@ -46,9 +46,11 @@ public interface Visitor<S, T> {
     public T visitExpRelOps(ExpRelOps exp, S arg) throws VisitException;
     // public T visitExpLogOp(ExpLogOp exp, S arg) throws VisitException;
 
-    //bitwise operations 
+    // bitwise operations 
     public T visitExpBAnd(ExpBAnd exp, S arg) throws VisitException;
     public T visitExpBOr(ExpBOr exp, S arg) throws VisitException;
 
+    // procedures
+    public T visitExpProcDefn(ExpProc exp, S arg) throws VisitException;
 
 }

@@ -15,7 +15,7 @@ import smpl.values.SMPLValue;
  * @author <a href="mailto:dcoore@uwimona.edu.jm">Daniel Coore</a>
  * @version 1.0
  */
-public class Environment<T extends SMPLValue<T>>{
+public class Environment<T extends SMPLValue<?>>{
 
     HashMap<String, T> dictionary;
     Environment<T> parent = null;

@@ -104,8 +104,16 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
+// Special symbols
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
+<YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
+<YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
+<YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ";" {return new Symbol(sym.SEMI);}
+
+// Functions (procedures)
+<YYINITIAL> "proc" {return new Symbol(sym.PROC);}
 
 // Numerical Values
 <YYINITIAL>    {num}+ {

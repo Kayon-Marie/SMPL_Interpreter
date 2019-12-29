@@ -6,8 +6,7 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
-import smpl.values.SMPLBool;
-import smpl.values.SMPLValue;
+import smpl.values.*;
 import smpl.syntax.ast.*;
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
@@ -195,5 +194,11 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         left = exp.getLeft().visit(this,arg);
         right = exp.getRight().visit(this,arg);
         return  left.BOr(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpProcDefn(ExpProc exp, Environment arg) throws VisitException {
+        SMPLProc closure = new SMPLProc(exp, arg);
+        return closure;
     }
 }

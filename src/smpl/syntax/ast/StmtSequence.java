@@ -40,7 +40,7 @@ public class StmtSequence extends Exp {
 
         String result = "";
         while (iter.hasNext()) {
-            result = result + iter.next().toString() + "\n";
+            result = result + "\t" + iter.next().toString() + "\n";
         }
 
         return result;

@@ -169,6 +169,11 @@ public class ToScheme implements Visitor<Void, String> {
         return "";
     }
 
+    @Override
+    public String visitExpProcDefn(ExpProc exp, Void arg) throws VisitException {
+        return "";
+    }
+
     // @Override
     // public String visitExpLogOp(ExpLogOp exp, Void arg) throws VisitException {
     //     String left = exp.getLeft().visit(this, arg);
