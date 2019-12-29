@@ -119,11 +119,11 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 	    return exp.getVal();
     }
 
-    public SMPLValue<?> visitExpVar(ExpVar exp, Environment arg)
+    public SMPLValue<?> visitExpVar(ExpVar exp, Environment env)
 	throws VisitException {
         // remember that arg is really the environment
         //	Environment env = (Environment) arg;
-        SMPLValue<?> val = exp.getVar().visit(this, arg);
+        SMPLValue<?> val = env.get(exp.getVar());
         return val;
     }
 
