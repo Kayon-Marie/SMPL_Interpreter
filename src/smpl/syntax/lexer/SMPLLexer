@@ -62,10 +62,14 @@ alpha = [a-zA-Z_]
 
 alphanum = {alpha}|[0-9]
 
+special = {nl} | [\t ] | [\\]
+
 num = [0-9]
 
 true = "#t"
 false = "#f"
+
+char = "#c"{alpha}
 
 real = {num}*\.{num} | {num}+\.{num}*
 
@@ -101,11 +105,18 @@ real = {num}*\.{num} | {num}+\.{num}*
 				 new Double(yytext()));
 		}
 
-// Strings and Chars	
+// Strings	
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
 		}
+
+// Characters
+<YYINITIAL> {char} {
+			// ChARACTER
+			return new Symbol(sym.CHAR, yytext());
+		}
+
 
 // Boolean
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
