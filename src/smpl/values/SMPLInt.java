@@ -141,6 +141,16 @@ public class SMPLInt extends SMPLValue<SMPLInt> {
     }
 
     @Override
+    public SMPLInt BAnd(SMPLValue<?> arg) throws SMPLException {
+        return make(this.value & arg.intValue());
+    }
+
+    @Override
+    public SMPLInt BOr(SMPLValue<?> arg) throws SMPLException {
+        return make(this.value | arg.intValue());
+    }
+
+    @Override
     public int intValue() throws SMPLException {
         return this.value;
     }

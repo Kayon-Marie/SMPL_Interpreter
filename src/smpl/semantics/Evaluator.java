@@ -180,4 +180,20 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         left = exp.getExp().visit(this, arg);
         return left.not();
     }
+
+    @Override
+    public SMPLValue<?> visitExpBAnd(ExpBAnd exp, Environment arg) throws VisitException {
+        SMPLValue<?> left,right;
+        left = exp.getLeft().visit(this,arg);
+        right = exp.getRight().visit(this,arg);
+        return  left.BAnd(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpBOr(ExpBOr exp, Environment arg) throws VisitException {
+        SMPLValue<?> left,right;
+        left = exp.getLeft().visit(this,arg);
+        right = exp.getRight().visit(this,arg);
+        return  left.BOr(right);
+    }
 }
