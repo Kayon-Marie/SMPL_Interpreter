@@ -8,7 +8,7 @@ public enum SMPLType {
     INTEGER("int"),
     REAL("real"),
     BOOLEAN("bool"),
-    FUNCTION("function");
+    PROCEDURE("procedure");
 
     private final String docString;
 

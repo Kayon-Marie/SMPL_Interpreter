@@ -52,7 +52,11 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
+<<<<<<< HEAD
 terminal LPAREN, RPAREN, SEMI, DEF;
+=======
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PROC;
+>>>>>>> functions
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -79,6 +83,7 @@ non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Exp expression;
+non terminal Exp compoundExp;
 non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp value;
@@ -90,6 +95,11 @@ non terminal Exp bool;
 non terminal Exp bitOp;
 non terminal empty;
 
+// procedures
+non terminal Exp procDefn;
+non terminal Exp procCall;
+non terminal ArrayList<String> paramListE;
+non terminal ArrayList<String> paramList;
 
 
 /* Grammar rules */
@@ -99,7 +109,7 @@ program ::=	stmtList:s {: RESULT = new SMPLProgram(s); :};
 stmtList ::=	stmtList:lst stmt:s {:
 					lst.add(s); 
 					RESULT = lst;
-				:} |
+				:} |	
 	     		stmt:s {:
 					RESULT = new StmtSequence(s);
 				:};
@@ -114,9 +124,30 @@ assignment ::= VAR:v ASSIGN expression:e {:
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
-				:};				
+				:};
+								
+expression ::=	logop: l {: RESULT = l; :} |
+				compoundExp: e {: RESULT = e; :} |
+				procDefn: proc {: RESULT = proc; :};
 
-expression ::=	logop: l {: RESULT = l; :};
+compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
+
+procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
+					RESULT = new ExpProc(params, body);
+				:};
+
+paramListE ::=	paramList: params {: RESULT = params; :} |
+				empty {: RESULT = new ArrayList<>(); :};
+
+paramList ::= 	paramList: params COMMA VAR: v {:
+					params.add(v);
+					RESULT = params;
+				:} |
+				VAR: v {: 
+					ArrayList<String> lst = new ArrayList<>();
+					lst.add(v);
+					RESULT = lst; 
+				:};
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|

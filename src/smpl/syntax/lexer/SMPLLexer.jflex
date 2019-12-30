@@ -100,14 +100,18 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
-// special symbols
+// keywords
+<YYINITIAL> "def" {return new Symbol(sym.DEF);}
+<YYINITIAL> "proc" {return new Symbol(sym.PROC);}
+
+// Special symbols
 <YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
-<YYINITIAL> ";" {return new Symbol(sym.SEMI); }
-
-// keywords
-<YYINITIAL> "def" {return new Symbol(sym.DEF);}
+<YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
+<YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
+<YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ";" {return new Symbol(sym.SEMI);}
 
 // Numerical Values
 <YYINITIAL>    {num}+ {
