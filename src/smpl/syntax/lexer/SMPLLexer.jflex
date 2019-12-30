@@ -160,7 +160,7 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
 <YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
-<YYINITIAL>    \S+		{ // error situation
+<YYINITIAL>    [^]		{ // error situation
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
 	       }

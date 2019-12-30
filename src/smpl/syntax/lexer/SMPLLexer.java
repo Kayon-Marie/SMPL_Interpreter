@@ -46,12 +46,11 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final String ZZ_CMAP_PACKED = 
-    "\10\26\1\27\1\2\1\1\1\0\1\2\1\1\22\26\1\2\1\26"+
-    "\1\25\1\5\1\26\1\16\2\26\1\21\1\22\1\14\1\12\1\26"+
-    "\1\13\1\11\1\15\12\4\3\26\1\20\3\26\32\3\1\26\1\23"+
-    "\1\26\1\17\1\3\1\26\2\3\1\10\2\3\1\7\7\3\1\24"+
-    "\5\3\1\6\6\3\12\26\1\0\32\26\1\0\u15df\26\1\0\u097f\26"+
-    "\13\0\35\26\2\0\5\26\1\0\57\26\1\0\u0fa0\26\1\0\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\uffff\26\ud00f\26";
+    "\10\0\1\2\1\2\1\1\1\0\1\2\1\1\22\0\1\2\1\0"+
+    "\1\25\1\5\1\0\1\16\2\0\1\21\1\22\1\14\1\12\1\0"+
+    "\1\13\1\11\1\15\12\4\3\0\1\20\3\0\32\3\1\0\1\23"+
+    "\1\0\1\17\1\3\1\0\2\3\1\10\2\3\1\7\7\3\1\24"+
+    "\5\3\1\6\6\3\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff95\0";
 
   /** 
    * Translates characters to character classes
@@ -64,14 +63,13 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\2\0\1\1\1\2\1\3\1\4\2\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\5"+
-    "\1\17\1\2\1\20\1\21\1\22\1\23\1\24\1\25"+
-    "\1\5\1\23\1\26\1\27\1\30\1\31\1\32\1\33"+
-    "\1\34";
+    "\2\0\1\1\1\2\1\3\1\4\1\5\2\1\1\6"+
+    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\1\16"+
+    "\1\17\1\20\1\21\1\22\1\23\1\24\1\25\1\0"+
+    "\1\23\1\26\1\27\1\30\1\31\1\32\1\33\1\34";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[35];
+    int [] result = new int[34];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -96,14 +94,14 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\30\0\60\0\60\0\110\0\140\0\170\0\220"+
-    "\0\250\0\250\0\250\0\250\0\250\0\250\0\250\0\250"+
-    "\0\250\0\250\0\250\0\250\0\300\0\330\0\60\0\360"+
-    "\0\250\0\250\0\u0108\0\250\0\60\0\60\0\60\0\250"+
-    "\0\u0120\0\250\0\250";
+    "\0\0\0\26\0\54\0\54\0\54\0\102\0\130\0\156"+
+    "\0\204\0\54\0\54\0\54\0\54\0\54\0\54\0\54"+
+    "\0\54\0\54\0\54\0\232\0\260\0\54\0\306\0\54"+
+    "\0\54\0\334\0\54\0\54\0\54\0\54\0\54\0\362"+
+    "\0\54\0\54";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[35];
+    int [] result = new int[34];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -126,20 +124,18 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\0\1\3\1\4\1\5\1\6\1\7\3\5\1\10"+
-    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
-    "\1\21\1\22\1\5\1\23\1\22\1\24\1\25\1\0"+
-    "\21\25\1\26\1\25\1\27\2\25\33\0\2\5\1\22"+
-    "\3\5\13\22\1\5\3\22\3\0\1\22\1\6\4\22"+
-    "\1\30\16\22\3\0\3\22\1\31\1\32\1\33\17\22"+
-    "\3\0\1\22\1\34\23\22\3\0\25\22\1\25\1\0"+
-    "\21\25\1\0\1\25\1\0\2\25\6\0\1\35\15\0"+
-    "\1\36\1\37\5\0\1\22\1\30\23\22\3\0\1\40"+
-    "\2\22\3\40\12\22\1\41\1\40\3\22\3\0\3\22"+
-    "\1\42\15\22\1\43\3\22";
+    "\1\3\1\4\1\5\1\6\1\7\1\10\3\6\1\11"+
+    "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
+    "\1\22\1\3\1\6\1\23\1\24\1\0\21\24\1\25"+
+    "\1\24\1\26\31\0\2\6\1\0\3\6\13\0\1\6"+
+    "\5\0\1\7\4\0\1\27\22\0\1\30\1\31\1\32"+
+    "\21\0\1\33\21\0\1\24\1\0\21\24\1\0\1\24"+
+    "\7\0\1\34\15\0\1\35\1\36\4\0\1\27\24\0"+
+    "\1\37\2\0\3\37\12\0\1\40\1\37\7\0\1\41"+
+    "\15\0\1\42\1\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[312];
+    int [] result = new int[264];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -177,10 +173,11 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\2\0\2\11\22\1\1\11\5\1\3\11\4\1";
+    "\2\0\3\11\4\1\12\11\2\1\1\11\1\1\2\11"+
+    "\1\0\5\11\1\1\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[35];
+    int [] result = new int[34];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -295,7 +292,7 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 152) {
+    while (i < 120) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -667,38 +664,38 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [80] { //skip newline, but reset char counter"+ZZ_NL+"\t\t\t yychar = 0; }");
-            { //skip newline, but reset char counter
-			 yychar = 0;
+            System.out.println("action [163] { // error situation"+ZZ_NL+"\t       String msg = String.format(\"Unrecognised Token: %s\", yytext());"+ZZ_NL+"\t       throw new TokenException(msg); }");
+            { // error situation
+	       String msg = String.format("Unrecognised Token: %s", yytext());
+	       throw new TokenException(msg);
             }
           case 29: break;
           case 2: 
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [83] { // skip whitespace }");
-            { // skip whitespace
+            System.out.println("action [80] { //skip newline, but reset char counter"+ZZ_NL+"\t\t\t yychar = 0; }");
+            { //skip newline, but reset char counter
+			 yychar = 0;
             }
           case 30: break;
           case 3: 
+            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
+            System.out.println("action [83] { // skip whitespace }");
+            { // skip whitespace
+            }
+          case 31: break;
+          case 4: 
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
             System.out.println("action [111] { // VAR"+ZZ_NL+"\t       return new Symbol(sym.VAR, yytext()); }");
             { // VAR
 	       return new Symbol(sym.VAR, yytext());
             }
-          case 31: break;
-          case 4: 
+          case 32: break;
+          case 5: 
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
             System.out.println("action [98] { // INTEGER"+ZZ_NL+"\t       return new Symbol(sym.INT, "+ZZ_NL+"\t\t\t\t new Integer(yytext())); }");
             { // INTEGER
 	       return new Symbol(sym.INT, 
 				 new Integer(yytext()));
-            }
-          case 32: break;
-          case 5: 
-            System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [163] { // error situation"+ZZ_NL+"\t       String msg = String.format(\"Unrecognised Token: %s\", yytext());"+ZZ_NL+"\t       throw new TokenException(msg); }");
-            { // error situation
-	       String msg = String.format("Unrecognised Token: %s", yytext());
-	       throw new TokenException(msg);
             }
           case 33: break;
           case 6: 
