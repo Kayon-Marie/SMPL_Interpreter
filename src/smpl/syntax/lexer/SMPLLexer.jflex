@@ -137,6 +137,8 @@ real = {num}*\.{num} | {num}+\.{num}*
 			return new Symbol(sym.CHAR, '\\');
 		}
 
+<YYINITIAL>  \"   	{string.setLength(0); yybegin(STRING);}
+
 // String
 <STRING> {
 	\"				{yybegin(YYINITIAL);
