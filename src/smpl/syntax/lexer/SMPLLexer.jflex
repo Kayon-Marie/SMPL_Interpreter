@@ -62,8 +62,6 @@ alpha = [a-zA-Z_]
 
 alphanum = {alpha}|[0-9]
 
-special = {nl} | [\t ] | [\\]
-
 num = [0-9]
 
 true = "#t"
@@ -116,7 +114,25 @@ real = {num}*\.{num} | {num}+\.{num}*
 // Characters
 <YYINITIAL> {char} {
 			// ChARACTER
-			return new Symbol(sym.CHAR, yytext());
+			return new Symbol(sym.CHAR, yycharat(2));
+		}
+
+// Newline Character Representation
+<YYINITIAL> "#c"\\n {
+			//SPECIAL CHARACTERS
+			return new Symbol(sym.CHAR, '\n');
+		}
+
+// Tab Character Representation
+<YYINITIAL> "#c"\\t {
+			//SPECIAL CHARACTERS
+			return new Symbol(sym.CHAR, '\t');
+		}
+
+// Newline Character Representation
+<YYINITIAL> "#c"\\ {
+			//SPECIAL CHARACTERS
+			return new Symbol(sym.CHAR, '\\');
 		}
 
 // String

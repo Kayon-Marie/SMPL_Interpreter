@@ -62,7 +62,7 @@ terminal String VAR;
 terminal Double REAL;
 terminal Boolean TRUE;
 terminal Boolean FALSE;
-terminal String CHAR;
+terminal Character CHAR;
 terminal String STRING;
 
 /* Non terminals */

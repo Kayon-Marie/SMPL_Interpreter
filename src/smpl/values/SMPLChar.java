@@ -4,11 +4,11 @@ import smpl.exceptions.SMPLException;
 
 public class SMPLChar extends SMPLValue<SMPLChar>{
 
-    Character value;
+    char value;
 
     public SMPLChar() { this('a'); }
 
-    public SMPLChar(Character value) {
+    public SMPLChar(char value) {
         this.value = value;
     }
 
@@ -19,7 +19,7 @@ public class SMPLChar extends SMPLValue<SMPLChar>{
 
     @Override
     public String toString() {
-        return new String(getType().toString() + "#c" + this.value);
+        return new String(getType().toString() + "#c" + String.valueOf(value));
     }
 
 }

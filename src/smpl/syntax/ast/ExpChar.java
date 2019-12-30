@@ -11,8 +11,8 @@ public class ExpChar extends Exp {
 
     SMPLValue<?> chr;
 
-    public ExpChar(String val) {
-        this.chr = SMPLValue.make(val.charAt(2));
+    public ExpChar(Character val) {
+        this.chr = SMPLValue.make(val);
     }
  
     public SMPLValue<?> getChar() {
