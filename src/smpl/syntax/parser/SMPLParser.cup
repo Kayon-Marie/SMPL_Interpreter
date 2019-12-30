@@ -8,6 +8,7 @@ import smpl.syntax.lexer.SMPLLexer;
 
 import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.*;
 
 /* Preliminaries to set up and use the scanner.  */
@@ -51,8 +52,7 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN,COMMA;
-terminal PAIR,CAR,CDR;
+terminal LPAREN, RPAREN,COMMA, SEMI, DEF;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -76,6 +76,7 @@ terminal String ASSIGN;
 non terminal SMPLProgram program;
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
+non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Exp expression;
 non terminal Exp term;
@@ -105,12 +106,16 @@ stmtList ::=	stmtList:lst stmt:s {:
 				:};
 
 stmt ::=	definition:d {: RESULT = d; :} |
-	 		expression:e {: RESULT = new Statement(e); :};
+			assignment:a SEMI {: RESULT = a; :}|
+	 		expression:e {: RESULT = new StmtExp(e); :};
 
+assignment ::= VAR:v ASSIGN expression:e {:
+		   			RESULT = new StmtAssignment(v, e);
+				:}; 
 
-definition ::=	VAR:v ASSIGN expression:e {:
-		   			RESULT = new StmtDefinition(v, e);
-				:};
+definition ::=	DEF VAR: v expression: e SEMI {:
+					RESULT = new StmtDefinition(v, e);
+				:};	
 
 
 
@@ -163,8 +168,5 @@ value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
 			REAL:rlit {: RESULT = new ExpLit(rlit); :} |
 			VAR:var {: RESULT = new ExpVar(var); :} |
 			LPAREN expression:e RPAREN {: RESULT = e; :};
-
-relsign ::= RELOP: sign {: RESULT = sign; :} |
-			ASSIGN: sign {: RESULT = sign; :};
 			
 empty ::= ;

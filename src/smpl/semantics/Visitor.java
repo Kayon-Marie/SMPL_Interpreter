@@ -3,6 +3,7 @@ package smpl.semantics;
 import smpl.exceptions.VisitException;
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.*;
+import smpl.syntax.ast.core.Statement;
 
 /**
  * The generic Visitor interface for the Arithmetic parser
@@ -19,9 +20,10 @@ public interface Visitor<S, T> {
     public T visitSMPLProgram(SMPLProgram p, S arg) throws VisitException;
 
     // statements
-    public T visitStatement(Statement exp, S arg) throws VisitException ;
+    public T visitStmtExp(StmtExp exp, S arg) throws VisitException ;
     public T visitStmtSequence(StmtSequence exp, S arg) throws VisitException ;
     public T visitStmtDefinition(StmtDefinition sd, S arg) throws VisitException;
+    public T visitStmtAssignment(StmtAssignment sa, S arg) throws VisitException;
     
 
     //arithmetic

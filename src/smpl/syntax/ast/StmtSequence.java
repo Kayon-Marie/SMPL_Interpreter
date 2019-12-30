@@ -8,6 +8,8 @@ import smpl.exceptions.VisitException;
 import smpl.syntax.ast.core.Exp;
 
 import smpl.semantics.Visitor;
+import smpl.syntax.ast.core.Statement;
+
 
 public class StmtSequence extends Exp {
 

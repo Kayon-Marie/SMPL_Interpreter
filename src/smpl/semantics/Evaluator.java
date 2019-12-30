@@ -6,10 +6,12 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.syntax.ast.core.Statement;
 import smpl.values.SMPLBool;
 import smpl.values.SMPLValue;
 import smpl.values.SMPLPair;
 import smpl.syntax.ast.*;
+
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
@@ -35,7 +37,7 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return result;
     }
 
-    public SMPLValue<?> visitStatement(Statement s, Environment arg)
+    public SMPLValue<?> visitStmtExp(StmtExp s, Environment arg)
     throws VisitException {
 	    return s.getExp().visit(this, arg);
     }
@@ -52,6 +54,15 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
             result = s.visit(this, arg);
         }
         // return last value evaluated
+        return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitStmtAssignment(StmtAssignment sa, Environment env) throws VisitException {
+        String id = sa.getVar();
+        SMPLValue<?> pvalue = env.get(id);
+        result = sa.getExp().visit(this, env);
+        env.put(id, result);
         return result;
     }
 

@@ -7,6 +7,8 @@ import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.*;
+import smpl.syntax.ast.core.Statement;
+
 
 public class ToScheme implements Visitor<Void, String> {
 
@@ -32,7 +34,7 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     // statements
-    public String visitStatement(Statement stmt, Void arg)
+    public String visitStmtExp(StmtExp stmt, Void arg)
 	throws VisitException {
 	    return stmt.getExp().visit(this, arg);
     }
@@ -62,6 +64,14 @@ public class ToScheme implements Visitor<Void, String> {
         String valExp = (String) sd.getExp().visit(this,
                             arg);
         return "(define " + sd.getVar() + " " +
+            valExp + ")";
+    }
+
+    @Override
+    public String visitStmtAssignment(StmtAssignment sa, Void arg) throws VisitException {
+        String valExp = (String) sa.getExp().visit(this,
+                            arg);
+        return "(assign " + sa.getVar() + " " +
             valExp + ")";
     }
 

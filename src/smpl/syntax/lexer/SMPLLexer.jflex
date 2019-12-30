@@ -107,8 +107,14 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
+// special symbols
+<YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
+<YYINITIAL> ";" {return new Symbol(sym.SEMI); }
+
+// keywords
+<YYINITIAL> "def" {return new Symbol(sym.DEF);}
 
 // Numerical Values
 <YYINITIAL>    {num}+ {
