@@ -30,7 +30,7 @@ public class StmtAssignment extends Statement {
 
     @Override
     public String toString() {
-        return var + " := " + exp.toString();
+        return var + " := " + exp.toString() + ";";
     }
 
 

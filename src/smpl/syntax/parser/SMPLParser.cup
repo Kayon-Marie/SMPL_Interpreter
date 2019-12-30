@@ -52,11 +52,7 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-<<<<<<< HEAD
-terminal LPAREN, RPAREN, SEMI, DEF;
-=======
-terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PROC;
->>>>>>> functions
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PROC, DEF;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
