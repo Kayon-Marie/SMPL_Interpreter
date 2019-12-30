@@ -3,6 +3,7 @@ package smpl.syntax.ast;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.Exp;
+import smpl.syntax.ast.core.Statement;
 
 import smpl.semantics.Visitor;
 
@@ -29,6 +30,6 @@ public class StmtDefinition extends Statement {
     }
 
     public String toString() {
-	    return String.format("%s = %s", getVar(), getExp().toString());
+	    return String.format("def %s %s", getVar(), getExp().toString());
     }
 }
