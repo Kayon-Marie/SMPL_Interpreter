@@ -80,6 +80,10 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL>	{ws}	{
 			 // skip whitespace
 			}
+
+
+<YYINITIAL> ","	{return new Symbol(sym.COMMA);}
+	
 			
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
@@ -92,7 +96,6 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL> "&"	{return new Symbol(sym.BAND);}
 <YYINITIAL> "|"	{return new Symbol(sym.BOR);}
 <YYINITIAL> "~"	{return new Symbol(sym.NEG);}
-
 
 
 

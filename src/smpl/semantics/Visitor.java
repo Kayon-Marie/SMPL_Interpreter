@@ -22,8 +22,7 @@ public interface Visitor<S, T> {
     public T visitStatement(Statement exp, S arg) throws VisitException ;
     public T visitStmtSequence(StmtSequence exp, S arg) throws VisitException ;
     public T visitStmtDefinition(StmtDefinition sd, S arg) throws VisitException;
-
-    // expressions
+    
 
     //arithmetic
     public T visitExpAdd(ExpAdd exp, S arg) throws VisitException;
@@ -50,6 +49,11 @@ public interface Visitor<S, T> {
     //bitwise operations 
     public T visitExpBAnd(ExpBAnd exp, S arg) throws VisitException;
     public T visitExpBOr(ExpBOr exp, S arg) throws VisitException;
+
+    //pair operations
+    public T visitExpPair(ExpPair exp, S arg) throws VisitException ;
+    public T visitExpCAR(ExpCAR exp, S arg) throws VisitException ;
+    public T visitExpCDR(ExpCDR exp, S arg) throws VisitException ;
 
 
 }

@@ -51,7 +51,8 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN;
+terminal LPAREN, RPAREN,COMMA;
+terminal PAIR,CAR,CDR;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -84,6 +85,7 @@ non terminal Exp arithExp;
 non terminal Exp relop;
 non terminal Exp negation;
 non terminal Exp logop;
+non terminal Exp pairExp;
 non terminal Exp bool;
 non terminal Exp bitOp;
 non terminal empty;
@@ -105,12 +107,16 @@ stmtList ::=	stmtList:lst stmt:s {:
 stmt ::=	definition:d {: RESULT = d; :} |
 	 		expression:e {: RESULT = new Statement(e); :};
 
+
 definition ::=	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtDefinition(v, e);
 				:};
 
 
+
 expression ::=	logop: l {: RESULT = l; :};
+
+
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|
