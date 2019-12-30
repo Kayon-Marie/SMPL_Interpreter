@@ -35,7 +35,9 @@ import smpl.syntax.parser.sym;
 %debug
 
 %{
-    public int getChar() {
+    StringBuffer string = new StringBuffer();
+
+	public int getChar() {
 	return yychar + 1;
     }
 
@@ -69,9 +71,9 @@ false = "#f"
 
 char = "#c"{alpha}
 
-string = \".*\"
-
 real = {num}*\.{num} | {num}+\.{num}*
+
+%state STRING
 
 %%
 
@@ -136,10 +138,21 @@ real = {num}*\.{num} | {num}+\.{num}*
 		}
 
 // String
-<YYINITIAL> {string} {
-			// Strings
-			return new Symbol(sym.STRING, yytext());
-		}
+<STRING> {
+	\"				{yybegin(YYINITIAL);
+						return new Symbol(sym.STRING, string.toString());
+					}
+	
+	[^\n\r\"\\]+	{string.append( yytext() );}
+
+	\\t				{string.append('\t');}
+
+	\\n				{string.append('\n');}
+
+	\\\"			{string.append('\"');}
+
+	\\				{string.append('\\');}
+}
 
 // Boolean
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
