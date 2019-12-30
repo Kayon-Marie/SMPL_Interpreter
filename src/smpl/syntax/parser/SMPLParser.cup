@@ -114,13 +114,14 @@ stmt ::=	definition:d {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :};
 
-assignment ::= VAR:v ASSIGN expression:e {:
+assignment ::= 	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtAssignment(v, e);
 				:}; 
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
-				:};
+				:} | 
+				DEF VAR: v 
 								
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
