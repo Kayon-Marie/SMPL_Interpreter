@@ -7,6 +7,7 @@ import java.util.*;
 import smpl.syntax.lexer.SMPLLexer;
 
 import smpl.syntax.ast.core.Exp;
+import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.*;
@@ -52,7 +53,11 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
+<<<<<<< HEAD
 terminal LPAREN, RPAREN,COMMA, SEMI, DEF;
+=======
+terminal LPAREN, RPAREN, SEMI, DEF;
+>>>>>>> master
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -106,6 +111,7 @@ stmtList ::=	stmtList:lst stmt:s {:
 				:};
 
 stmt ::=	definition:d {: RESULT = d; :} |
+<<<<<<< HEAD
 			assignment:a SEMI {: RESULT = a; :}|
 	 		expression:e {: RESULT = new StmtExp(e); :};
 
@@ -117,7 +123,18 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
 				:};	
 
+=======
+			assignment: a SEMI {: RESULT = a; :} |
+	 		expression:e SEMI {: RESULT = new StmtExp(e); :};
 
+assignment ::= VAR:v ASSIGN expression:e {:
+		   			RESULT = new StmtAssignment(v, e);
+				:}; 
+>>>>>>> master
+
+definition ::=	DEF VAR: v expression: e SEMI {:
+					RESULT = new StmtDefinition(v, e);
+				:};				
 
 expression ::=	logop: l {: RESULT = l; :};
 
@@ -145,6 +162,8 @@ arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpAdd(e, t); :} |
 				arithExp:e MINUS term:t {:
 					RESULT = new ExpSub(e, t); :} |
+				LPAREN MINUS arithExp: ae RPAREN {:
+					RESULT = new ExpNeg(ae); :}	|
 				term:t {: RESULT = t; :};
 
 term ::=	term:t MUL factor:f {:
@@ -153,8 +172,6 @@ term ::=	term:t MUL factor:f {:
 				RESULT = new ExpDiv(t, f); :} |
 	 		term:t MOD factor:f {:
 				RESULT = new ExpMod(t, f); :} |
-			LPAREN MINUS factor: f RPAREN {:
-				RESULT = new ExpNeg(f); :}	|
 	 		factor:f {: RESULT = f; :};
 
 factor ::=	factor:f POWER value:v {: RESULT = new ExpPow(f, v); :} |

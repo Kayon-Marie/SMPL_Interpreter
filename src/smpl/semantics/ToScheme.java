@@ -6,6 +6,7 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.*;
 import smpl.syntax.ast.core.Statement;
 

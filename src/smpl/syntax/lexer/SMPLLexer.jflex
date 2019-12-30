@@ -70,7 +70,7 @@ false = "#f"
 real = {num}*\.{num} | {num}+\.{num}*
 
 // relational operators - excluding "=" AKA sym.ASSIGN
-rel_op = "<"|"<="|">"|">="|"!="
+rel_op = "<"|"<="|">"|">="|"!="|"="
 
 %%
 
@@ -87,7 +87,6 @@ rel_op = "<"|"<="|">"|">="|"!="
 			
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
-<YYINITIAL>	"="		{return new Symbol(sym.ASSIGN, yytext());} // also used as rel. op
 <YYINITIAL> "and"	{return new Symbol(sym.AND);}
 <YYINITIAL> "or"	{return new Symbol(sym.OR);}
 <YYINITIAL> "not"	{return new Symbol(sym.NOT);}
@@ -96,8 +95,6 @@ rel_op = "<"|"<="|">"|">="|"!="
 <YYINITIAL> "&"	{return new Symbol(sym.BAND);}
 <YYINITIAL> "|"	{return new Symbol(sym.BOR);}
 <YYINITIAL> "~"	{return new Symbol(sym.NEG);}
-
-
 
 // arithmetic operators
 <YYINITIAL>	"+"	{return new Symbol(sym.PLUS);}
