@@ -109,7 +109,7 @@ stmtList ::=	stmtList:lst stmt:s {:
 				:};
 
 stmt ::=	definition:d {: RESULT = d; :} |
-	 		expression:e SEMI {: RESULT = new Statement(e); :};
+	 		expression:e {: RESULT = new Statement(e); :};
 
 definition ::=	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtDefinition(v, e);
