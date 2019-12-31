@@ -142,17 +142,6 @@ procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
 					RESULT = new ExpProcSingle(v, body);
 				:};
 
-// procCall ::=	expression: id multiExp: me {: RESULT = new ExpProcCall(id, me); :};
-procCall ::=	expression: id LPAREN expListE: list RPAREN {:
-					RESULT = new ExpProcCall(id, list);
-				:};
-
-expListE ::= expList: el {: RESULT = el; :} | empty {: RESULT = new ArrayList(); :};
-
-expList ::= expList: el COMMA expression: e {: el.add(e); RESULT = el; :} |
-			expression: e {: ArrayList<Exp> lst = new ArrayList<>(); lst.add(e); RESULT = lst; :};
-				
-
 paramListE ::=	paramList: params {: RESULT = params; :} |
 				empty {: RESULT = new ArrayList<>(); :};
 
@@ -165,6 +154,16 @@ paramList ::= 	paramList: params COMMA VAR: v {:
 					lst.add(v);
 					RESULT = lst; 
 				:};
+
+// procCall ::=	expression: id multiExp: me {: RESULT = new ExpProcCall(id, me); :};
+procCall ::=	factor: id LPAREN expListE: list RPAREN {:
+					RESULT = new ExpProcCall(id, list);
+				:};
+
+expListE ::= expList: el {: RESULT = el; :} | empty {: RESULT = new ArrayList(); :};
+
+expList ::= expList: el COMMA expression: e {: el.add(e); RESULT = el; :} |
+			expression: e {: ArrayList<Exp> lst = new ArrayList<>(); lst.add(e); RESULT = lst; :};
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|
@@ -201,13 +200,13 @@ term ::=	term:t MUL power: p {:
 	 		power: p {: RESULT = p; :};
 
 power ::= 	power: p POWER factor: f {: RESULT = new ExpPow(p, f); :} |
-			factor: f {:: RESULT = f; :};
+			factor: f {: RESULT = f; :};
 
 factor ::=	value:v {: RESULT = v; :} |
 			bool: b {: RESULT = b; :} |
+			VAR: v {: RESULT = new ExpVar(v); :}|
 			procCall: pcall {: RESULT = pcall; :} |
 			LPAREN expression:e RPAREN {: RESULT = e; :};
-			
 
 bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
 			FALSE: f {: RESULT = new ExpBool(f); :};
