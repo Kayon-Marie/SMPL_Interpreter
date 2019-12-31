@@ -53,11 +53,8 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-<<<<<<< HEAD
-terminal LPAREN, RPAREN,COMMA, SEMI, DEF;
-=======
 terminal LPAREN, RPAREN, SEMI, DEF;
->>>>>>> master
+terminal COMMA, LSQUARE, RSQUARE;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -83,6 +80,9 @@ non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
+non terminal ArrayList<Exp> expList;
+non terminal ArrayList<Exp> expListE;
+non terminal Exp listExp;
 non terminal Exp expression;
 non terminal Exp term;
 non terminal Exp factor;
@@ -111,34 +111,29 @@ stmtList ::=	stmtList:lst stmt:s {:
 				:};
 
 stmt ::=	definition:d {: RESULT = d; :} |
-<<<<<<< HEAD
-			assignment:a SEMI {: RESULT = a; :}|
-	 		expression:e {: RESULT = new StmtExp(e); :};
-
-assignment ::= VAR:v ASSIGN expression:e {:
-		   			RESULT = new StmtAssignment(v, e);
-				:}; 
-
-definition ::=	DEF VAR: v expression: e SEMI {:
-					RESULT = new StmtDefinition(v, e);
-				:};	
-
-=======
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :};
 
 assignment ::= VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtAssignment(v, e);
 				:}; 
->>>>>>> master
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
 				:};				
 
-expression ::=	logop: l {: RESULT = l; :};
+expression ::=	logop: l {: RESULT = l; :}|
+				listExp: le {: RESULT = le; :};
 
+expListE ::= expList: pl {: RESULT = pl; :} | empty {: RESULT = new ArrayList(); :};
 
+expList ::= expList:pl COMMA expression:e {: pl.add(e); 
+											RESULT = pl; :} |
+			expression :e {: ArrayList<Exp> ls = new ArrayList<>(); 
+							ls.add(e);
+							RESULT = ls; :};
+
+listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :};
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|

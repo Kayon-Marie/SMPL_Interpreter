@@ -36,13 +36,26 @@ public class SMPLPair extends SMPLValue<SMPLPair> {
     }
 
     public SMPLValue<?> setLeft(SMPLValue<?> arg) throws SMPLException {
-        return this.right = arg;
+        return this.left = arg;
     }
 
 
     @Override
     public String toString() {
-        return new String(getType().toString() + this.left.toString() + "," + this.right.toString());
+        String result = "(";
+        if (this.left == null) {
+            result += "#el";
+        }else{
+            result += this.left.toString();
+        }
+        result += ",";
+        if(this.right == null){
+            result += "#er";
+        }else{
+            result += this.right.toString();
+        }
+        result += ")";
+        return result;
     }
 
 

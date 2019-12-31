@@ -7,6 +7,7 @@ import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
+import smpl.syntax.ast.core.Exp;
 import smpl.values.SMPLBool;
 import smpl.values.SMPLValue;
 import smpl.values.SMPLPair;
@@ -229,5 +230,23 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         SMPLValue<?> right;
         right = exp.getPair().getRight();
         return right;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpList(ExpList exp, Environment arg) throws VisitException {
+        ArrayList elements = exp.getElements();
+        Iterator iter = elements.iterator();
+        Exp i;
+        SMPLPair head = new SMPLPair();
+        SMPLPair temp = head;
+        SMPLPair next = new SMPLPair();
+        while(iter.hasNext()) {
+            i = (Exp) iter.next();
+            temp.setLeft(i.visit(this,arg));
+            temp.setRight(next);
+            temp = next;
+            next = new SMPLPair();
+        }
+        return head;
     }
 }

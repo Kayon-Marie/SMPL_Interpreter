@@ -5,10 +5,6 @@ import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 public class StmtAssignment extends Statement {
 
     String var;

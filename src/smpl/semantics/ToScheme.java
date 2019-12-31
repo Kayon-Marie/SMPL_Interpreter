@@ -7,8 +7,8 @@ import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.*;
-import smpl.syntax.ast.core.Statement;
 
 
 public class ToScheme implements Visitor<Void, String> {
@@ -172,25 +172,57 @@ public class ToScheme implements Visitor<Void, String> {
 
     @Override
     public String visitExpBOr(ExpBOr exp, Void arg) throws VisitException {
-        return "";
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "|" + " " + left + " " + right + ")";
     }
 
     @Override
     public String visitExpBAnd(ExpBAnd exp, Void arg) throws VisitException {
-        return "";
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "&" + " " + left + " " + right + ")";
     }
 
     @Override
     public String visitExpPair(ExpPair exp, Void arg) throws VisitException {
-        return "";
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "pair" + " " + left + " " + right + ")";
     }
 
     @Override
     public String visitExpCAR(ExpCAR exp, Void arg) throws VisitException {
-        return "";
+        String left = exp.getPair().getLeft().toString();
+        String right = exp.getPair().getRight().toString();
+        return "(" + "CAR" + " " + left + " " + right + ")";
     }
+    
     @Override
     public String visitExpCDR(ExpCDR exp, Void arg) throws VisitException {
+        String left = exp.getPair().getLeft().toString();
+        String right = exp.getPair().getRight().toString();
+        return "(" + "CDR" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpList(ExpList exp, Void arg) throws VisitException {
+        // ArrayList elements = exp.getElements();
+        // if (elements.size() == 1)
+        //     return ((Exp) elements.get(0)).visit(this,
+        //                         arg);
+        // else {
+        //     Iterator iter = elements.iterator();
+        //     String result = "(begin ";
+        //     Exp e;
+        //     while (iter.hasNext()) {
+        //         e = (Exp) iter.next();
+        //         result += (String) e.visit(this, arg) +
+        //             ", ";
+        //     }
+        //     result += ")";
+        //     return result;
+        // }
         return "";
     }
 
