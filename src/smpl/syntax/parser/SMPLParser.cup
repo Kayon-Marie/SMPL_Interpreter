@@ -79,9 +79,12 @@ non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Exp expression;
+non terminal ArrayList<Exp> expListE;
+non terminal ArrayList<Exp> expList;  
 non terminal Exp compoundExp;
 non terminal Exp term;
 non terminal Exp factor;
+non terminal Exp power;
 non terminal Exp value;
 non terminal Exp arithExp;
 non terminal Exp relop;
@@ -126,6 +129,7 @@ expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :};
 
+
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
 procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
@@ -137,6 +141,16 @@ procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
 				PROC VAR: v expression: body {:
 					RESULT = new ExpProcSingle(v, body);
 				:};
+
+// procCall ::=	expression: id multiExp: me {: RESULT = new ExpProcCall(id, me); :};
+procCall ::=	expression: id LPAREN expListE: list RPAREN {:
+					RESULT = new ExpProcCall(id, list);
+				:};
+
+expListE ::= expList: el {: RESULT = el; :} | empty {: RESULT = new ArrayList(); :};
+
+expList ::= expList: el COMMA expression: e {: el.add(e); RESULT = el; :} |
+			expression: e {: ArrayList<Exp> lst = new ArrayList<>(); lst.add(e); RESULT = lst; :};
 				
 
 paramListE ::=	paramList: params {: RESULT = params; :} |
@@ -178,24 +192,28 @@ arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpNeg(ae); :}	|
 				term:t {: RESULT = t; :};
 
-term ::=	term:t MUL factor:f {:
-				RESULT = new ExpMul(t, f); :} |
-	 		term:t DIV factor:f {:
-				RESULT = new ExpDiv(t, f); :} |
-	 		term:t MOD factor:f {:
-				RESULT = new ExpMod(t, f); :} |
-	 		factor:f {: RESULT = f; :};
+term ::=	term:t MUL power: p {:
+				RESULT = new ExpMul(t, p); :} |
+	 		term:t DIV power: p {:
+				RESULT = new ExpDiv(t, p); :} |
+	 		term:t MOD power: p {:
+				RESULT = new ExpMod(t, p); :} |
+	 		power: p {: RESULT = p; :};
 
-factor ::=	factor:f POWER value:v {: RESULT = new ExpPow(f, v); :} |
+power ::= 	power: p POWER factor: f {: RESULT = new ExpPow(p, f); :} |
+			factor: f {:: RESULT = f; :};
+
+factor ::=	value:v {: RESULT = v; :} |
 			bool: b {: RESULT = b; :} |
-			value:v {: RESULT = v; :};
+			procCall: pcall {: RESULT = pcall; :} |
+			LPAREN expression:e RPAREN {: RESULT = e; :};
+			
 
 bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
 			FALSE: f {: RESULT = new ExpBool(f); :};
 	   		
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
-			REAL:rlit {: RESULT = new ExpLit(rlit); :} |
-			VAR:var {: RESULT = new ExpVar(var); :} |
-			LPAREN expression:e RPAREN {: RESULT = e; :};
+			REAL:rlit {: RESULT = new ExpLit(rlit); :};
+			
 			
 empty ::= ;
