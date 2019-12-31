@@ -11,6 +11,7 @@ import smpl.syntax.ast.core.Statement;
 import smpl.values.*;
 import smpl.syntax.ast.*;
 
+
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
        methods will be the environment object that used to
@@ -251,5 +252,44 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
             Environment closingEnv) throws VisitException {
         // TODO Auto-generated method stub
         return null;
+    }
+    
+    public SMPLValue<?> visitExpPair(ExpPair exp, Environment arg) throws VisitException {
+        SMPLValue<?> left,right;
+        left = exp.getLeft().visit(this,arg);
+        right = exp.getRight().visit(this,arg);
+        return  new SMPLPair(left,right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpCAR(ExpCAR exp, Environment arg) throws VisitException {
+        SMPLValue<?> left;
+        left = exp.getPair().getLeft();
+        return  left;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpCDR(ExpCDR exp, Environment arg) throws VisitException {
+        SMPLValue<?> right;
+        right = exp.getPair().getRight();
+        return right;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpList(ExpList exp, Environment arg) throws VisitException {
+        ArrayList elements = exp.getElements();
+        Iterator iter = elements.iterator();
+        Exp i;
+        SMPLPair head = new SMPLPair();
+        SMPLPair temp = head;
+        SMPLPair next = new SMPLPair();
+        while(iter.hasNext()) {
+            i = (Exp) iter.next();
+            temp.setLeft(i.visit(this,arg));
+            temp.setRight(next);
+            temp = next;
+            next = new SMPLPair();
+        }
+        return head;
     }
 }

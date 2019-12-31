@@ -9,6 +9,7 @@ import smpl.syntax.lexer.SMPLLexer;
 import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.*;
 
 /* Preliminaries to set up and use the scanner.  */
@@ -52,7 +53,11 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PROC, DEF, PERIOD;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD;
+terminal LSQUARE, RSQUARE;
+
+// keywords
+terminal DEF, PROC;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -74,11 +79,16 @@ terminal String ASSIGN;
 
 /* Non terminals */
 non terminal SMPLProgram program;
+
+// statements
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
+
+//expressions
 non terminal Exp expression;
+non terminal Exp listExp;
 non terminal ArrayList<Exp> expListE;
 non terminal ArrayList<Exp> expList;  
 non terminal Exp compoundExp;
@@ -90,15 +100,19 @@ non terminal Exp arithExp;
 non terminal Exp relop;
 non terminal Exp negation;
 non terminal Exp logop;
+non terminal Exp pairExp;
 non terminal Exp bool;
 non terminal Exp bitOp;
-non terminal empty;
 
 // procedures
 non terminal Exp procDefn;
 non terminal Exp procCall;
 non terminal ArrayList<String> paramListE;
 non terminal ArrayList<String> paramList;
+
+// empty stuuff
+terminal NIL;
+non terminal empty;
 
 
 /* Grammar rules */
@@ -126,6 +140,7 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 				:};
 								
 expression ::=	logop: l {: RESULT = l; :} |
+				listExp: le {: RESULT = le; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :};
 
@@ -160,18 +175,33 @@ procCall ::=	factor: id LPAREN expListE: list RPAREN {:
 					RESULT = new ExpProcCall(id, list);
 				:};
 
-expListE ::= expList: el {: RESULT = el; :} | empty {: RESULT = new ArrayList(); :};
+expListE ::=	expList: pl {: RESULT = pl; :} | 
+				empty {: RESULT = new ArrayList(); :};
 
-expList ::= expList: el COMMA expression: e {: el.add(e); RESULT = el; :} |
-			expression: e {: ArrayList<Exp> lst = new ArrayList<>(); lst.add(e); RESULT = lst; :};
+expList ::=	expList:pl COMMA expression:e {: 
+				pl.add(e); 
+				RESULT = pl; 
+			:} |
+			expression :e {: 
+				ArrayList<Exp> ls = new ArrayList<>(); 
+				ls.add(e);
+				RESULT = ls; 
+			:};
 
+// list
+listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :} |
+			NIL {: RESULT = new ExpList(); :};
+
+// logical operations
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|
 			negation: n {: RESULT = n; :};
 
+// NOT logical operation
 negation ::= 	NOT relop: r {: RESULT = new ExpNot(r); :} |
 				relop: r {: RESULT = r; :};
 
+// relational operations
 relop ::= 	relop:r  RELOP:sign arithExp: ae {:
 				RESULT = new ExpRelOp(r,ae,sign);
 			:} |
@@ -179,10 +209,12 @@ relop ::= 	relop:r  RELOP:sign arithExp: ae {:
 				RESULT = b;
 			:};
 
+// bitwise operations
 bitOp ::= bitOp:b BAND arithExp: e {: RESULT = new ExpBAnd(b,e); :} |
 		  bitOp:b BOR arithExp: e {: RESULT = new ExpBOr(b,e); :} |
 		  arithExp:e {: RESULT = e; :};	
 
+// airhtmetic expressions
 arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpAdd(e, t); :} |
 				arithExp:e MINUS term:t {:
@@ -202,15 +234,18 @@ term ::=	term:t MUL power: p {:
 power ::= 	power: p POWER factor: f {: RESULT = new ExpPow(p, f); :} |
 			factor: f {: RESULT = f; :};
 
+// factors
 factor ::=	value:v {: RESULT = v; :} |
 			bool: b {: RESULT = b; :} |
 			VAR: v {: RESULT = new ExpVar(v); :}|
 			procCall: pcall {: RESULT = pcall; :} |
 			LPAREN expression:e RPAREN {: RESULT = e; :};
 
+// boolean values
 bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
 			FALSE: f {: RESULT = new ExpBool(f); :};
-	   		
+
+// numbers - int, real	   		
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
 			REAL:rlit {: RESULT = new ExpLit(rlit); :};
 			

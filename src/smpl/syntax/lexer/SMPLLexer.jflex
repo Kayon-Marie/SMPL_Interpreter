@@ -67,10 +67,17 @@ num = [0-9]
 true = "#t"
 false = "#f"
 
+nil = "#e"
+
 real = {num}*\.{num} | {num}+\.{num}*
 
 // relational operators - excluding "=" AKA sym.ASSIGN
 rel_op = "<"|"<="|">"|">="|"!="|"="
+
+// error handling
+// special cases to permit the non use of spaces
+start_symbol = [^\,\(\[\{\s]
+end_symbol = [^\;\)\]\}]
 
 %%
 
@@ -80,6 +87,7 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	{ws}	{
 			 // skip whitespace
 			}
+	
 			
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
@@ -113,6 +121,8 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL> "," {return new Symbol(sym.COMMA);}
 <YYINITIAL> ";" {return new Symbol(sym.SEMI);}
 <YYINITIAL> "." {return new Symbol(sym.PERIOD);}
+<YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
+<YYINITIAL> "]" {return new Symbol(sym.RSQUARE); }
 
 // Numerical Values
 <YYINITIAL>    {num}+ {
@@ -141,7 +151,7 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 				 Integer.parseInt(i,16));
 		}
 
-// Strings and Chars	
+// Strings and Chars
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
@@ -151,9 +161,13 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
 <YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
+// Nil (empty List)
+<YYINITIAL> {nil}	{return new Symbol(sym.NIL);}
 
+// [^\"\(\s]\S+[^\)]$
+// [^\,\(\[\{\s]\S+[^\)\]\}]$
 // error situation
-<YYINITIAL>   [^]		{ 
+<YYINITIAL>   {start_symbol}\S+{end_symbol}$		{ 
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
 	       }

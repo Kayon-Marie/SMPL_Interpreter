@@ -60,5 +60,15 @@ public interface Visitor<S, T> {
     public S visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
     public S visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
     public S visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+   
+    //pair operations
+    public T visitExpPair(ExpPair exp, S arg) throws VisitException ;
+    public T visitExpCAR(ExpCAR exp, S arg) throws VisitException ;
+    public T visitExpCDR(ExpCDR exp, S arg) throws VisitException ;
+
+    //List operations
+    public T visitExpList(ExpList exp, S arg) throws VisitException ;
+
+
 
 }

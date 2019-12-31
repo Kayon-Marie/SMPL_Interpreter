@@ -6,6 +6,8 @@ import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.Statement;
 
 import smpl.semantics.Visitor;
+import smpl.syntax.ast.core.Statement;
+
 
 public class StmtDefinition extends Statement {
 
