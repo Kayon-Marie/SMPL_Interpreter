@@ -80,6 +80,7 @@ non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Exp expression;
 non terminal Exp compoundExp;
+non terminal ArrayList<Exp> multiExp;
 non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp value;
@@ -124,9 +125,12 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 								
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
+				LPAREN 
 				procDefn: proc {: RESULT = proc; :};
 
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
+
+multiExp ::=	
 
 procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
 					RESULT = new ExpProcN(params, body);
