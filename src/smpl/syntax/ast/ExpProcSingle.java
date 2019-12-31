@@ -32,8 +32,7 @@ public class ExpProcSingle extends ExpProc {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return null;
+        return String.format(" %s {\n%s}", param, body.toString());
     }
 
 }

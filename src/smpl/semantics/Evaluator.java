@@ -228,7 +228,7 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public Environment visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Environment env, Environment closingEnv) 
         throws VisitException {
-        ArrayList<String> params = exp.getParams();
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
         int paramSize = params.size();
         int argSize = args.size();
         List<SMPLValue<?>> values = new ArrayList<>();
@@ -273,8 +273,14 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public Environment visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Environment env,
             Environment closingEnv) throws VisitException {
-        // TODO Auto-generated method stub
-        return null;
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        List<SMPLValue<?>> values = new ArrayList<>();
+        SMPLValue<?> restValue;
+
+        restValue = new ExpList(args).visit(this, env);
+        values.add(restValue);
+        return new Environment(params, values, closingEnv);
+
     }
     
     public SMPLValue<?> visitExpPair(ExpPair exp, Environment arg) throws VisitException {
