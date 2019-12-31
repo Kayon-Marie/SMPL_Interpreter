@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
-
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.core.Exp;
@@ -224,6 +224,37 @@ public class ToScheme implements Visitor<Void, String> {
         //     return result;
         // }
         return "";
+    }
+
+    @Override
+    public String visitExpProcDefn(ExpProc exp, Void arg) throws VisitException {
+        return "";
+    }
+
+    @Override
+    public String visitExpProcCall(ExpProcCall exp, Void env) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Void visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Void env, Void env2)
+            throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Void visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Void env, Void env2) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Void visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Void env, Void env2)
+            throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     // @Override

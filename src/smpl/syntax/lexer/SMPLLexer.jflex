@@ -74,6 +74,11 @@ real = {num}*\.{num} | {num}+\.{num}*
 // relational operators - excluding "=" AKA sym.ASSIGN
 rel_op = "<"|"<="|">"|">="|"!="|"="
 
+// error handling
+// special cases to permit the non use of spaces
+start_symbol = [^\,\(\[\{\s]
+end_symbol = [^\;\)\]\}]
+
 %%
 
 <YYINITIAL>	{nl}	{//skip newline, but reset char counter
@@ -103,17 +108,21 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
-// special symbols
+// keywords
+<YYINITIAL> "def" {return new Symbol(sym.DEF);}
+<YYINITIAL> "proc" {return new Symbol(sym.PROC);}
+
+// Special symbols
 <YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
-<YYINITIAL> ";" {return new Symbol(sym.SEMI); }
+<YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
+<YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
+<YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ";" {return new Symbol(sym.SEMI);}
+<YYINITIAL> "." {return new Symbol(sym.PERIOD);}
 <YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
 <YYINITIAL> "]" {return new Symbol(sym.RSQUARE); }
-<YYINITIAL> "," {return new Symbol(sym.COMMA); }
-
-// keywords
-<YYINITIAL> "def" {return new Symbol(sym.DEF);}
 
 // Numerical Values
 <YYINITIAL>    {num}+ {
@@ -142,7 +151,7 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 				 Integer.parseInt(i,16));
 		}
 
-// Strings and Chars	
+// Strings and Chars
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
@@ -155,8 +164,10 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 // Nil (empty List)
 <YYINITIAL> {nil}	{return new Symbol(sym.NIL);}
 
+// [^\"\(\s]\S+[^\)]$
+// [^\,\(\[\{\s]\S+[^\)\]\}]$
 // error situation
-<YYINITIAL>   [^]		{ 
+<YYINITIAL>   {start_symbol}\S+{end_symbol}$		{ 
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
 	       }

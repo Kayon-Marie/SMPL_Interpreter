@@ -278,4 +278,6 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     public SMPLValue<?> BOr(SMPLValue<?> arg) throws SMPLException{
         throw new TypeException("Incorrect type used");
     }
+
+    public abstract String toString();
 }

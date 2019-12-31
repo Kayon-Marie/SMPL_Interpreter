@@ -2,15 +2,14 @@ package smpl.semantics;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
+import smpl.exceptions.ArgumentException;
 import smpl.exceptions.VisitException;
-
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
-import smpl.syntax.ast.core.Exp;
-import smpl.values.SMPLBool;
-import smpl.values.SMPLValue;
-import smpl.values.SMPLPair;
+import smpl.values.*;
 import smpl.syntax.ast.*;
 
 
@@ -211,6 +210,79 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     }
 
     @Override
+    public SMPLValue<?> visitExpProcDefn(ExpProc exp, Environment arg) throws VisitException {
+        SMPLProc closure = new SMPLProc(exp, arg);
+        return closure;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpProcCall(ExpProcCall exp, Environment env) throws VisitException {
+        // deal with id (can be variable or expression)
+        SMPLProc proc = (SMPLProc) exp.getIdentifier().visit(this, env);
+        ExpProc defn = proc.getProcExp();
+        ArrayList<Exp> args = exp.getArgs();
+        Environment<SMPLValue<?>> procEnv = defn.call(this, args, env, proc.getClosingEnv());
+        return defn.getBody().visit(this, procEnv);
+    }
+
+    @Override
+    public Environment visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Environment env, Environment closingEnv) 
+        throws VisitException {
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        int paramSize = params.size();
+        int argSize = args.size();
+        List<SMPLValue<?>> values = new ArrayList<>();
+        if (paramSize == argSize) {
+            for (Exp arg: args) {
+                values.add(arg.visit(this, env));
+            }
+            return new Environment(params, values, closingEnv);
+
+        } else throw new ArgumentException(paramSize, argSize);
+    }
+
+    @Override
+    public Environment visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Environment env,
+            Environment closingEnv) throws VisitException {
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        int paramSize = params.size();
+        int argSize = args.size();
+        List<SMPLValue<?>> values = new ArrayList<>();
+        SMPLValue<?> restValue;
+
+        if (argSize >= paramSize) {
+
+            // evauate N arguments
+            for (int i = 0; i < paramSize; i++) {
+                values.add(args.get(i).visit(this, env));
+            }
+
+            // excess (P-rest) arguments
+            List<Exp> restExps = args.subList(paramSize, argSize);
+            System.out.println(restExps);
+            restValue = new ExpList(restExps).visit(this, env);
+            
+            params.add(exp.getRest());
+            values.add(restValue);
+
+            return new Environment(params, values, closingEnv);
+
+        } else throw new ArgumentException(paramSize, argSize);
+    }
+
+    @Override
+    public Environment visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Environment env,
+            Environment closingEnv) throws VisitException {
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        List<SMPLValue<?>> values = new ArrayList<>();
+        SMPLValue<?> restValue;
+
+        restValue = new ExpList(args).visit(this, env);
+        values.add(restValue);
+        return new Environment(params, values, closingEnv);
+
+    }
+    
     public SMPLValue<?> visitExpPair(ExpPair exp, Environment arg) throws VisitException {
         SMPLValue<?> left,right;
         left = exp.getLeft().visit(this,arg);
@@ -234,8 +306,8 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpList(ExpList exp, Environment arg) throws VisitException {
-        ArrayList elements = exp.getElements();
-        Iterator iter = elements.iterator();
+        List<Exp> elements = exp.getElements();
+        Iterator<Exp> iter = elements.iterator();
         Exp i;
         SMPLPair head = new SMPLPair();
         SMPLPair temp = head;

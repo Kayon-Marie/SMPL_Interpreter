@@ -53,8 +53,11 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN, SEMI, DEF, NIL;
-terminal COMMA, LSQUARE, RSQUARE;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD;
+terminal LSQUARE, RSQUARE;
+
+// keywords
+terminal DEF, PROC;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -76,16 +79,22 @@ terminal String ASSIGN;
 
 /* Non terminals */
 non terminal SMPLProgram program;
+
+// statements
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
-non terminal ArrayList<Exp> expList;
-non terminal ArrayList<Exp> expListE;
-non terminal Exp listExp;
+
+//expressions
 non terminal Exp expression;
+non terminal Exp listExp;
+non terminal ArrayList<Exp> expListE;
+non terminal ArrayList<Exp> expList;  
+non terminal Exp compoundExp;
 non terminal Exp term;
 non terminal Exp factor;
+non terminal Exp power;
 non terminal Exp value;
 non terminal Exp arithExp;
 non terminal Exp relop;
@@ -94,8 +103,16 @@ non terminal Exp logop;
 non terminal Exp pairExp;
 non terminal Exp bool;
 non terminal Exp bitOp;
-non terminal empty;
 
+// procedures
+non terminal Exp procDefn;
+non terminal Exp procCall;
+non terminal ArrayList<String> paramListE;
+non terminal ArrayList<String> paramList;
+
+// empty stuuff
+terminal NIL;
+non terminal empty;
 
 
 /* Grammar rules */
@@ -105,7 +122,7 @@ program ::=	stmtList:s {: RESULT = new SMPLProgram(s); :};
 stmtList ::=	stmtList:lst stmt:s {:
 					lst.add(s); 
 					RESULT = lst;
-				:} |
+				:} |	
 	     		stmt:s {:
 					RESULT = new StmtSequence(s);
 				:};
@@ -114,35 +131,77 @@ stmt ::=	definition:d {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :};
 
-assignment ::= VAR:v ASSIGN expression:e {:
+assignment ::= 	VAR:v ASSIGN expression:e {:
 		   			RESULT = new StmtAssignment(v, e);
 				:}; 
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
-				:};				
+				:};
+								
+expression ::=	logop: l {: RESULT = l; :} |
+				listExp: le {: RESULT = le; :} |
+				compoundExp: e {: RESULT = e; :} |
+				procDefn: proc {: RESULT = proc; :};
 
-expression ::=	logop: l {: RESULT = l; :}|
-				listExp: le {: RESULT = le; :};
 
-expListE ::= expList: pl {: RESULT = pl; :} | empty {: RESULT = new ArrayList(); :};
+compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
-expList ::= expList:pl COMMA expression:e {: pl.add(e); 
-											RESULT = pl; :} |
-			expression :e {: ArrayList<Exp> ls = new ArrayList<>(); 
-							ls.add(e);
-							RESULT = ls; :};
+procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
+					RESULT = new ExpProcN(params, body);
+				:} |
+				PROC LPAREN paramListE: params PERIOD VAR: rest RPAREN expression: body {:
+					RESULT = new ExpProcMulti(params, rest, body);
+				:} | 
+				PROC VAR: v expression: body {:
+					RESULT = new ExpProcSingle(v, body);
+				:};
 
+paramListE ::=	paramList: params {: RESULT = params; :} |
+				empty {: RESULT = new ArrayList<>(); :};
+
+paramList ::= 	paramList: params COMMA VAR: v {:
+					params.add(v);
+					RESULT = params;
+				:} |
+				VAR: v {: 
+					ArrayList<String> lst = new ArrayList<>();
+					lst.add(v);
+					RESULT = lst; 
+				:};
+
+// procCall ::=	expression: id multiExp: me {: RESULT = new ExpProcCall(id, me); :};
+procCall ::=	factor: id LPAREN expListE: list RPAREN {:
+					RESULT = new ExpProcCall(id, list);
+				:};
+
+expListE ::=	expList: pl {: RESULT = pl; :} | 
+				empty {: RESULT = new ArrayList(); :};
+
+expList ::=	expList:pl COMMA expression:e {: 
+				pl.add(e); 
+				RESULT = pl; 
+			:} |
+			expression :e {: 
+				ArrayList<Exp> ls = new ArrayList<>(); 
+				ls.add(e);
+				RESULT = ls; 
+			:};
+
+// list
 listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :} |
 			NIL {: RESULT = new ExpList(); :};
 
+// logical operations
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|
 			negation: n {: RESULT = n; :};
 
+// NOT logical operation
 negation ::= 	NOT relop: r {: RESULT = new ExpNot(r); :} |
 				relop: r {: RESULT = r; :};
 
+// relational operations
 relop ::= 	relop:r  RELOP:sign arithExp: ae {:
 				RESULT = new ExpRelOp(r,ae,sign);
 			:} |
@@ -150,10 +209,12 @@ relop ::= 	relop:r  RELOP:sign arithExp: ae {:
 				RESULT = b;
 			:};
 
+// bitwise operations
 bitOp ::= bitOp:b BAND arithExp: e {: RESULT = new ExpBAnd(b,e); :} |
 		  bitOp:b BOR arithExp: e {: RESULT = new ExpBOr(b,e); :} |
 		  arithExp:e {: RESULT = e; :};	
 
+// airhtmetic expressions
 arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpAdd(e, t); :} |
 				arithExp:e MINUS term:t {:
@@ -162,24 +223,31 @@ arithExp ::=	arithExp:e PLUS term:t {:
 					RESULT = new ExpNeg(ae); :}	|
 				term:t {: RESULT = t; :};
 
-term ::=	term:t MUL factor:f {:
-				RESULT = new ExpMul(t, f); :} |
-	 		term:t DIV factor:f {:
-				RESULT = new ExpDiv(t, f); :} |
-	 		term:t MOD factor:f {:
-				RESULT = new ExpMod(t, f); :} |
-	 		factor:f {: RESULT = f; :};
+term ::=	term:t MUL power: p {:
+				RESULT = new ExpMul(t, p); :} |
+	 		term:t DIV power: p {:
+				RESULT = new ExpDiv(t, p); :} |
+	 		term:t MOD power: p {:
+				RESULT = new ExpMod(t, p); :} |
+	 		power: p {: RESULT = p; :};
 
-factor ::=	factor:f POWER value:v {: RESULT = new ExpPow(f, v); :} |
+power ::= 	power: p POWER factor: f {: RESULT = new ExpPow(p, f); :} |
+			factor: f {: RESULT = f; :};
+
+// factors
+factor ::=	value:v {: RESULT = v; :} |
 			bool: b {: RESULT = b; :} |
-			value:v {: RESULT = v; :};
+			VAR: v {: RESULT = new ExpVar(v); :}|
+			procCall: pcall {: RESULT = pcall; :} |
+			LPAREN expression:e RPAREN {: RESULT = e; :};
 
+// boolean values
 bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
 			FALSE: f {: RESULT = new ExpBool(f); :};
-	   		
+
+// numbers - int, real	   		
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
-			REAL:rlit {: RESULT = new ExpLit(rlit); :} |
-			VAR:var {: RESULT = new ExpVar(var); :} |
-			LPAREN expression:e RPAREN {: RESULT = e; :};
+			REAL:rlit {: RESULT = new ExpLit(rlit); :};
+			
 			
 empty ::= ;

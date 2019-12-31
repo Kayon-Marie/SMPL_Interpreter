@@ -5,8 +5,6 @@ import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 import smpl.values.SMPLPair;
 
-
-
 public class ExpCDR extends Exp {
 
     SMPLPair pair;

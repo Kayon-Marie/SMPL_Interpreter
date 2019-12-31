@@ -32,6 +32,6 @@ public class StmtDefinition extends Statement {
     }
 
     public String toString() {
-	    return String.format("def %s %s", getVar(), getExp().toString());
+	    return String.format("def %s %s", getVar(), getExp().toString() + ";");
     }
 }
