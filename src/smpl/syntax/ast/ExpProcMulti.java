@@ -24,6 +24,10 @@ public class ExpProcMulti extends ExpProc {
         return this.params;
     }
 
+    public String getRest() {
+        return this.rest;
+    }
+
     @Override
     public Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, ArrayList<Exp> args,
             Environment<SMPLValue<?>> env, Environment<SMPLValue<?>> closingEnv) throws VisitException {
@@ -32,8 +36,20 @@ public class ExpProcMulti extends ExpProc {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return null;
+        String paramstr;
+        ArrayList<String> paramList = params;
+        int n = paramList.size();
+        switch (n) {
+            case 0: paramstr = ""; break;
+            case 1: paramstr = paramList.get(0); break;
+            default: 
+                paramstr = paramList.get(0);
+                for (int i = 1; i < n; i++) {
+                    paramstr += ", " + paramList.get(i);
+                }
+        }
+        
+        return String.format("(%s . %s) {\n%s}", paramstr, rest, body.toString());
     }
 
 }

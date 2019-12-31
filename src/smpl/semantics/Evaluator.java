@@ -2,6 +2,7 @@ package smpl.semantics;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import smpl.exceptions.ArgumentException;
 import smpl.exceptions.VisitException;
@@ -230,21 +231,43 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         ArrayList<String> params = exp.getParams();
         int paramSize = params.size();
         int argSize = args.size();
-        ArrayList<SMPLValue<?>> values = new ArrayList<>();
+        List<SMPLValue<?>> values = new ArrayList<>();
         if (paramSize == argSize) {
             for (Exp arg: args) {
                 values.add(arg.visit(this, env));
             }
             return new Environment(params, values, closingEnv);
-        } else throw new ArgumentException(paramSize, argSize);
 
+        } else throw new ArgumentException(paramSize, argSize);
     }
 
     @Override
     public Environment visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Environment env,
             Environment closingEnv) throws VisitException {
-        // TODO Auto-generated method stub
-        return null;
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        int paramSize = params.size();
+        int argSize = args.size();
+        List<SMPLValue<?>> values = new ArrayList<>();
+        SMPLValue<?> restValue;
+
+        if (argSize >= paramSize) {
+
+            // evauate N arguments
+            for (int i = 0; i < paramSize; i++) {
+                values.add(args.get(i).visit(this, env));
+            }
+
+            // excess (P-rest) arguments
+            List<Exp> restExps = args.subList(paramSize, argSize);
+            System.out.println(restExps);
+            restValue = new ExpList(restExps).visit(this, env);
+            
+            params.add(exp.getRest());
+            values.add(restValue);
+
+            return new Environment(params, values, closingEnv);
+
+        } else throw new ArgumentException(paramSize, argSize);
     }
 
     @Override
@@ -277,8 +300,8 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpList(ExpList exp, Environment arg) throws VisitException {
-        ArrayList elements = exp.getElements();
-        Iterator iter = elements.iterator();
+        List<Exp> elements = exp.getElements();
+        Iterator<Exp> iter = elements.iterator();
         Exp i;
         SMPLPair head = new SMPLPair();
         SMPLPair temp = head;

@@ -46,7 +46,7 @@ public class ExpProcN extends ExpProc {
                 }
         }
         
-        return String.format("(%s) {\n\t %s \n}", paramstr, body.toString());
+        return String.format("(%s) {\n%s}", paramstr, body.toString());
     }
 
 }

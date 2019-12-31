@@ -1,6 +1,7 @@
 package smpl.syntax.ast;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
@@ -10,17 +11,17 @@ import smpl.syntax.ast.core.Exp;
 
 public class ExpList extends Exp {
 
-    ArrayList<Exp> elements;
+    List<Exp> elements;
 
     public ExpList() {
         this(new ArrayList<Exp>());
     }
 
-    public ExpList(ArrayList<Exp> elements) {
+    public ExpList(List<Exp> elements) {
         this.elements = elements;
     }
 
-    public ArrayList<Exp> getElements(){
+    public List<Exp> getElements(){
         return elements;
     }
 
