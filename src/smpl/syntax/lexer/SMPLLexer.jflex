@@ -67,6 +67,8 @@ num = [0-9]
 true = "#t"
 false = "#f"
 
+nil = "#e"
+
 real = {num}*\.{num} | {num}+\.{num}*
 
 // relational operators - excluding "=" AKA sym.ASSIGN
@@ -80,9 +82,6 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	{ws}	{
 			 // skip whitespace
 			}
-
-
-<YYINITIAL> ","	{return new Symbol(sym.COMMA);}
 	
 			
 // Relational and Logical operators
@@ -153,6 +152,8 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
 <YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
+// Nil (empty List)
+<YYINITIAL> {nil}	{return new Symbol(sym.NIL);}
 
 // error situation
 <YYINITIAL>   [^]		{ 

@@ -39,9 +39,22 @@ public class SMPLPair extends SMPLValue<SMPLPair> {
         return this.left = arg;
     }
 
+    public boolean isNil() {
+        return this.left == null && this.right == null;
+    }
 
     @Override
     public String toString() {
+        String str = "";
+        if (isNil()) {
+            str += "#e";
+        } else {
+            str += PairToString();
+        }
+        return str;
+    }
+
+    public String PairToString() {
         String result = "(";
         if (this.left == null) {
             result += "#el";

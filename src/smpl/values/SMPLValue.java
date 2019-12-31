@@ -76,6 +76,13 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
         return getType() == SMPLType.BOOLEAN;
     }
 
+    /**
+     * @return <code>true</code> if and only if this value is a pair
+     */
+    public boolean isPair() {
+        return getType() == SMPLType.PAIR;
+    }
+
     // =========================== //
     // == ARITHMETIC OPERATIONS == //
     // =========================== //

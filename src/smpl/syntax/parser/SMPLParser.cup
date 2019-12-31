@@ -53,7 +53,7 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN, SEMI, DEF;
+terminal LPAREN, RPAREN, SEMI, DEF, NIL;
 terminal COMMA, LSQUARE, RSQUARE;
 
 // arithmetic operators
@@ -133,7 +133,8 @@ expList ::= expList:pl COMMA expression:e {: pl.add(e);
 							ls.add(e);
 							RESULT = ls; :};
 
-listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :};
+listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :} |
+			NIL {: RESULT = new ExpList(); :};
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|

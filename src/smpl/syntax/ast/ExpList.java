@@ -12,6 +12,10 @@ public class ExpList extends Exp {
 
     ArrayList<Exp> elements;
 
+    public ExpList() {
+        this(new ArrayList<Exp>());
+    }
+
     public ExpList(ArrayList<Exp> elements) {
         this.elements = elements;
     }
