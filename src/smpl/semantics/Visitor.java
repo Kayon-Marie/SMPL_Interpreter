@@ -2,7 +2,10 @@ package smpl.semantics;
 
 import smpl.exceptions.VisitException;
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.*;
+import java.util.ArrayList;
+
 /**
  * The generic Visitor interface for the Arithmetic parser
  * example.
@@ -53,5 +56,9 @@ public interface Visitor<S, T> {
 
     // procedures
     public T visitExpProcDefn(ExpProc exp, S arg) throws VisitException;
+    public T visitExpProcCall(ExpProcCall exp, S env) throws VisitException;
+    public S visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
 
 }

@@ -52,7 +52,7 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PROC, DEF;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PROC, DEF, PERIOD;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -120,8 +120,7 @@ assignment ::= 	VAR:v ASSIGN expression:e {:
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
-				:} | 
-				DEF VAR: v 
+				:};
 								
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
@@ -130,8 +129,15 @@ expression ::=	logop: l {: RESULT = l; :} |
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
 procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
-					RESULT = new ExpProc(params, body);
+					RESULT = new ExpProcN(params, body);
+				:} |
+				PROC LPAREN paramListE: params PERIOD VAR: rest RPAREN expression: body {:
+					RESULT = new ExpProcMulti(params, rest, body);
+				:} | 
+				PROC VAR: v expression: body {:
+					RESULT = new ExpProcSingle(v, body);
 				:};
+				
 
 paramListE ::=	paramList: params {: RESULT = params; :} |
 				empty {: RESULT = new ArrayList<>(); :};

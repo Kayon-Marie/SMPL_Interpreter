@@ -1,5 +1,6 @@
 package smpl.values;
 
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.ExpProc;
 import smpl.semantics.Environment;
 import java.util.ArrayList;
@@ -35,20 +36,7 @@ public class SMPLProc extends SMPLValue<SMPLProc> {
 
     @Override
     public String toString() {
-        String params;
-        ArrayList<String> paramList = procExp.getParams();
-        int n = paramList.size();
-        switch (n) {
-            case 0: params = ""; break;
-            case 1: params = paramList.get(0); break;
-            default: 
-                params = paramList.get(0);
-                for (int i = 1; i < n; i++) {
-                    params += ", " + paramList.get(i);
-                }
-        }
-        String body = procExp.getBody().toString();
-        return String.format("\nFunction: (%s) {\n\t %s \n}", params, body);
+        return String.format("\n%s %s", getType().toString(), procExp.toString());
     }
     
 }

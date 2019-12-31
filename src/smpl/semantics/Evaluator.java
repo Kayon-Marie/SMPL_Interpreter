@@ -3,8 +3,9 @@ package smpl.semantics;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import smpl.exceptions.ArgumentException;
 import smpl.exceptions.VisitException;
-
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
 import smpl.values.*;
@@ -210,5 +211,45 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitExpProcDefn(ExpProc exp, Environment arg) throws VisitException {
         SMPLProc closure = new SMPLProc(exp, arg);
         return closure;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpProcCall(ExpProcCall exp, Environment env) throws VisitException {
+        // deal with id (can be variable or expression)
+        SMPLProc proc = (SMPLProc) exp.getIdentifier().visit(this, env);
+        ExpProc defn = proc.getProcExp();
+        ArrayList<Exp> args = exp.getArgs();
+        Environment<SMPLValue<?>> procEnv = defn.call(this, args, env, proc.getClosingEnv());
+        return defn.getBody().visit(this, procEnv);
+    }
+
+    @Override
+    public Environment visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Environment env, Environment closingEnv) 
+        throws VisitException {
+        ArrayList<String> params = exp.getParams();
+        int paramSize = params.size();
+        int argSize = args.size();
+        ArrayList<SMPLValue<?>> values = new ArrayList<>();
+        if (paramSize == argSize) {
+            for (Exp arg: args) {
+                values.add(arg.visit(this, env));
+            }
+            return new Environment(params, values, closingEnv);
+        } else throw new ArgumentException(paramSize, argSize);
+
+    }
+
+    @Override
+    public Environment visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Environment env,
+            Environment closingEnv) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Environment visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Environment env,
+            Environment closingEnv) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

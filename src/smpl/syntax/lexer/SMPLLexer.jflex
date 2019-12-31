@@ -112,6 +112,7 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
 <YYINITIAL> "," {return new Symbol(sym.COMMA);}
 <YYINITIAL> ";" {return new Symbol(sym.SEMI);}
+<YYINITIAL> "." {return new Symbol(sym.PERIOD);}
 
 // Numerical Values
 <YYINITIAL>    {num}+ {
