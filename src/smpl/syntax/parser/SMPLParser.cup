@@ -9,6 +9,7 @@ import smpl.syntax.lexer.SMPLLexer;
 import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.core.SMPLProgram;
+import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.*;
 
 /* Preliminaries to set up and use the scanner.  */
@@ -53,6 +54,7 @@ scan with {:
 
 // special symbols
 terminal LPAREN, RPAREN, SEMI, DEF;
+terminal COMMA, LSQUARE, RSQUARE;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -78,6 +80,9 @@ non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
+non terminal ArrayList<Exp> expList;
+non terminal ArrayList<Exp> expListE;
+non terminal Exp listExp;
 non terminal Exp expression;
 non terminal Exp term;
 non terminal Exp factor;
@@ -86,6 +91,7 @@ non terminal Exp arithExp;
 non terminal Exp relop;
 non terminal Exp negation;
 non terminal Exp logop;
+non terminal Exp pairExp;
 non terminal Exp bool;
 non terminal Exp bitOp;
 non terminal empty;
@@ -116,7 +122,18 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
 				:};				
 
-expression ::=	logop: l {: RESULT = l; :};
+expression ::=	logop: l {: RESULT = l; :}|
+				listExp: le {: RESULT = le; :};
+
+expListE ::= expList: pl {: RESULT = pl; :} | empty {: RESULT = new ArrayList(); :};
+
+expList ::= expList:pl COMMA expression:e {: pl.add(e); 
+											RESULT = pl; :} |
+			expression :e {: ArrayList<Exp> ls = new ArrayList<>(); 
+							ls.add(e);
+							RESULT = ls; :};
+
+listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :};
 
 logop ::= 	logop: l AND negation: n {: RESULT = new ExpAnd(l, n); :} |
 			logop: l OR negation: n {: RESULT = new ExpOr(l, n); :}	|

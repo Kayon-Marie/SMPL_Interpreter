@@ -80,6 +80,10 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	{ws}	{
 			 // skip whitespace
 			}
+
+
+<YYINITIAL> ","	{return new Symbol(sym.COMMA);}
+	
 			
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
@@ -105,6 +109,9 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
 <YYINITIAL> ";" {return new Symbol(sym.SEMI); }
+<YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
+<YYINITIAL> "]" {return new Symbol(sym.RSQUARE); }
+<YYINITIAL> "," {return new Symbol(sym.COMMA); }
 
 // keywords
 <YYINITIAL> "def" {return new Symbol(sym.DEF);}
