@@ -70,7 +70,7 @@ true = "#t"
 false = "#f"
 
 char = "#c"{alpha}
-unicode = [0-9a-zA-Z]
+unicode = [a-zA-Z0-9]
 
 nil = "#e"
 
@@ -172,9 +172,9 @@ end_symbol = [^\;\)\]\}]
 			return new Symbol(sym.CHAR, yycharat(2));
 		}
 
-<YYINITIAL> "#u"{unicode}{unicode}{unicode}{unicode} {
+<YYINITIAL> "#u"{unicode}+ {
 			//Unicode
-			return new Symbol(sym.CHAR, (char) Integer.parseInt(yytext().substring(2), 16));
+			return new Symbol(sym.UNI, yytext().substring(2));
 		}
 
 // Newline Character Representation

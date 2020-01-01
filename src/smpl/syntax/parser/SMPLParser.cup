@@ -75,6 +75,7 @@ terminal Double REAL;
 terminal Boolean TRUE;
 terminal Boolean FALSE;
 terminal Character CHAR;
+terminal String UNI;
 terminal String STRING;
 terminal String RELOP;
 terminal String ASSIGN;
@@ -104,6 +105,7 @@ non terminal Exp relop;
 non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
+non terminal Exp charLit;
 non terminal Exp bitOp;
 non terminal ArrayList<String> vars;
 non terminal ArrayList<String> varAux;
@@ -266,11 +268,15 @@ power ::= 	power: p POWER factor: f {: RESULT = new ExpPow(p, f); :} |
 // factors
 factor ::=	value:v {: RESULT = v; :} |
 			bool: b {: RESULT = b; :} |
-			CHAR: c {: RESULT = new ExpChar(c); :} |
-			STRING: s {: RESULT = new ExpString(s); :} |
+			charLit: c {: RESULT = c; :} |
 			VAR: v {: RESULT = new ExpVar(v); :}|
 			procCall: pcall {: RESULT = pcall; :} |
 			LPAREN expression:e RPAREN {: RESULT = e; :};
+
+//character & string values
+charLit ::= CHAR: c {: RESULT = new ExpChar(c); :} |
+			STRING: s {: RESULT = new ExpString(s); :} |
+			UNI: u {: RESULT = new ExpChar(u); :};
 
 // boolean values
 bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
