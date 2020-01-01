@@ -70,6 +70,7 @@ true = "#t"
 false = "#f"
 
 char = "#c"{alpha}
+unicode = [0-9a-zA-Z]
 
 real = {num}*\.{num} | {num}+\.{num}*
 
@@ -117,6 +118,11 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL> {char} {
 			// ChARACTER
 			return new Symbol(sym.CHAR, yycharat(2));
+		}
+
+<YYINITIAL> "#u"{unicode}{unicode}{unicode}{unicode} {
+			//Unicode
+			return new Symbol(sym.CHAR, (char) Integer.parseInt(yytext().substring(2)));
 		}
 
 // Newline Character Representation
