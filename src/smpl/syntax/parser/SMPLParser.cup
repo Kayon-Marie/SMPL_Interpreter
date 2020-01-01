@@ -147,7 +147,8 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 								
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
-				procDefn: proc {: RESULT = proc; :};
+				procDefn: proc {: RESULT = proc; :}|
+				listExp: le {: RESULT = le; :};
 
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
