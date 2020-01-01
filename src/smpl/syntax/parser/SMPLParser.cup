@@ -84,9 +84,6 @@ non terminal SMPLProgram program;
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtAssignment assignment;
-non terminal ArrayList<StmtAssignment> assignmentListE;
-non terminal ArrayList<StmtAssignment> assignmentList;
-non terminal ArrayList<StmtAssignment> assignments;
 non terminal StmtDefinition definition;
 non terminal Statement letStmt;
 
@@ -106,7 +103,11 @@ non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
 non terminal Exp bitOp;
-non terminal ArrayList<String> varList;
+non terminal ArrayList<String> vars;
+non terminal ArrayList<String> varAux;
+non terminal ArrayList<Binding> bindings;
+non terminal ArrayList<Binding> bindingsAux;
+non terminal Binding binding;
 
 // procedures
 non terminal Exp procDefn;
@@ -136,32 +137,9 @@ stmt ::=	definition:d {: RESULT = d; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			letStmt:lS SEMI {: RESULT = lS; :};
 
-assignment ::= 	varList:v ASSIGN expList:e {:
+assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
 				:}; 
-
-assignmentListE ::= assignmentList:al {: RESULT=al; :}|
-					empty {: RESULT = new ArrayList<>(); :};
-
-assignmentList ::= assignmentList:al COMMA assignment:a {: 
-						al.add(a);
-						RESULT = al;	
-					:}| assignment:a {: ArrayList<StmtAssignment> lst = new ArrayList<>();
-										lst.add(a);
-										RESULT = lst;
-					 :};
-
-// assignments ::= assignment:a assignmentsAux:al {:
-// 		al.add(0,a);
-// 		RESULT = al;
-// 	     :} |
-// 		empty {: RESULT = new ArrayList(); :};
-
-// assignmentsAux ::= COMMA assignment:a assignmentsAux:al {:
-// 		  al.add(0,a);
-// 		  RESULT = al;
-// 		:} |
-// 		empty {: RESULT = new ArrayList(); :};	 
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
@@ -197,7 +175,7 @@ paramList ::= 	paramList: params COMMA VAR: v {:
 				:};
 
 // procCall ::=	expression: id multiExp: me {: RESULT = new ExpProcCall(id, me); :};
-procCall ::=	factor: id LPAREN expListE: list RPAREN {:
+procCall ::=	factor: id LPAREN expListE:list RPAREN {:
 					RESULT = new ExpProcCall(id, list);
 				:};
 
@@ -216,9 +194,25 @@ expList ::=	expList:pl COMMA expression:e {:
 
 
 //let Stmt
-letStmt ::= LET LPAREN assignmentList:as RPAREN expression:body {:
-			RESULT = new StmtLet(as, body);
+letStmt ::= LET LPAREN bindings:bs RPAREN expression:body {:
+			RESULT = new StmtLet(bs, body);
            :};
+
+binding ::= VAR:v ASSIGN expression:e {:
+		RESULT = new Binding(v, e);
+	    :};
+
+bindings ::= binding:b bindingsAux:bl {:
+		bl.add(0,b);
+		RESULT = bl;
+	     :} |
+		empty {: RESULT = new ArrayList(); :};
+
+bindingsAux ::= COMMA binding:b bindingsAux:bl {:
+		  bl.add(0,b);
+		  RESULT = bl;
+		:} |
+		empty {: RESULT = new ArrayList(); :};
 
 // list
 listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :} |
@@ -281,15 +275,17 @@ bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
 			REAL:rlit {: RESULT = new ExpLit(rlit); :};
 
-varList ::=	varList:vl COMMA VAR:v {: 
-				pl.add(v); 
-				RESULT = vl; 
-			:} |
-			VAR:v {: 
-				ArrayList<String> ls = new ArrayList<>(); 
-				ls.add(v);
-				RESULT = ls; 
-			:};
+vars ::= VAR:v varAux:vl {:
+		vl.add(0,v);
+		RESULT = vl;
+	     :} |
+		empty {: RESULT = new ArrayList(); :};
+
+varAux ::= COMMA VAR:v varAux:vl {:
+		  vl.add(0,v);
+		  RESULT = vl;
+		:} |
+		empty {: RESULT = new ArrayList(); :};
 			
 			
 empty ::= ;

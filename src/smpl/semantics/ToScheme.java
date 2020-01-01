@@ -90,6 +90,20 @@ public class ToScheme implements Visitor<Void, String> {
         return result;
     }
 
+    public String visitStmtLet(StmtLet sl, Void arg)
+	throws VisitException {
+        ArrayList<Binding> bindings = sl.getBindings();
+        Exp body = sl.getBody();
+        String x = "";
+        for (int i =0; i< bindings.size();i++){
+            x += bindings.get(i).getVar();
+            x += " = ";
+            x += (String) bindings.get(i).getValExp().visit(this,arg);
+        }
+        return "(let " + x + " " +
+            body.visit(this,arg).toString() + ")";
+    }
+
     // expressions
     public String visitExpAdd(ExpAdd exp, Void arg)
 	throws VisitException {

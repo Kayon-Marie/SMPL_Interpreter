@@ -80,6 +80,28 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return result;
     }
 
+    @Override
+    public SMPLValue<?> visitStmtLet(StmtLet let, Environment env) 
+	throws VisitException{
+	ArrayList<Binding> bindings = let.getBindings();
+	Exp body = let.getBody();
+
+	int size = bindings.size();
+	String[] vars = new String[size];
+	SMPLValue<?>[] vals = new SMPLValue<?>[size];
+	Binding b;
+	for (int i = 0; i < size; i++) {
+	    b = bindings.get(i);
+	    vars[i] = b.getVar();
+	    // evaluate each expression in bindings
+	    result = b.getValExp().visit(this, env);
+	    vals[i] = result;
+	}
+	// create new env as child of current
+	Environment newEnv = new Environment<> (vars, vals, env);
+	return body.visit(this, newEnv);
+    }
+
     public SMPLValue<?> visitExpAdd(ExpAdd exp, Environment arg)
 	throws VisitException {
         SMPLValue<?> val1, val2;
