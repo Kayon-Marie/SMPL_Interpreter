@@ -74,6 +74,11 @@ unicode = [0-9a-zA-Z]
 
 real = {num}*\.{num} | {num}+\.{num}*
 
+// error handling
+// special cases to permit the non use of spaces
+start_symbol = [^\,\(\[\{\s]
+end_symbol = [^\;\)\]\}]
+
 %state STRING
 
 %%
@@ -122,7 +127,7 @@ real = {num}*\.{num} | {num}+\.{num}*
 
 <YYINITIAL> "#u"{unicode}{unicode}{unicode}{unicode} {
 			//Unicode
-			return new Symbol(sym.CHAR, (char) Integer.parseInt(yytext().substring(2)));
+			return new Symbol(sym.CHAR, (char) Integer.parseInt(yytext().substring(2), 16));
 		}
 
 // Newline Character Representation
@@ -166,7 +171,7 @@ real = {num}*\.{num} | {num}+\.{num}*
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
 <YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
-<YYINITIAL>    [^]		{ // error situation
+<YYINITIAL>    {start_symbol}\S+{end_symbol}$		{ // error situation
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
 	       }

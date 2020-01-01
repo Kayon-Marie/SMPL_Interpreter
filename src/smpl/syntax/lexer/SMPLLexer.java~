@@ -851,9 +851,9 @@ public class SMPLLexer implements java_cup.runtime.Scanner {
           case 57: break;
           case 29: 
             System.out.println("line: "+(yyline+1)+" "+"col: "+(yycolumn+1)+" "+"match: --"+zzToPrintable(yytext())+"--");
-            System.out.println("action [123] { //Unicode"+ZZ_NL+"\t\t\treturn new Symbol(sym.CHAR, (char) yytext().substring(2)); }");
+            System.out.println("action [123] { //Unicode"+ZZ_NL+"\t\t\treturn new Symbol(sym.CHAR, (char) Integer.parseInt(yytext().substring(2))); }");
             { //Unicode
-			return new Symbol(sym.CHAR, (char) yytext().substring(2));
+			return new Symbol(sym.CHAR, (char) Integer.parseInt(yytext().substring(2)));
             }
           case 58: break;
           default:
