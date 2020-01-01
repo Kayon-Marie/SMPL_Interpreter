@@ -135,7 +135,8 @@ stmtList ::=	stmtList:lst stmt:s {:
 stmt ::=	definition:d {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
-			letStmt:lS SEMI {: RESULT = lS; :};
+			letStmt:lS SEMI {: RESULT = lS; :}|
+			ifStmt: i {: RESULT = i :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
@@ -198,6 +199,8 @@ expList ::=	expList:pl COMMA expression:e {:
 letStmt ::= LET LPAREN bindings:bs RPAREN expression:body {:
 			RESULT = new StmtLet(bs, body);
            :};
+
+//if Stmt
 
 binding ::= VAR:v ASSIGN expression:e {:
 		RESULT = new Binding(v, e);
