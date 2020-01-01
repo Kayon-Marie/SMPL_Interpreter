@@ -157,11 +157,10 @@ expression ::=	logop: l {: RESULT = l; :} |
 				listExp: le {: RESULT = le; :} |
 				subVector: sv {: RESULT = sv; :};
 
-/*
+
 vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 					RESULT = new ExpVector(list);
 				:};
-*/
 
 /*
 vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
