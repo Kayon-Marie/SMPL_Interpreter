@@ -155,7 +155,7 @@ expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
 				listExp: le {: RESULT = le; :} |
-				vectorExp: ve {: RESULT = ve; :};
+				subVector: sv {: RESULT = sv; :};
 
 /*
 vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
@@ -163,6 +163,7 @@ vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 				:};
 */
 
+/*
 vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
 					RESULT = new ExpVector(list);
 				:};
@@ -179,12 +180,12 @@ subVectorList ::=	subVectorList: list COMMA subVector: sv {:
 						ls.add(sv);
 						RESULT = ls; 
 					:};
+*/
 
-subVector ::=	expression: size COLON expression: proc {:
+subVector ::=	arithExp: size COLON expression: proc {:
 					RESULT = new ExpSubVector(size, proc);
-				:} |
-				expression: e {: RESULT = e; :};
-
+				:};
+				
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
 procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
