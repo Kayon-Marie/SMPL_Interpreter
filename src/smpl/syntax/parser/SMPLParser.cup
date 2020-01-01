@@ -57,7 +57,7 @@ terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD;
 terminal LSQUARE, RSQUARE;
 
 // keywords
-terminal DEF, PROC;
+terminal DEF, PROC, LET;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -84,7 +84,11 @@ non terminal SMPLProgram program;
 non terminal StmtSequence stmtList;
 non terminal Statement stmt;
 non terminal StmtAssignment assignment;
+non terminal ArrayList<StmtAssignment> assignmentListE;
+non terminal ArrayList<StmtAssignment> assignmentList;
+non terminal ArrayList<StmtAssignment> assignments;
 non terminal StmtDefinition definition;
+non terminal Statement letStmt;
 
 //expressions
 non terminal Exp expression;
@@ -100,9 +104,9 @@ non terminal Exp arithExp;
 non terminal Exp relop;
 non terminal Exp negation;
 non terminal Exp logop;
-non terminal Exp pairExp;
 non terminal Exp bool;
 non terminal Exp bitOp;
+non terminal ArrayList<String> varList;
 
 // procedures
 non terminal Exp procDefn;
@@ -129,21 +133,43 @@ stmtList ::=	stmtList:lst stmt:s {:
 
 stmt ::=	definition:d {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
-	 		expression:e SEMI {: RESULT = new StmtExp(e); :};
+	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
+			letStmt:lS SEMI {: RESULT = lS; :};
 
-assignment ::= 	VAR:v ASSIGN expression:e {:
+assignment ::= 	varList:v ASSIGN expList:e {:
 		   			RESULT = new StmtAssignment(v, e);
 				:}; 
+
+assignmentListE ::= assignmentList:al {: RESULT=al; :}|
+					empty {: RESULT = new ArrayList<>(); :};
+
+assignmentList ::= assignmentList:al COMMA assignment:a {: 
+						al.add(a);
+						RESULT = al;	
+					:}| assignment:a {: ArrayList<StmtAssignment> lst = new ArrayList<>();
+										lst.add(a);
+										RESULT = lst;
+					 :};
+
+// assignments ::= assignment:a assignmentsAux:al {:
+// 		al.add(0,a);
+// 		RESULT = al;
+// 	     :} |
+// 		empty {: RESULT = new ArrayList(); :};
+
+// assignmentsAux ::= COMMA assignment:a assignmentsAux:al {:
+// 		  al.add(0,a);
+// 		  RESULT = al;
+// 		:} |
+// 		empty {: RESULT = new ArrayList(); :};	 
 
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
 				:};
 								
 expression ::=	logop: l {: RESULT = l; :} |
-				listExp: le {: RESULT = le; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :};
-
 
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
@@ -187,6 +213,12 @@ expList ::=	expList:pl COMMA expression:e {:
 				ls.add(e);
 				RESULT = ls; 
 			:};
+
+
+//let Stmt
+letStmt ::= LET LPAREN assignmentList:as RPAREN expression:body {:
+			RESULT = new StmtLet(as, body);
+           :};
 
 // list
 listExp ::= LSQUARE expListE:e RSQUARE {: RESULT = new ExpList(e); :} |
@@ -248,6 +280,16 @@ bool ::= 	TRUE: t {: RESULT = new ExpBool(t); :} |
 // numbers - int, real	   		
 value ::=   INT:ilit {: RESULT = new ExpLit(ilit); :} |
 			REAL:rlit {: RESULT = new ExpLit(rlit); :};
+
+varList ::=	varList:vl COMMA VAR:v {: 
+				pl.add(v); 
+				RESULT = vl; 
+			:} |
+			VAR:v {: 
+				ArrayList<String> ls = new ArrayList<>(); 
+				ls.add(v);
+				RESULT = ls; 
+			:};
 			
 			
 empty ::= ;

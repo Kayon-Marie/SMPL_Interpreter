@@ -59,10 +59,16 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitStmtAssignment(StmtAssignment sa, Environment env) throws VisitException {
-        String id = sa.getVar();
-        SMPLValue<?> pvalue = env.get(id);
-        result = sa.getExp().visit(this, env);
-        env.put(id, result);
+        ArrayList<String> ids = sa.getVarList();
+        ArrayList<Exp> exps = sa.getExpList();
+        SMPLValue<?> result = SMPLValue.make(0);
+        if(ids.size() != exps.size()){
+            throw new VisitException("Error: Number of identifiers do not match number of expressions");
+        }
+        for(int i =0; i<ids.size();i++){
+            result = exps.get(i).visit(this,env);
+            env.put(ids.get(i),result);
+        }
         return result;
     }
 
