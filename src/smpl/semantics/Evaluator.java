@@ -173,6 +173,14 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return val.pow(pow);
     }
 
+    public SMPLValue<?> visitExpChar(ExpChar exp, Environment arg) throws VisitException {
+        return exp.getChar();
+    }
+
+    public SMPLValue<?> visitExpString(ExpString exp, Environment arg) throws VisitException {
+        return exp.getString();
+    }
+    
     @Override
     public SMPLValue<?> visitExpRelOp(ExpRelOp exp, Environment arg) throws VisitException {
         SMPLValue<?> left, right;

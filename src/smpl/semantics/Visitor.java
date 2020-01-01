@@ -41,6 +41,8 @@ public interface Visitor<S, T> {
     public T visitExpLit(ExpLit exp, S arg) throws VisitException;
     public T visitExpVar(ExpVar exp, S arg) throws VisitException;
     public T visitExpBool(ExpBool exp, S arg) throws VisitException;
+    public T visitExpChar(ExpChar exp, S arg) throws VisitException;
+    public T visitExpString(ExpString exp, S arg) throws VisitException;
     
     //relational and logic expressions
     public T visitExpAnd(ExpAnd exp, S arg) throws VisitException;

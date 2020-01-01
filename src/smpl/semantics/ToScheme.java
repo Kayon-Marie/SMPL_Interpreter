@@ -165,6 +165,14 @@ public class ToScheme implements Visitor<Void, String> {
         return "(^ " + left + " " + right + ")";
     }
 
+    public String visitExpChar(ExpChar exp, Void arg) throws VisitException {
+        return "#c" + exp.getChar();
+    }
+
+    public String visitExpString(ExpString exp, Void arg) throws VisitException {
+        return "\"" + exp.getString() + "\"";
+    }
+    
     @Override
     public String visitExpRelOp(ExpRelOp exp, Void arg) throws VisitException {
         String left = exp.getLeft().visit(this, arg);

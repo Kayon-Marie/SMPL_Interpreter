@@ -43,6 +43,24 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     public static SMPLBool make(Boolean value) {
         return new SMPLBool(value);
     }
+
+    /**
+     * 
+     * @param value
+     * @return SMPLValue instance to represent a character value (#c[a-zA-Z])
+     */
+    public static SMPLChar make(Character value) {
+        return new SMPLChar(value);
+    }
+
+    /**
+     * 
+     * @param value
+     * @return SMPLValue instance to represent a character value (#c[a-zA-Z])
+     */
+    public static SMPLString make(String value) {
+        return new SMPLString(value);
+    }
     
     /**
      *
@@ -77,6 +95,23 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     }
 
     /**
+     * 
+     * @return <code>true</code> if and only if this value is a character value
+     */
+    public boolean isChar() {
+        return getType() == SMPLType.CHAR;
+    }
+
+    /**
+     * 
+     * @return <code>true</code> if and only if this value is a string value
+     */
+    public boolean isString() {
+        return getType() == SMPLType.STRING;
+    }
+
+    /**
+     * 
      * @return <code>true</code> if and only if this value is a pair
      */
     public boolean isPair() {

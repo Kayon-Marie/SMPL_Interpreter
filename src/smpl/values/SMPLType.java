@@ -8,6 +8,9 @@ public enum SMPLType {
     INTEGER("int"),
     REAL("real"),
     BOOLEAN("bool"),
+    CHAR("char"),
+    STRING("string"),
+    FUNCTION("function"),
     PROCEDURE("procedure"),
     PAIR("pair");
 
