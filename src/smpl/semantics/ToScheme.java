@@ -4,23 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
-
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.SMPLProgram;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpPow;
-import smpl.syntax.ast.ExpChar;
-import smpl.syntax.ast.ExpString;
+import smpl.syntax.ast.core.Statement;
+import smpl.syntax.ast.core.Exp;
+import smpl.syntax.ast.*;
+
 
 public class ToScheme implements Visitor<Void, String> {
 
@@ -46,7 +35,7 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     // statements
-    public String visitStatement(Statement stmt, Void arg)
+    public String visitStmtExp(StmtExp stmt, Void arg)
 	throws VisitException {
 	    return stmt.getExp().visit(this, arg);
     }
@@ -77,6 +66,42 @@ public class ToScheme implements Visitor<Void, String> {
                             arg);
         return "(define " + sd.getVar() + " " +
             valExp + ")";
+    }
+
+    @Override
+    public String visitStmtAssignment(StmtAssignment sa, Void arg) throws VisitException {
+        ArrayList<String> ids = sa.getVarList();
+        ArrayList<Exp> exps = sa.getExpList();
+        result = "(assignment";
+        String x = "";
+        String y = "";
+        if(ids.size() != exps.size()){
+            throw new VisitException("Error: Number of identifiers do not match number of expressions");
+        }
+        for(int i =0; i<ids.size();i++){
+            if(i!=0){
+                y+=",";
+                x+=",";
+            }
+            x += (String)exps.get(i).visit(this,arg);
+            y += ids.get(i); 
+        }
+        result = "(assignment" + y + " " + x + ")";
+        return result;
+    }
+
+    public String visitStmtLet(StmtLet sl, Void arg)
+	throws VisitException {
+        ArrayList<Binding> bindings = sl.getBindings();
+        Exp body = sl.getBody();
+        String x = "";
+        for (int i =0; i< bindings.size();i++){
+            x += bindings.get(i).getVar();
+            x += " = ";
+            x += (String) bindings.get(i).getValExp().visit(this,arg);
+        }
+        return "(let " + x + " " +
+            body.visit(this,arg).toString() + ")";
     }
 
     // expressions
@@ -147,4 +172,132 @@ public class ToScheme implements Visitor<Void, String> {
     public String visitExpString(ExpString exp, Void arg) throws VisitException {
         return "\"" + exp.getString() + "\"";
     }
+    
+    @Override
+    public String visitExpRelOp(ExpRelOp exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        String sign = exp.getSign();
+        return "(" + sign + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpAnd(ExpAnd exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "and" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpOr(ExpOr exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "or" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpNot(ExpNot exp, Void arg) throws VisitException {
+        String left = exp.getExp().visit(this, arg);
+        return "(" + "not" + " " + left + ")";
+    }
+
+    @Override
+    public String visitExpRelOps(ExpRelOps exp, Void arg) throws VisitException {
+        return "";
+    }
+
+    @Override
+    public String visitExpBOr(ExpBOr exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "|" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpBAnd(ExpBAnd exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "&" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpPair(ExpPair exp, Void arg) throws VisitException {
+        String left = exp.getLeft().visit(this, arg);
+        String right = exp.getRight().visit(this, arg);
+        return "(" + "pair" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpCAR(ExpCAR exp, Void arg) throws VisitException {
+        String left = exp.getPair().getLeft().toString();
+        String right = exp.getPair().getRight().toString();
+        return "(" + "CAR" + " " + left + " " + right + ")";
+    }
+    
+    @Override
+    public String visitExpCDR(ExpCDR exp, Void arg) throws VisitException {
+        String left = exp.getPair().getLeft().toString();
+        String right = exp.getPair().getRight().toString();
+        return "(" + "CDR" + " " + left + " " + right + ")";
+    }
+
+    @Override
+    public String visitExpList(ExpList exp, Void arg) throws VisitException {
+        // ArrayList elements = exp.getElements();
+        // if (elements.size() == 1)
+        //     return ((Exp) elements.get(0)).visit(this,
+        //                         arg);
+        // else {
+        //     Iterator iter = elements.iterator();
+        //     String result = "(begin ";
+        //     Exp e;
+        //     while (iter.hasNext()) {
+        //         e = (Exp) iter.next();
+        //         result += (String) e.visit(this, arg) +
+        //             ", ";
+        //     }
+        //     result += ")";
+        //     return result;
+        // }
+        return "";
+    }
+
+    @Override
+    public String visitExpProcDefn(ExpProc exp, Void arg) throws VisitException {
+        return "";
+    }
+
+    @Override
+    public String visitExpProcCall(ExpProcCall exp, Void env) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Void visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Void env, Void env2)
+            throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Void visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Void env, Void env2) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Void visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Void env, Void env2)
+            throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    // @Override
+    // public String visitExpLogOp(ExpLogOp exp, Void arg) throws VisitException {
+    //     String left = exp.getLeft().visit(this, arg);
+    //     String right = exp.getRight().visit(this, arg);
+    //     String op = exp.getOp();
+    //     return "(" + op + " " + left + " " + right + ")";
+    // }
 }

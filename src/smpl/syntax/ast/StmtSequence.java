@@ -6,8 +6,11 @@ import java.util.Iterator;
 import smpl.exceptions.VisitException;
 
 import smpl.syntax.ast.core.Exp;
+import smpl.syntax.ast.core.Statement;
 
 import smpl.semantics.Visitor;
+import smpl.syntax.ast.core.Statement;
+
 
 public class StmtSequence extends Exp {
 
@@ -40,7 +43,7 @@ public class StmtSequence extends Exp {
 
         String result = "";
         while (iter.hasNext()) {
-            result = result + iter.next().toString() + "\n";
+            result = result + "\t" + iter.next().toString() + ";" + "\n";
         }
 
         return result;

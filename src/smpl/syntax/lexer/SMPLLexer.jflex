@@ -72,7 +72,12 @@ false = "#f"
 char = "#c"{alpha}
 unicode = [0-9a-zA-Z]
 
+nil = "#e"
+
 real = {num}*\.{num} | {num}+\.{num}*
+
+// relational operators - excluding "=" AKA sym.ASSIGN
+rel_op = "<"|"<="|">"|">="|"!="|"="
 
 // error handling
 // special cases to permit the non use of spaces
@@ -89,6 +94,20 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL>	{ws}	{
 			 // skip whitespace
 			}
+	
+			
+// Relational and Logical operators
+<YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
+<YYINITIAL> "and"	{return new Symbol(sym.AND);}
+<YYINITIAL> "or"	{return new Symbol(sym.OR);}
+<YYINITIAL> "not"	{return new Symbol(sym.NOT);}
+
+//Bitwise operators
+<YYINITIAL> "&"	{return new Symbol(sym.BAND);}
+<YYINITIAL> "|"	{return new Symbol(sym.BOR);}
+<YYINITIAL> "~"	{return new Symbol(sym.NEG);}
+
+// arithmetic operators
 <YYINITIAL>	"+"	{return new Symbol(sym.PLUS);}
 <YYINITIAL>	"-"	{return new Symbol(sym.MINUS);}
 <YYINITIAL>	"*"	{return new Symbol(sym.MUL);}
@@ -96,9 +115,23 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL>	"%"	{return new Symbol(sym.MOD);}
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
-<YYINITIAL>	"="	{return new Symbol(sym.ASSIGN);}
+// keywords
+<YYINITIAL> "def" {return new Symbol(sym.DEF);}
+<YYINITIAL> "proc" {return new Symbol(sym.PROC);}
+<YYINITIAL> "let" {return new Symbol(sym.LET);}
+
+
+// Special symbols
+<YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}
 <YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
 <YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
+<YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
+<YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
+<YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ";" {return new Symbol(sym.SEMI);}
+<YYINITIAL> "." {return new Symbol(sym.PERIOD);}
+<YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
+<YYINITIAL> "]" {return new Symbol(sym.RSQUARE); }
 
 // Numerical Values
 <YYINITIAL>    {num}+ {
@@ -113,7 +146,21 @@ end_symbol = [^\;\)\]\}]
 				 new Double(yytext()));
 		}
 
-// Variables	
+<YYINITIAL>   "#b"[01]+ {
+			// BINARY
+			String i = yytext().substring(2);
+			return new Symbol(sym.INT,
+				 Integer.parseInt(i, 2));
+		}
+
+<YYINITIAL>   "#x"{alphanum}+ {
+			// HEX
+			String i = yytext().substring(2);
+			return new Symbol(sym.INT,
+				 Integer.parseInt(i,16));
+		}
+
+// Strings and Chars
 <YYINITIAL>    {alpha}{alphanum}* {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
@@ -171,7 +218,13 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}
 <YYINITIAL> {false} 	{return new Symbol(sym.FALSE, new Boolean(false));}
 
-<YYINITIAL>    {start_symbol}\S+{end_symbol}$		{ // error situation
+// Nil (empty List)
+<YYINITIAL> {nil}	{return new Symbol(sym.NIL);}
+
+// [^\"\(\s]\S+[^\)]$
+// [^\,\(\[\{\s]\S+[^\)\]\}]$
+// error situation
+<YYINITIAL>   {start_symbol}\S+{end_symbol}$		{ 
 	       String msg = String.format("Unrecognised Token: %s", yytext());
 	       throw new TokenException(msg);
 	       }

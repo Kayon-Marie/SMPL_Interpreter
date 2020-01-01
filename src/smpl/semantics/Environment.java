@@ -2,6 +2,7 @@ package smpl.semantics;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import smpl.exceptions.UnboundVarException;
 import smpl.values.SMPLValue;
@@ -15,7 +16,7 @@ import smpl.values.SMPLValue;
  * @author <a href="mailto:dcoore@uwimona.edu.jm">Daniel Coore</a>
  * @version 1.0
  */
-public class Environment<T extends SMPLValue<T>>{
+public class Environment<T extends SMPLValue<?>>{
 
     HashMap<String, T> dictionary;
     Environment<T> parent = null;
@@ -50,6 +51,21 @@ public class Environment<T extends SMPLValue<T>>{
         dictionary = new HashMap<>();
         for (int i = 0; i < ids.length; i++) {
             put(ids[i], values[i]);
+        }
+    }
+
+    /**
+     * Create a new environment that extends a given one with some new bindings
+     * @param ids The identifiers of the new bindings
+     * @param values The values of the new bindings
+     * @param env The environment being extended, which will be the parent of the 
+     * new environment that is created.
+     */
+    public Environment(List<String> ids, List<T> values, Environment<T> env) {
+        this.parent = env;
+        dictionary = new HashMap<>();
+        for (int i = 0; i < ids.size(); i++) {
+            put(ids.get(i), values.get(i));
         }
     }
 

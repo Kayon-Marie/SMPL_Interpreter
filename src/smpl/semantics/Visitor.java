@@ -2,21 +2,9 @@ package smpl.semantics;
 
 import smpl.exceptions.VisitException;
 import smpl.syntax.ast.core.SMPLProgram;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpPow;
-import smpl.syntax.ast.ExpChar;
-import smpl.syntax.ast.ExpString;
+import smpl.syntax.ast.core.Exp;
+import smpl.syntax.ast.*;
+import java.util.ArrayList;
 
 /**
  * The generic Visitor interface for the Arithmetic parser
@@ -33,21 +21,58 @@ public interface Visitor<S, T> {
     public T visitSMPLProgram(SMPLProgram p, S arg) throws VisitException;
 
     // statements
-    public T visitStatement(Statement exp, S arg) throws VisitException ;
+    public T visitStmtExp(StmtExp exp, S arg) throws VisitException ;
     public T visitStmtSequence(StmtSequence exp, S arg) throws VisitException ;
     public T visitStmtDefinition(StmtDefinition sd, S arg) throws VisitException;
+    public T visitStmtAssignment(StmtAssignment sa, S arg) throws VisitException;
 
     // expressions
+
+    // arithmetic
     public T visitExpAdd(ExpAdd exp, S arg) throws VisitException;
     public T visitExpSub(ExpSub exp, S arg) throws VisitException;
     public T visitExpMul(ExpMul exp, S arg) throws VisitException;
     public T visitExpDiv(ExpDiv exp, S arg) throws VisitException;
     public T visitExpMod(ExpMod exp, S arg) throws VisitException;
+    public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
+    public T visitExpPow(ExpPow exp, S ard) throws VisitException;  
+
+    // iterals and variables
     public T visitExpLit(ExpLit exp, S arg) throws VisitException;
     public T visitExpVar(ExpVar exp, S arg) throws VisitException;
     public T visitExpBool(ExpBool exp, S arg) throws VisitException;
-    public T visitExpNeg(ExpNeg exp, S arg) throws VisitException;
-    public T visitExpPow(ExpPow exp, S ard) throws VisitException;
     public T visitExpChar(ExpChar exp, S arg) throws VisitException;
     public T visitExpString(ExpString exp, S arg) throws VisitException;
+    
+    //relational and logic expressions
+    public T visitExpAnd(ExpAnd exp, S arg) throws VisitException;
+    public T visitExpOr(ExpOr exp, S arg) throws VisitException;
+    public T visitExpNot(ExpNot exp, S arg) throws VisitException;
+    public T visitExpRelOp(ExpRelOp exp, S arg) throws VisitException;
+    public T visitExpRelOps(ExpRelOps exp, S arg) throws VisitException;
+    // public T visitExpLogOp(ExpLogOp exp, S arg) throws VisitException;
+
+    // bitwise operations 
+    public T visitExpBAnd(ExpBAnd exp, S arg) throws VisitException;
+    public T visitExpBOr(ExpBOr exp, S arg) throws VisitException;
+
+    // procedures
+    public T visitExpProcDefn(ExpProc exp, S arg) throws VisitException;
+    public T visitExpProcCall(ExpProcCall exp, S env) throws VisitException;
+    public S visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+   
+    //pair operations
+    public T visitExpPair(ExpPair exp, S arg) throws VisitException ;
+    public T visitExpCAR(ExpCAR exp, S arg) throws VisitException ;
+    public T visitExpCDR(ExpCDR exp, S arg) throws VisitException ;
+
+    //List operations
+    public T visitExpList(ExpList exp, S arg) throws VisitException ;
+
+    public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
+
+
+
 }

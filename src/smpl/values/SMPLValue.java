@@ -13,6 +13,10 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
 
     private static final long serialVersionUID = 1L;
 
+    // =========================== //
+    // ==     VALUE CREATION    == //
+    // =========================== //
+
     /**
      * Create a SMPLValue wrapping a Integer
      * @param value
@@ -107,6 +111,18 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     }
 
     /**
+     * 
+     * @return <code>true</code> if and only if this value is a pair
+     */
+    public boolean isPair() {
+        return getType() == SMPLType.PAIR;
+    }
+
+    // =========================== //
+    // == ARITHMETIC OPERATIONS == //
+    // =========================== //
+
+    /**
      * Add the given value to this value
      * @param arg The value to be added.
      * @return The sum of the two values as a new instance of FnPlotValue.
@@ -129,7 +145,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     }
 
     /**
-     * Negate the given value from this value.
+     * Negate the given numeric value from this value. Bool values converted to intvalue()
      * @return The difference as a new instance of FnPlotValue
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
@@ -183,6 +199,44 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
         throw new TypeException("Operation pow called with non-numeric type");
     }
 
+    // ======================== //
+    // == LOGICAL OPERATIONS == //
+    // ======================== //
+
+    /**
+     * Performs lgoical op "and" on two Boolean-resolvable SMPLValues
+     * @param arg
+     * @return
+     * @throws SMPLException
+     */
+    public SMPLValue<?> and(SMPLValue<?> arg) throws SMPLException {
+        throw new TypeException("Operation 'and' performed on non SMPLBoolean resolvalble value");
+    }
+
+    /**
+     * Performs lgoical op "or" on two Boolean-resolvable SMPLValues
+     * @param arg
+     * @return
+     * @throws SMPLException
+     */
+    public SMPLValue<?> or(SMPLValue<?> arg) throws SMPLException {
+        throw new TypeException("Operation 'or' performed on non SMPLBoolean resolvalble value");
+    }
+
+    /**
+     * Performs lgoical op "not" on a Boolean-resolvable SMPLValue
+     * @param arg
+     * @return
+     * @throws SMPLException
+     */
+    public SMPLValue<?> not() throws SMPLException {
+        throw new TypeException("Operation 'not' performed on non SMPLBoolean resolvalble value");
+    }
+
+    // =========================== //
+    // ==   RAW VALUE GETTERS   == //
+    // =========================== //
+
     /**
      *
      * @return The integer value wrapped in this FnPlot value
@@ -202,6 +256,15 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     }
 
     /**
+     * 
+     * @return
+     * @throws SMPLException
+     */
+    public boolean boolValue() throws SMPLException {
+        throw new TypeException(SMPLType.BOOLEAN, getType());
+    }
+
+    /**
      *
      * @return The user defined function wrapped in this FnPlot value.
      * @throws smpl.exceptions.TypeException if there is no such function
@@ -209,4 +272,47 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     // public SMPLFunction funValue() throws SMPLException {
     //     throw new TypeException(SMPLType.FUNCTION, getType());
     // }
+
+    // =========================== //
+    // == RELATIONAL OPERATIONS == //
+    // =========================== //
+
+    /**
+     * For comparing SMPLValue types
+     * @param arg
+     * @param sign
+     * @return boolean of successful comparison btw 2 SMPLValues
+     * @throws SMPLException
+     */
+    public SMPLValue<?> cmp(SMPLValue<?> arg, String sign) throws SMPLException{
+        throw new TypeException("Data type is valid in no comparisons");
+    }
+
+     // =========================== //
+    // == BITWISE OPERATIONS == //
+    // =========================== //
+
+    /**
+     * For bitwise AND of SMPLValues
+     * @param arg
+     * @param sign
+     * @return int rep of result
+     * @throws SMPLException
+     */
+    public SMPLValue<?> BAnd(SMPLValue<?> arg) throws SMPLException{
+        throw new TypeException("Incorrect type used");
+    }
+
+     /**
+     * For bitwise OR of SMPLValues
+     * @param arg
+     * @param sign
+     * @return int rep of result
+     * @throws SMPLException
+     */
+    public SMPLValue<?> BOr(SMPLValue<?> arg) throws SMPLException{
+        throw new TypeException("Incorrect type used");
+    }
+
+    public abstract String toString();
 }

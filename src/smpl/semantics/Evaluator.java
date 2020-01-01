@@ -2,26 +2,16 @@ package smpl.semantics;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
+import smpl.exceptions.ArgumentException;
 import smpl.exceptions.VisitException;
-
+import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.core.SMPLProgram;
-import smpl.values.SMPLValue;
-import smpl.syntax.ast.Statement;
-import smpl.syntax.ast.StmtSequence;
-import smpl.syntax.ast.StmtDefinition;
-import smpl.syntax.ast.ExpLit;
-import smpl.syntax.ast.ExpVar;
-import smpl.syntax.ast.ExpAdd;
-import smpl.syntax.ast.ExpBool;
-import smpl.syntax.ast.ExpChar;
-import smpl.syntax.ast.ExpSub;
-import smpl.syntax.ast.ExpMul;
-import smpl.syntax.ast.ExpNeg;
-import smpl.syntax.ast.ExpDiv;
-import smpl.syntax.ast.ExpMod;
-import smpl.syntax.ast.ExpPow;
-import smpl.syntax.ast.ExpString;
+import smpl.syntax.ast.core.Statement;
+import smpl.values.*;
+import smpl.syntax.ast.*;
+
 
 public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     /* For this visitor, the argument passed to all visit
@@ -47,7 +37,7 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return result;
     }
 
-    public SMPLValue<?> visitStatement(Statement s, Environment arg)
+    public SMPLValue<?> visitStmtExp(StmtExp s, Environment arg)
     throws VisitException {
 	    return s.getExp().visit(this, arg);
     }
@@ -67,12 +57,49 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return result;
     }
 
+    @Override
+    public SMPLValue<?> visitStmtAssignment(StmtAssignment sa, Environment env) throws VisitException {
+        ArrayList<String> ids = sa.getVarList();
+        ArrayList<Exp> exps = sa.getExpList();
+        SMPLValue<?> result = SMPLValue.make(0);
+        if(ids.size() != exps.size()){
+            throw new VisitException("Error: Number of identifiers do not match number of expressions");
+        }
+        for(int i =0; i<ids.size();i++){
+            result = exps.get(i).visit(this,env);
+            env.put(ids.get(i),result);
+        }
+        return result;
+    }
+
     public SMPLValue<?> visitStmtDefinition(StmtDefinition sd, Environment env)
 	throws VisitException {
         // Environment env = (Environment) arg;
         result = sd.getExp().visit(this, env);
         env.put(sd.getVar(), result);
         return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitStmtLet(StmtLet let, Environment env) 
+	throws VisitException{
+	ArrayList<Binding> bindings = let.getBindings();
+	Exp body = let.getBody();
+
+	int size = bindings.size();
+	String[] vars = new String[size];
+	SMPLValue<?>[] vals = new SMPLValue<?>[size];
+	Binding b;
+	for (int i = 0; i < size; i++) {
+	    b = bindings.get(i);
+	    vars[i] = b.getVar();
+	    // evaluate each expression in bindings
+	    result = b.getValExp().visit(this, env);
+	    vals[i] = result;
+	}
+	// create new env as child of current
+	Environment newEnv = new Environment<> (vars, vals, env);
+	return body.visit(this, newEnv);
     }
 
     public SMPLValue<?> visitExpAdd(ExpAdd exp, Environment arg)
@@ -152,5 +179,182 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     public SMPLValue<?> visitExpString(ExpString exp, Environment arg) throws VisitException {
         return exp.getString();
+    }
+    
+    @Override
+    public SMPLValue<?> visitExpRelOp(ExpRelOp exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        String sign = exp.getSign();
+        return left.cmp(right, sign);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpRelOps(ExpRelOps exp, Environment arg) throws VisitException {
+        SMPLValue<?> status = SMPLValue.make(true);
+        ArrayList<ExpRelOp> operations = exp.getOps();
+
+        if (operations.size() < 1)
+            return exp.getExp().visit(this, arg);
+
+        for (ExpRelOp op: operations) {
+            status = op.visit(this, arg);
+            if (status.boolValue() == false) 
+                break;
+        }
+        return status;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpAnd(ExpAnd exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        return left.and(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpOr(ExpOr exp, Environment arg) throws VisitException {
+        SMPLValue<?> left, right;
+        left = exp.getLeft().visit(this, arg);
+        right = exp.getRight().visit(this, arg);
+        return left.or(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpNot(ExpNot exp, Environment arg) throws VisitException {
+        SMPLValue<?> left;
+        left = exp.getExp().visit(this, arg);
+        return left.not();
+    }
+
+    @Override
+    public SMPLValue<?> visitExpBAnd(ExpBAnd exp, Environment arg) throws VisitException {
+        SMPLValue<?> left,right;
+        left = exp.getLeft().visit(this,arg);
+        right = exp.getRight().visit(this,arg);
+        return  left.BAnd(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpBOr(ExpBOr exp, Environment arg) throws VisitException {
+        SMPLValue<?> left,right;
+        left = exp.getLeft().visit(this,arg);
+        right = exp.getRight().visit(this,arg);
+        return  left.BOr(right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpProcDefn(ExpProc exp, Environment arg) throws VisitException {
+        SMPLProc closure = new SMPLProc(exp, arg);
+        return closure;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpProcCall(ExpProcCall exp, Environment env) throws VisitException {
+        // deal with id (can be variable or expression)
+        SMPLProc proc = (SMPLProc) exp.getIdentifier().visit(this, env);
+        ExpProc defn = proc.getProcExp();
+        ArrayList<Exp> args = exp.getArgs();
+        Environment<SMPLValue<?>> procEnv = defn.call(this, args, env, proc.getClosingEnv());
+        return defn.getBody().visit(this, procEnv);
+    }
+
+    @Override
+    public Environment visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Environment env, Environment closingEnv) 
+        throws VisitException {
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        int paramSize = params.size();
+        int argSize = args.size();
+        List<SMPLValue<?>> values = new ArrayList<>();
+        if (paramSize == argSize) {
+            for (Exp arg: args) {
+                values.add(arg.visit(this, env));
+            }
+            return new Environment(params, values, closingEnv);
+
+        } else throw new ArgumentException(paramSize, argSize);
+    }
+
+    @Override
+    public Environment visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Environment env,
+            Environment closingEnv) throws VisitException {
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        int paramSize = params.size();
+        int argSize = args.size();
+        List<SMPLValue<?>> values = new ArrayList<>();
+        SMPLValue<?> restValue;
+
+        if (argSize >= paramSize) {
+
+            // evauate N arguments
+            for (int i = 0; i < paramSize; i++) {
+                values.add(args.get(i).visit(this, env));
+            }
+
+            // excess (P-rest) arguments
+            List<Exp> restExps = args.subList(paramSize, argSize);
+            System.out.println(restExps);
+            restValue = new ExpList(restExps).visit(this, env);
+            
+            params.add(exp.getRest());
+            values.add(restValue);
+
+            return new Environment(params, values, closingEnv);
+
+        } else throw new ArgumentException(paramSize, argSize);
+    }
+
+    @Override
+    public Environment visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Environment env,
+            Environment closingEnv) throws VisitException {
+        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        List<SMPLValue<?>> values = new ArrayList<>();
+        SMPLValue<?> restValue;
+
+        restValue = new ExpList(args).visit(this, env);
+        values.add(restValue);
+        return new Environment(params, values, closingEnv);
+
+    }
+    
+    public SMPLValue<?> visitExpPair(ExpPair exp, Environment arg) throws VisitException {
+        SMPLValue<?> left,right;
+        left = exp.getLeft().visit(this,arg);
+        right = exp.getRight().visit(this,arg);
+        return  new SMPLPair(left,right);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpCAR(ExpCAR exp, Environment arg) throws VisitException {
+        SMPLValue<?> left;
+        left = exp.getPair().getLeft();
+        return  left;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpCDR(ExpCDR exp, Environment arg) throws VisitException {
+        SMPLValue<?> right;
+        right = exp.getPair().getRight();
+        return right;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpList(ExpList exp, Environment arg) throws VisitException {
+        List<Exp> elements = exp.getElements();
+        Iterator<Exp> iter = elements.iterator();
+        Exp i;
+        SMPLPair head = new SMPLPair();
+        SMPLPair temp = head;
+        SMPLPair next = new SMPLPair();
+        while(iter.hasNext()) {
+            i = (Exp) iter.next();
+            temp.setLeft(i.visit(this,arg));
+            temp.setRight(next);
+            temp = next;
+            next = new SMPLPair();
+        }
+        return head;
     }
 }

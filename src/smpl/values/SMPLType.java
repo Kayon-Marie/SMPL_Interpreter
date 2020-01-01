@@ -10,7 +10,9 @@ public enum SMPLType {
     BOOLEAN("bool"),
     CHAR("char"),
     STRING("string"),
-    FUNCTION("function");
+    FUNCTION("function"),
+    PROCEDURE("procedure"),
+    PAIR("pair");
 
     private final String docString;
 

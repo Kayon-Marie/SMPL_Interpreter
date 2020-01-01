@@ -1,32 +1,29 @@
 package smpl.syntax.ast;
 
 import smpl.exceptions.VisitException;
-
+import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 
-import smpl.semantics.Visitor;
-
-public class Statement extends Exp {
+public class ExpNot extends Exp {
 
     Exp exp;
 
-    public Statement() {
-	    super();
-    }
-
-    public Statement(Exp e) {
-	    exp = e;
+    public ExpNot(Exp exp) {
+        this.exp = exp;
     }
 
     public Exp getExp() {
-	    return exp;
+        return this.exp;
     }
 
+    @Override
     public <S, T> T visit(Visitor<S, T> v, S arg) throws VisitException {
-	    return v.visitStatement(this, arg);
+        return v.visitExpNot(this, arg);
     }
 
+    @Override
     public String toString() {
-	    return exp.toString();
+        return "not " + exp.toString();
     }
+
 }
