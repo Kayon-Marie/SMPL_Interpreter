@@ -19,7 +19,7 @@ public class ExpChar extends Exp{
 
     public ExpChar(String val) throws SMPLException {
         if(val.length() > 4 || val.length() < 4){
-            throw new SMPLException("Too many characters to unicode value");
+            throw new SMPLException("Unicode value should be exactly 4 characters");
         }
         else{
             char unicode = (char) Integer.parseInt(val, 16);
