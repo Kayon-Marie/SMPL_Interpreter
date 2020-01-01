@@ -103,13 +103,17 @@ non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
 non terminal Exp bitOp;
-non terminal Exp vectorExp;
 non terminal ArrayList<String> vars;
 non terminal ArrayList<String> varAux;
 non terminal ArrayList<Binding> bindings;
 non terminal ArrayList<Binding> bindingsAux;
 non terminal Binding binding;
 
+// vectors
+non terminal Exp vectorExp;
+non terminal ArrayList<Exp> subVectorListE;
+non terminal ArrayList<Exp> subVectorList;
+non terminal Exp subVector;
 
 // procedures
 non terminal Exp procDefn;
@@ -150,10 +154,35 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
-				listExp: le {: RESULT = le; :};
+				listExp: le {: RESULT = le; :} |
+				subVector: sv {: RESULT = sv; :}|
+				vectorExp: ve {: RESULT = ve; :};
 
-vectorExp ::= 	LSQUARE COLON  COLON RSQUARE {:
-					RESULT = new ExpVector();
+vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
+					RESULT = new ExpVector(list);
+				:};
+
+/*
+vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
+					RESULT = new ExpVector(list);
+				:};
+
+subVectorListE ::=	subVectorList: list {: RESULT = list; :} |
+					empty {: RESULT = new ArrayList<>(); :};				
+
+subVectorList ::=	subVectorList: list COMMA subVector: sv {:
+						list.add(sv); 
+						RESULT = list; 
+					:} |
+					subVector: sv {:
+						ArrayList<Exp> ls = new ArrayList<>(); 
+						ls.add(sv);
+						RESULT = ls; 
+					:};
+*/
+
+subVector ::=	expression: size COLON expression: proc {:
+					RESULT = new ExpSubVector(size, proc);
 				:};
 
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
