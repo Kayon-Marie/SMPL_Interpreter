@@ -69,6 +69,8 @@ public interface Visitor<S, T> {
     //List operations
     public T visitExpList(ExpList exp, S arg) throws VisitException ;
 
+    public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
+
 
 
 }

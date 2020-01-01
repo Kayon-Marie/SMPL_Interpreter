@@ -111,6 +111,8 @@ end_symbol = [^\;\)\]\}]
 // keywords
 <YYINITIAL> "def" {return new Symbol(sym.DEF);}
 <YYINITIAL> "proc" {return new Symbol(sym.PROC);}
+<YYINITIAL> "let" {return new Symbol(sym.LET);}
+
 
 // Special symbols
 <YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}

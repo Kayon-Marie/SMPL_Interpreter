@@ -70,10 +70,38 @@ public class ToScheme implements Visitor<Void, String> {
 
     @Override
     public String visitStmtAssignment(StmtAssignment sa, Void arg) throws VisitException {
-        String valExp = (String) sa.getExp().visit(this,
-                            arg);
-        return "(assign " + sa.getVar() + " " +
-            valExp + ")";
+        ArrayList<String> ids = sa.getVarList();
+        ArrayList<Exp> exps = sa.getExpList();
+        result = "(assignment";
+        String x = "";
+        String y = "";
+        if(ids.size() != exps.size()){
+            throw new VisitException("Error: Number of identifiers do not match number of expressions");
+        }
+        for(int i =0; i<ids.size();i++){
+            if(i!=0){
+                y+=",";
+                x+=",";
+            }
+            x += (String)exps.get(i).visit(this,arg);
+            y += ids.get(i); 
+        }
+        result = "(assignment" + y + " " + x + ")";
+        return result;
+    }
+
+    public String visitStmtLet(StmtLet sl, Void arg)
+	throws VisitException {
+        ArrayList<Binding> bindings = sl.getBindings();
+        Exp body = sl.getBody();
+        String x = "";
+        for (int i =0; i< bindings.size();i++){
+            x += bindings.get(i).getVar();
+            x += " = ";
+            x += (String) bindings.get(i).getValExp().visit(this,arg);
+        }
+        return "(let " + x + " " +
+            body.visit(this,arg).toString() + ")";
     }
 
     // expressions
