@@ -121,6 +121,7 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
 <YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
 <YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ":" {return new Symbol(sym.COLON);}
 <YYINITIAL> ";" {return new Symbol(sym.SEMI);}
 <YYINITIAL> "." {return new Symbol(sym.PERIOD);}
 <YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }

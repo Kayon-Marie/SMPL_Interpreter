@@ -53,7 +53,7 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD, COLON;
 terminal LSQUARE, RSQUARE;
 
 // keywords
@@ -103,11 +103,13 @@ non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
 non terminal Exp bitOp;
+non terminal Exp vectorExp;
 non terminal ArrayList<String> vars;
 non terminal ArrayList<String> varAux;
 non terminal ArrayList<Binding> bindings;
 non terminal ArrayList<Binding> bindingsAux;
 non terminal Binding binding;
+
 
 // procedures
 non terminal Exp procDefn;
@@ -149,6 +151,10 @@ expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
 				listExp: le {: RESULT = le; :};
+
+vectorExp ::= 	LSQUARE COLON  COLON RSQUARE {:
+					RESULT = new ExpVector();
+				:};
 
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
