@@ -4,16 +4,17 @@ import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 import smpl.values.SMPLPair;
+import smpl.values.SMPLValue;
 
 public class ExpCAR extends Exp {
 
-    SMPLPair pair;
+    SMPLValue<?> pair;
 
-    public ExpCAR(SMPLPair pair) {
+    public ExpCAR(SMPLValue<?> pair) {
         this.pair = pair;
     }
 
-    public SMPLPair getPair(){
+    public SMPLValue<?> getPair(){
         return this.pair;
     }
 

@@ -35,7 +35,9 @@ import smpl.syntax.parser.sym;
 %debug
 
 %{
-    public int getChar() {
+    StringBuffer string = new StringBuffer();
+
+	public int getChar() {
 	return yychar + 1;
     }
 
@@ -67,6 +69,9 @@ num = [0-9]
 true = "#t"
 false = "#f"
 
+char = "#c"{alpha}
+unicode = [a-zA-Z0-9]
+
 nil = "#e"
 
 real = {num}*\.{num} | {num}+\.{num}*
@@ -78,6 +83,8 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 // special cases to permit the non use of spaces
 start_symbol = [^\,\(\[\{\s]
 end_symbol = [^\;\)\]\}]
+
+%state STRING
 
 %%
 
@@ -121,6 +128,7 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
 <YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
 <YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ":" {return new Symbol(sym.COLON);}
 <YYINITIAL> ";" {return new Symbol(sym.SEMI);}
 <YYINITIAL> "." {return new Symbol(sym.PERIOD);}
 <YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
@@ -158,6 +166,54 @@ end_symbol = [^\;\)\]\}]
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
 		}
+
+// Characters
+<YYINITIAL> {char} {
+			// ChARACTER
+			return new Symbol(sym.CHAR, yycharat(2));
+		}
+
+<YYINITIAL> "#u"{unicode}+ {
+			//Unicode
+			return new Symbol(sym.UNI, yytext().substring(2));
+		}
+
+// Newline Character Representation
+<YYINITIAL> "#c"\\n {
+			//SPECIAL CHARACTERS
+			return new Symbol(sym.CHAR, '\n');
+		}
+
+// Tab Character Representation
+<YYINITIAL> "#c"\\t {
+			//SPECIAL CHARACTERS
+			return new Symbol(sym.CHAR, '\t');
+		}
+
+// Newline Character Representation
+<YYINITIAL> "#c"\\ {
+			//SPECIAL CHARACTERS
+			return new Symbol(sym.CHAR, '\\');
+		}
+
+<YYINITIAL>  \"   	{string.setLength(0); yybegin(STRING);}
+
+// String
+<STRING> {
+	\"				{yybegin(YYINITIAL);
+						return new Symbol(sym.STRING, string.toString());
+					}
+	
+	[^\n\r\"\\]+	{string.append( yytext() );}
+
+	\\t				{string.append('\t');}
+
+	\\n				{string.append('\n');}
+
+	\\\"			{string.append('\"');}
+
+	\\				{string.append('\\');}
+}
 
 // Boolean
 <YYINITIAL> {true} 		{return new Symbol(sym.TRUE, new Boolean(true));}

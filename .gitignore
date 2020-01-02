@@ -4,3 +4,7 @@ src/smpl/syntax/parser/SMPLParser.java
 src/smpl/syntax/parser/sym.java
 *.bat
 *.sh
+src/smpl/syntax/lexer/SMPLLexer.java~
+src/smpl/syntax/lexer/SMPLLexer.java
+src/smpl/syntax/parser/sym.java
+src/smpl/syntax/parser/SMPLParser.java

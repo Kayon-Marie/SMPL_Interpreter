@@ -1,6 +1,7 @@
 package smpl.syntax.ast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import smpl.exceptions.VisitException;
 import smpl.semantics.Environment;
@@ -18,14 +19,14 @@ public class ExpProcSingle extends ExpProc {
     }
 
     @Override
-    public ArrayList<String> getParams() {
-        ArrayList<String> paramList = new ArrayList<>();
+    public List<String> getParams() {
+        List<String> paramList = new ArrayList<>();
         paramList.add(this.param);
         return paramList;
     }
 
     @Override
-    public Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, ArrayList<Exp> args,
+    public Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, List<Exp> args,
             Environment<SMPLValue<?>> env, Environment<SMPLValue<?>> closingEnv) throws VisitException {
         return v.visitExpProcSingleCall(this, args, env, closingEnv);
     }
