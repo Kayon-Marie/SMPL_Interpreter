@@ -76,6 +76,12 @@ public interface Visitor<S, T> {
     public T visitExpVector(ExpVector exp, S arg) throws VisitException;
     public T visitExpSubVector(ExpSubVector exp, S arg) throws VisitException;
 
+    //builtin operations
+    public T visitExpSubstring(ExpSubstring exp, S arg) throws VisitException;
+    public T visitExpEqual(ExpEqual exp, S arg) throws VisitException;
+    public T visitExpEq(ExpEq exp, S arg) throws VisitException;
+    public T visitExpSize(ExpSize exp, S arg) throws VisitException;
+
     public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
 
 

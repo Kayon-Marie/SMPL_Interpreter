@@ -244,6 +244,34 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
+    public String visitExpSubstring(ExpSubstring exp, Void arg) throws VisitException {
+        String exp1 = exp.getString();
+        String start = Integer.toString(exp.getStart());
+        String end = Integer.toString(exp.getEnd());
+        return "substr("+exp1+","+start+","+end+")";
+    }
+
+    @Override
+    public String visitExpEqual(ExpEqual exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg1();
+        String exp2 = exp.getArg2();
+        return "equal?("+exp1+","+exp2+")";
+    }
+
+    @Override
+    public String visitExpEq(ExpEq exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg1();
+        String exp2 = exp.getArg2();
+        return "eqv?("+exp1+","+exp2+")";
+    }
+
+    @Override
+    public String visitExpSize(ExpSize exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg();
+        return "size("+exp1+")";
+    }
+
+    @Override
     public String visitExpList(ExpList exp, Void arg) throws VisitException {
         // ArrayList elements = exp.getElements();
         // if (elements.size() == 1)
