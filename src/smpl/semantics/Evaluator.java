@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
+import java.util.Scanner;
 
 import smpl.exceptions.*;
 import smpl.syntax.ast.core.*;
@@ -83,17 +84,18 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         String operation = IO.getOperation();
         String output = IO.getOutput().visit(this,env).toString();
         Scanner scanner = new Scanner(System.in); 
-        if(operation == "print"){
+        if(operation.equals( "print")){
             System.out.print(output);
             return null;
-        }else if (operation == "println"){
+        }else if (operation.equals("println")){
             System.out.println(output);
             return null;
-        }else if (operation == "read"){
+        }else if (operation.equals("read")){
             return SMPLValue.make(scanner.next());
-        }else if (operation == "readint"){
+        }else if (operation.equals("readint")){
             return SMPLValue.make(scanner.nextInt());
         }
+        return null;
     }
 
     @Override

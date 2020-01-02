@@ -7,11 +7,11 @@ import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 
-public class StmtIf extends Statement {
+public class StmtIO extends Statement {
     String operation;
-    Exp output;
+    ArrayList<Exp> output;
 
-    public StmtIf(String operation, Exp output) {
+    public StmtIO(String operation, Exp output) {
         this.operation = operation;
         this.output = output;
     }

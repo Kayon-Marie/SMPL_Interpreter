@@ -79,6 +79,7 @@ terminal String UNI;
 terminal String STRING;
 terminal String RELOP;
 terminal String ASSIGN;
+terminal String IO;
 
 /* Non terminals */
 non terminal SMPLProgram program;
@@ -89,6 +90,7 @@ non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Statement letStmt;
+non terminal Statement IOStmt;
 
 //expressions
 non terminal Exp expression;
@@ -148,7 +150,7 @@ stmt ::=	definition:d {: RESULT = d; :} |
 			letStmt:lS SEMI {: RESULT = lS; :}|
 			IOStmt:io SEMI {: RESULT = io; :};
 
-IOStmt ::= IO:io LPAREN expression:e RPAREN {: RESULT = StmtIO(io,e); :};
+IOStmt ::= IO:io LPAREN expListE:e RPAREN {: RESULT = new StmtIO(io,e); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
@@ -162,6 +164,8 @@ expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
 				listExp: le {: RESULT = le; :};
+
+
 				// vectorExp: ve {: RESULT = ve; :};
 
 /*
@@ -170,27 +174,27 @@ vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 				:};
 */
 
-vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
-					RESULT = new ExpVector(list);
-				:};
+// vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
+// 					RESULT = new ExpVector(list);
+// 				:};
 
-subVectorListE ::=	subVectorList: list {: RESULT = list; :} |
-					empty {: RESULT = new ArrayList<>(); :};				
+// subVectorListE ::=	subVectorList: list {: RESULT = list; :} |
+// 					empty {: RESULT = new ArrayList<>(); :};				
 
-subVectorList ::=	subVectorList: list COMMA subVector: sv {:
-						list.add(sv); 
-						RESULT = list; 
-					:} |
-					subVector: sv {:
-						ArrayList<Exp> ls = new ArrayList<>(); 
-						ls.add(sv);
-						RESULT = ls; 
-					:};
+// subVectorList ::=	subVectorList: list COMMA subVector: sv {:
+// 						list.add(sv); 
+// 						RESULT = list; 
+// 					:} |
+// 					subVector: sv {:
+// 						ArrayList<Exp> ls = new ArrayList<>(); 
+// 						ls.add(sv);
+// 						RESULT = ls; 
+// 					:};
 
-subVector ::=	arithExp: size COLON expression: proc {:
-					RESULT = new ExpSubVector(size, proc);
-				:} |
-				expression: e {: RESULT = e; :};
+// subVector ::=	arithExp: size COLON expression: proc {:
+// 					RESULT = new ExpSubVector(size, proc);
+// 				:} |
+// 				expression: e {: RESULT = e; :};
 				
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 

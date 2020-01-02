@@ -36,7 +36,7 @@ public class SMPLProc extends SMPLValue<SMPLProc> {
 
     @Override
     public String toString() {
-        return String.format("\n%s %s", getType().toString(), procExp.toString());
+        return String.format("\n%s %s", procExp.toString());
     }
     
 }

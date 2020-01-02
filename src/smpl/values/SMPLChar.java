@@ -19,7 +19,7 @@ public class SMPLChar extends SMPLValue<SMPLChar>{
 
     @Override
     public String toString() {
-        return new String(getType().toString() + "#c" + String.valueOf(value));
+        return new String("#c" + String.valueOf(value));
     }
 
 }

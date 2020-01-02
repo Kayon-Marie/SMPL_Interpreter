@@ -19,7 +19,7 @@ public class SMPLString extends SMPLValue<SMPLString>{
 
     @Override
     public String toString() {
-        return new String(getType().toString() + String.valueOf(value));
+        return new String(String.valueOf(value));
     }
 
 }

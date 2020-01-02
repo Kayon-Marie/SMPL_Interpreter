@@ -162,7 +162,7 @@ public class SMPLInt extends SMPLValue<SMPLInt> {
 
     @Override
     public String toString() {
-        return new String(getType().toString() + this.value);
+        return String.valueOf(this.value);
     }
 
 

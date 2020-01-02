@@ -128,7 +128,7 @@ public class SMPLBool extends SMPLValue<SMPLBool>{
 
     @Override
     public String toString() {
-        return new String(getType().toString() + this.rep + "(" + this.value + ")");
+        return new String(this.rep + "(" + this.value + ")");
     }
 
 }
