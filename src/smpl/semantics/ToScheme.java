@@ -106,6 +106,19 @@ public class ToScheme implements Visitor<Void, String> {
             body.visit(this,arg).toString() + ")";
     }
 
+    public String visitStmtIf(StmtIf ifStmt, Void arg)
+	throws VisitException {
+        String pred = (String) ifStmt.getPredicate().visit(this,arg);
+        String clause1 = (String) ifStmt.getClause1().visit(this,arg);
+        String clause2;
+        if(ifStmt.getClause2()==null){
+            clause2 = "";
+        }else{
+            clause2 = (String)ifStmt.getClause2().visit(this,arg);
+        }
+        return "(if "+ pred +" "+ clause1 + " " + clause2;
+    }
+
     // expressions
     public String visitExpAdd(ExpAdd exp, Void arg)
 	throws VisitException {

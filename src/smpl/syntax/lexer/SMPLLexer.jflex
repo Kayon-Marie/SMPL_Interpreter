@@ -119,6 +119,9 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> "def" {return new Symbol(sym.DEF);}
 <YYINITIAL> "proc" {return new Symbol(sym.PROC);}
 <YYINITIAL> "let" {return new Symbol(sym.LET);}
+<YYINITIAL> "if" {return new Symbol(sym.IF);}
+<YYINITIAL> "else" {return new Symbol(sym.ELSE);}
+<YYINITIAL> "then" {return new Symbol(sym.THEN);}
 
 
 // Special symbols

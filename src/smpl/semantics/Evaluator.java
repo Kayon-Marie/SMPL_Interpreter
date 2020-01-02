@@ -100,6 +100,25 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 	return body.visit(this, newEnv);
     }
 
+    public SMPLValue<?> visitStmtIf(StmtIf ifStmt, Environment env) 
+    throws VisitException{
+        SMPLValue<?> value = ifStmt.getPredicate().visit(this,env);
+        if(value.isBool()){
+            if(value.boolValue()){
+                result = ifStmt.getClause1().visit(this,env);
+            }else{
+                if(ifStmt.getClause2()== null){
+                    result= null;
+                }else{
+                    result = ifStmt.getClause2().visit(this,env);
+                }
+            }
+        }
+        return result;
+    }
+
+
+
     public SMPLValue<?> visitExpAdd(ExpAdd exp, Environment arg)
 	throws VisitException {
         SMPLValue<?> val1, val2;

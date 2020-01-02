@@ -57,7 +57,7 @@ terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD, COLON;
 terminal LSQUARE, RSQUARE;
 
 // keywords
-terminal DEF, PROC, LET;
+terminal DEF, PROC, LET,IF,THEN,ELSE;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -89,6 +89,9 @@ non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Statement letStmt;
+non terminal Statement matched;
+non terminal Statement unmatched;
+non terminal Statement otherStatements;
 
 //expressions
 non terminal Exp expression;
@@ -142,11 +145,20 @@ stmtList ::=	stmtList:lst stmt:s {:
 					RESULT = new StmtSequence(s);
 				:};
 
-stmt ::=	definition:d {: RESULT = d; :} |
-			assignment: a SEMI {: RESULT = a; :} |
-	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
-			letStmt:lS SEMI {: RESULT = lS; :}|
-			ifStmt: i {: RESULT = i :};
+stmt ::=	matched:m {: RESULT = m; :}|
+			unmatched:u {: RESULT = u;:};
+
+matched ::= IF relop:t THEN matched:c1 ELSE matched:c2 {: RESULT = new StmtIf(t,c1,c2); :}|
+			otherStatements:o {: RESULT = o; :};
+
+unmatched ::= IF relop:p THEN stmt:t {: RESULT = new StmtIf(p,t,null); :}|
+				IF relop:p THEN matched:c1 ELSE unmatched:c2 {: RESULT = new StmtIf(p,c1,c2); :};
+
+
+otherStatements ::= definition:d {: RESULT = d; :} |
+					assignment: a SEMI {: RESULT = a; :} |
+	 				expression:e SEMI {: RESULT = new StmtExp(e); :}|
+					letStmt:lS SEMI {: RESULT = lS; :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
@@ -155,6 +167,7 @@ assignment ::= 	vars:v ASSIGN expListE:e {:
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
 				:};
+
 								
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
@@ -168,27 +181,27 @@ vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 				:};
 */
 
-vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
-					RESULT = new ExpVector(list);
-				:};
+// vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
+// 					RESULT = new ExpVector(list);
+// 				:};
 
-subVectorListE ::=	subVectorList: list {: RESULT = list; :} |
-					empty {: RESULT = new ArrayList<>(); :};				
+// subVectorListE ::=	subVectorList: list {: RESULT = list; :} |
+// 					empty {: RESULT = new ArrayList<>(); :};				
 
-subVectorList ::=	subVectorList: list COMMA subVector: sv {:
-						list.add(sv); 
-						RESULT = list; 
-					:} |
-					subVector: sv {:
-						ArrayList<Exp> ls = new ArrayList<>(); 
-						ls.add(sv);
-						RESULT = ls; 
-					:};
+// subVectorList ::=	subVectorList: list COMMA subVector: sv {:
+// 						list.add(sv); 
+// 						RESULT = list; 
+// 					:} |
+// 					subVector: sv {:
+// 						ArrayList<Exp> ls = new ArrayList<>(); 
+// 						ls.add(sv);
+// 						RESULT = ls; 
+// 					:};
 
-subVector ::=	arithExp: size COLON expression: proc {:
-					RESULT = new ExpSubVector(size, proc);
-				:} |
-				expression: e {: RESULT = e; :};
+// subVector ::=	arithExp: size COLON expression: proc {:
+// 					RESULT = new ExpSubVector(size, proc);
+// 				:} |
+// 				expression: e {: RESULT = e; :};
 				
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
