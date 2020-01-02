@@ -100,6 +100,7 @@ non terminal ArrayList<Exp> expListE;
 non terminal ArrayList<Exp> expList;  
 non terminal Exp compoundExp;
 non terminal Exp forExp;
+non terminal Exp whileExp;
 non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp power;
@@ -144,6 +145,7 @@ stmt ::=	definition:d {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			forExp: f SEMI {: RESULT = new StmtExp(f); :} |
+			whileExp: w SEMI {: RESULT = new StmtExp(w); :} |
 			letStmt:lS SEMI {: RESULT = lS; :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
@@ -160,6 +162,8 @@ expression ::=	logop: l {: RESULT = l; :} |
 				listExp: le {: RESULT = le; :};
 
 forExp ::= FOR LPAREN expression:size RPAREN expression: body {: RESULT = new ExpFor(size, body); :};
+
+whileExp ::= WHILE LPAREN relop:cond RPAREN expression: body {: RESULT = new ExpWhile(cond, body); :};
 
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 

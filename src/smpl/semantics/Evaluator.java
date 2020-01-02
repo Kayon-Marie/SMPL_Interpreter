@@ -367,4 +367,23 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         }
         return result;
     }
+
+    @Override
+    public SMPLValue<?> visitExpWhile(ExpWhile exp, Environment arg) throws VisitException {
+        Exp cond = exp.getCond();
+        SMPLValue<?> result = null;
+        while(true){
+            SMPLValue<?> value = cond.visit(this, arg);
+            if(value.isBool()){
+                if(value.boolValue()){
+                    result = exp.getBody().visit(this, arg);
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+        }
+        return result;
+    }
 }
