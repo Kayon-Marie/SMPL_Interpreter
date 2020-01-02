@@ -1,6 +1,6 @@
 package smpl.syntax.ast;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import smpl.semantics.Environment;
 import smpl.exceptions.ArgumentException;
@@ -11,9 +11,9 @@ import smpl.values.SMPLValue;
 
 public class ExpProcN extends ExpProc {
 
-    ArrayList<String> params;
+    List<String> params;
 
-    public ExpProcN(ArrayList<String> params, Exp body) {
+    public ExpProcN(List<String> params, Exp body) {
         super(body);
         this.params = params;
     }
@@ -21,12 +21,12 @@ public class ExpProcN extends ExpProc {
     /**
      * @return the params
      */
-    public ArrayList<String> getParams() {
+    public List<String> getParams() {
         return params;
     }
 
     @Override
-    public Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, ArrayList<Exp> args,
+    public Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, List<Exp> args,
             Environment<SMPLValue<?>> env, Environment<SMPLValue<?>> closingEnv) throws VisitException {
         return v.visitExpProcNCall(this, args, env, closingEnv);
     }
@@ -34,7 +34,7 @@ public class ExpProcN extends ExpProc {
     @Override
     public String toString() {
         String paramstr;
-        ArrayList<String> paramList = params;
+        List<String> paramList = params;
         int n = paramList.size();
         switch (n) {
             case 0: paramstr = ""; break;

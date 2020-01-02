@@ -3,7 +3,7 @@ package smpl.exceptions;
 import smpl.values.SMPLType;
 import smpl.values.SMPLValue;
 
-public class TypeException extends SMPLException {
+public class TypeException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
