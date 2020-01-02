@@ -327,15 +327,15 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public SMPLValue<?> visitExpCAR(ExpCAR exp, Environment arg) throws VisitException {
         SMPLValue<?> left;
-        left =((SMPLPair)exp.getPair()).getLeft();
-        return  left;
+        // left =((SMPLPair)exp.getPair()).getLeft();
+        return  null;
     }
 
     @Override
     public SMPLValue<?> visitExpCDR(ExpCDR exp, Environment arg) throws VisitException {
         SMPLValue<?> right;
-        right = ((SMPLPair)exp.getPair()).getRight();
-        return right;
+        // right = exp.getPair().getRight();
+        return null;
     }
 
     @Override

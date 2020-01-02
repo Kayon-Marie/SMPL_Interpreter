@@ -8,13 +8,13 @@ import smpl.values.SMPLValue;
 
 public class ExpCAR extends Exp {
 
-    SMPLValue<?> pair;
+    Exp pair;
 
-    public ExpCAR(SMPLValue<?> pair) {
+    public ExpCAR(Exp pair) {
         this.pair = pair;
     }
 
-    public SMPLValue<?> getPair(){
+    public Exp getPair(){
         return this.pair;
     }
 

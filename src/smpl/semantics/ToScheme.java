@@ -231,16 +231,18 @@ public class ToScheme implements Visitor<Void, String> {
 
     @Override
     public String visitExpCAR(ExpCAR exp, Void arg) throws VisitException {
-        String left = ((SMPLPair)exp.getPair()).getLeft().toString();
-        String right = ((SMPLPair)exp.getPair()).getRight().toString();
-        return "(" + "CAR" + " " + left + " " + right + ")";
+        // String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        // String right = ((SMPLPair)exp.getPair()).getRight().toString();
+        // return "(" + "CAR" + " " + left + " " + right + ")";
+        return null;
     }
     
     @Override
     public String visitExpCDR(ExpCDR exp, Void arg) throws VisitException {
-        String left = ((SMPLPair)exp.getPair()).getLeft().toString();
-        String right = ((SMPLPair)exp.getPair()).getRight().toString();
-        return "(" + "CDR" + " " + left + " " + right + ")";
+        // String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        // String right = ((SMPLPair)exp.getPair()).getRight().toString();
+        // return "(" + "CDR" + " " + left + " " + right + ")";
+        return null;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package smpl.values;
 
-import smpl.exceptions.SMPLException;
+import smpl.exceptions.RuntimeException;
 import smpl.exceptions.TypeException;
 
 /**
@@ -144,7 +144,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under addition
      */
-    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> add(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation div called with non-numeric type");
     }
 
@@ -155,7 +155,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
      */
-    public SMPLValue<?> sub(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> sub(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation sub called with non-numeric type");
     }
 
@@ -165,7 +165,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under subtraction
      */
-    public SMPLValue<?> neg() throws SMPLException {
+    public SMPLValue<?> neg() throws RuntimeException {
         throw new TypeException("Operation neg called with non-numeric type");
     }
 
@@ -176,7 +176,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under multiplication
      */
-    public SMPLValue<?> mul(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> mul(SMPLValue<?> arg) throws RuntimeException {
             throw new TypeException("Operation mul called with non-numeric type");
     }
 
@@ -187,7 +187,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under division
      */
-    public SMPLValue<?> div(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> div(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation div called with non-numeric type");
     }
     
@@ -198,7 +198,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under division
      */
-    public SMPLValue<?> mod(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> mod(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation mod called with non-numeric type");
     }
 
@@ -210,7 +210,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @throws smpl.exceptions.TypeException if there is a type incompatibility 
      * between this value and the argument value under exponentiation
      */
-    public SMPLValue<?> pow(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> pow(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation pow called with non-numeric type");
     }
 
@@ -224,7 +224,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return
      * @throws SMPLException
      */
-    public SMPLValue<?> and(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> and(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation 'and' performed on non SMPLBoolean resolvalble value");
     }
 
@@ -234,7 +234,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return
      * @throws SMPLException
      */
-    public SMPLValue<?> or(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> or(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation 'or' performed on non SMPLBoolean resolvalble value");
     }
 
@@ -244,7 +244,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return
      * @throws SMPLException
      */
-    public SMPLValue<?> not() throws SMPLException {
+    public SMPLValue<?> not() throws RuntimeException {
         throw new TypeException("Operation 'not' performed on non SMPLBoolean resolvalble value");
     }
 
@@ -257,7 +257,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return The integer value wrapped in this FnPlot value
      * @throws smpl.exceptions.TypeException If there is no such integer
      */
-    public int intValue() throws SMPLException {
+    public int intValue() throws RuntimeException {
         throw new TypeException(SMPLType.INTEGER, getType());
     }
 
@@ -266,7 +266,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return The real value wrapped in this FnPlot value
      * @throws smpl.exceptions.TypeException if there is no such real value.
      */
-    public double doubleValue() throws SMPLException {
+    public double doubleValue() throws RuntimeException {
         throw new TypeException(SMPLType.REAL, getType());
     }
 
@@ -275,7 +275,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return
      * @throws SMPLException
      */
-    public boolean boolValue() throws SMPLException {
+    public boolean boolValue() throws RuntimeException {
         throw new TypeException(SMPLType.BOOLEAN, getType());
     }
 
@@ -299,7 +299,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return boolean of successful comparison btw 2 SMPLValues
      * @throws SMPLException
      */
-    public SMPLValue<?> cmp(SMPLValue<?> arg, String sign) throws SMPLException{
+    public SMPLValue<?> cmp(SMPLValue<?> arg, String sign) throws RuntimeException{
         throw new TypeException("Data type is valid in no comparisons");
     }
 
@@ -314,7 +314,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return int rep of result
      * @throws SMPLException
      */
-    public SMPLValue<?> BAnd(SMPLValue<?> arg) throws SMPLException{
+    public SMPLValue<?> BAnd(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Incorrect type used");
     }
 
@@ -325,7 +325,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return int rep of result
      * @throws SMPLException
      */
-    public SMPLValue<?> BOr(SMPLValue<?> arg) throws SMPLException{
+    public SMPLValue<?> BOr(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Incorrect type used");
     }
 
