@@ -73,6 +73,8 @@ public interface Visitor<S, T> {
 
     public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
 
+    //Iteration operations
+    public T visitExpFor(ExpFor exp, S arg) throws VisitException;
 
 
 }

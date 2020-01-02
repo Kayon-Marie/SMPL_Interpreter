@@ -95,12 +95,17 @@ end_symbol = [^\;\)\]\}]
 			 // skip whitespace
 			}
 	
-			
+
+// Iteration operators
+<YYINITIAL> "for" 	   {return new Symbol(sym.FOR);}
+<YYINITIAL> "while"    {return new Symbol(sym.WHILE);}
+<YYINITIAL> "repeat"   {return new Symbol(sym.REPEAT);}
+
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
-<YYINITIAL> "and"	{return new Symbol(sym.AND);}
-<YYINITIAL> "or"	{return new Symbol(sym.OR);}
-<YYINITIAL> "not"	{return new Symbol(sym.NOT);}
+<YYINITIAL> "and"	 {return new Symbol(sym.AND);}
+<YYINITIAL> "or"	 {return new Symbol(sym.OR);}
+<YYINITIAL> "not"	 {return new Symbol(sym.NOT);}
 
 //Bitwise operators
 <YYINITIAL> "&"	{return new Symbol(sym.BAND);}
@@ -116,22 +121,22 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
 // keywords
-<YYINITIAL> "def" {return new Symbol(sym.DEF);}
+<YYINITIAL> "def"  {return new Symbol(sym.DEF);}
 <YYINITIAL> "proc" {return new Symbol(sym.PROC);}
-<YYINITIAL> "let" {return new Symbol(sym.LET);}
+<YYINITIAL> "let"  {return new Symbol(sym.LET);}
 
 
 // Special symbols
 <YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}
-<YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
-<YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
-<YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
-<YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
-<YYINITIAL> "," {return new Symbol(sym.COMMA);}
-<YYINITIAL> ";" {return new Symbol(sym.SEMI);}
-<YYINITIAL> "." {return new Symbol(sym.PERIOD);}
-<YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
-<YYINITIAL> "]" {return new Symbol(sym.RSQUARE); }
+<YYINITIAL>	"("	 {return new Symbol(sym.LPAREN);}
+<YYINITIAL>	")"	 {return new Symbol(sym.RPAREN);}
+<YYINITIAL>	"{"	 {return new Symbol(sym.LBRACE);}
+<YYINITIAL>	"}"	 {return new Symbol(sym.RBRACE);}
+<YYINITIAL> ","  {return new Symbol(sym.COMMA);}
+<YYINITIAL> ";"  {return new Symbol(sym.SEMI);}
+<YYINITIAL> "."  {return new Symbol(sym.PERIOD);}
+<YYINITIAL> "["  {return new Symbol(sym.LSQUARE); }
+<YYINITIAL> "]"  {return new Symbol(sym.RSQUARE); }
 
 // Numerical Values
 <YYINITIAL>    {num}+ {

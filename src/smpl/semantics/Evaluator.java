@@ -357,4 +357,14 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         }
         return head;
     }
+
+    @Override
+    public SMPLValue<?> visitExpFor(ExpFor exp, Environment arg) throws VisitException {
+        int size = exp.getSize().visit(this, arg).intValue();
+        SMPLValue<?> result = null;
+        for(int i = 0; i < size; i++){
+            result = exp.getBody().visit(this, arg);
+        }
+        return result;
+    }
 }
