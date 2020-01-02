@@ -64,16 +64,15 @@ alpha = [a-zA-Z_]
 
 alphanum = {alpha}|[0-9]
 
-alphanum = {alpha}|[0-9]
-
-
 num = [0-9]
+
+var = [^\"\'\[\]\(\)\{\}\;\,\:#][^\"\'\[\]\(\)\{\}\;\,\:\s]*
 
 true = "#t"
 false = "#f"
 
 char = "#c"{alpha}
-unicode = [a-zA-Z0-9]
+unicode = [a-fA-F0-9]
 
 nil = "#e"
 
@@ -86,6 +85,7 @@ rel_op = "<"|"<="|">"|">="|"!="|"="
 // special cases to permit the non use of spaces
 start_symbol = [^\,\(\[\{\s]
 end_symbol = [^\;\)\]\}]
+
 
 %state STRING
 
@@ -160,15 +160,15 @@ end_symbol = [^\;\)\]\}]
 				 Integer.parseInt(i, 2));
 		}
 
-<YYINITIAL>   "#x"{alphanum}+ {
+<YYINITIAL>   "#x"{unicode}+ {
 			// HEX
 			String i = yytext().substring(2);
 			return new Symbol(sym.INT,
 				 Integer.parseInt(i,16));
 		}
 
-// Strings and Chars
-<YYINITIAL>    {alpha}{alphanum}* {
+// Identifiers
+<YYINITIAL>    {var} {
 	       // VAR
 	       return new Symbol(sym.VAR, yytext());
 		}

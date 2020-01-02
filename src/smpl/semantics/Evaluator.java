@@ -63,6 +63,10 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         if(ids.size() != exps.size()){
             throw new VisitException("Error: Number of identifiers do not match number of expressions");
         }
+        SMPLValue<?> test;
+        for(int i =0; i<ids.size();i++){
+            test = env.get(ids.get(i));
+        }
         for(int i =0; i<ids.size();i++){
             result = exps.get(i).visit(this,env);
             env.put(ids.get(i),result);
@@ -343,16 +347,28 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpCAR(ExpCAR exp, Environment arg) throws VisitException {
-        SMPLValue<?> left;
-        left =((SMPLPair)exp.getPair()).getLeft();
-        return  left;
+        SMPLValue<?> pair = exp.getPair().visit(this, arg);
+        if (pair.isPair()) {
+            result = ((SMPLPair)pair).getLeft();
+        } else throw new TypeException(SMPLType.PAIR, pair.getType());
+        
+        return result;
     }
 
     @Override
     public SMPLValue<?> visitExpCDR(ExpCDR exp, Environment arg) throws VisitException {
-        SMPLValue<?> right;
-        right = ((SMPLPair)exp.getPair()).getRight();
-        return right;
+        SMPLValue<?> pair = exp.getPair().visit(this, arg);
+        if (pair.isPair()) {
+            result = ((SMPLPair)pair).getRight();
+        } else throw new TypeException(SMPLType.PAIR, pair.getType());
+        // right = exp.getPair().getRight();
+        return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpIsPair(ExpIsPair exp, Environment arg) throws VisitException {
+        SMPLValue<?> pair = exp.getPair().visit(this, arg);
+        return SMPLValue.make(pair.isPair());
     }
 
     @Override
@@ -374,6 +390,29 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     }
 
     @Override
+    public SMPLValue<?> visitExpSubstring(ExpSubstring exp, Environment arg) throws VisitException {
+        String str = exp.getString().visit(this, arg).strValue();
+        int start = exp.getStart().visit(this, arg).intValue();
+        int end = exp.getEnd().visit(this, arg).intValue();
+
+        String substr = str.substring(start, end);
+        return SMPLValue.make(substr);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpEq(ExpEq exp, Environment arg) throws VisitException {
+        SMPLValue<?> obj1 = exp.getArg1().visit(this, arg);
+        SMPLValue<?> obj2 = exp.getArg2().visit(this, arg);
+
+        return SMPLValue.make(obj1==obj2);
+    }
+
+    @Override
+    public SMPLValue<?> visitExpSize(ExpSize exp, Environment arg) throws VisitException {
+        result = new SMPLString();
+        return result;
+    }
+
     public SMPLValue<?> visitExpVector(ExpVector exp, Environment arg) throws VisitException {
         SMPLVector vector = new SMPLVector();
         SMPLValue<?> value;

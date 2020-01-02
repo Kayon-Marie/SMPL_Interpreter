@@ -7,13 +7,13 @@ import smpl.values.SMPLValue;
 
 public class ExpCDR extends Exp {
 
-    SMPLValue<?> pair;
+    Exp pair;
 
-    public ExpCDR(SMPLValue<?> pair) {
+    public ExpCDR(Exp pair) {
         this.pair = pair;
     }
 
-    public SMPLValue<?> getPair(){
+    public Exp getPair(){
         return this.pair;
     }
 
