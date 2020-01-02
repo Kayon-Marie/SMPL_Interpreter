@@ -149,8 +149,8 @@ stmt ::=	definition:d  {: RESULT = d; :} |
 			letStmt:lS SEMI {: RESULT = lS; :}|
 			ifStmt:is SEMI {: RESULT = is; :};
 
-ifStmt ::= IF relop:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
-			IF relop:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
+ifStmt ::= IF expression:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
+			IF expression:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);

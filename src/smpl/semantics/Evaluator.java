@@ -103,7 +103,6 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitStmtIf(StmtIf ifStmt, Environment env) 
     throws VisitException{
         SMPLValue<?> value = ifStmt.getPredicate().visit(this,env);
-        if(value.isBool()){
             if(value.boolValue()){
                 result = ifStmt.getClause1().visit(this,env);
             }else{
@@ -113,7 +112,6 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
                     result = ifStmt.getClause2().visit(this,env);
                 }
             }
-        }
         return result;
     }
 
