@@ -63,6 +63,10 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         if(ids.size() != exps.size()){
             throw new VisitException("Error: Number of identifiers do not match number of expressions");
         }
+        SMPLValue<?> test;
+        for(int i =0; i<ids.size();i++){
+            test = env.get(ids.get(i));
+        }
         for(int i =0; i<ids.size();i++){
             result = exps.get(i).visit(this,env);
             env.put(ids.get(i),result);
