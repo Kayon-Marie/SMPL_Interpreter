@@ -89,9 +89,7 @@ non terminal Statement stmt;
 non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Statement letStmt;
-non terminal Statement matched;
-non terminal Statement unmatched;
-non terminal Statement otherStatements;
+non terminal Statement ifStmt;
 
 //expressions
 non terminal Exp expression;
@@ -145,21 +143,14 @@ stmtList ::=	stmtList:lst stmt:s {:
 					RESULT = new StmtSequence(s);
 				:};
 
-stmt ::=	matched:m {: RESULT = m; :}|
-			unmatched:u {: RESULT = u;:};
+stmt ::=	definition:d  {: RESULT = d; :} |
+			assignment: a SEMI {: RESULT = a; :} |
+	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
+			letStmt:lS SEMI {: RESULT = lS; :}|
+			ifStmt:is SEMI {: RESULT = is; :};
 
-
-matched ::= IF relop:t THEN matched:c1 ELSE matched:c2 {: RESULT = new StmtIf(t,c1,c2); :}|
-			otherStatements:o {: RESULT = o; :};
-
-unmatched ::= IF relop:p THEN stmt:t {: RESULT = new StmtIf(p,t,null); :}|
-				IF relop:p THEN matched:c1 ELSE unmatched:c2 {: RESULT = new StmtIf(p,c1,c2); :};
-
-
-otherStatements ::= definition:d {: RESULT = d; :} |
-					assignment: a SEMI {: RESULT = a; :} |
-	 				expression:e SEMI {: RESULT = new StmtExp(e); :}|
-					letStmt:lS SEMI {: RESULT = lS; :};
+ifStmt ::= IF relop:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
+			IF relop:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);

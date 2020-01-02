@@ -64,6 +64,9 @@ alpha = [a-zA-Z_]
 
 alphanum = {alpha}|[0-9]
 
+alphanum = {alpha}|[0-9]
+
+
 num = [0-9]
 
 true = "#t"
