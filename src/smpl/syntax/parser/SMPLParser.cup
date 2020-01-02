@@ -101,7 +101,7 @@ non terminal Exp factor;
 non terminal Exp power;
 non terminal Exp value;
 non terminal Exp arithExp;
-non terminal ExpRelOps relop;
+non terminal ExpRelOSps relop;
 non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
