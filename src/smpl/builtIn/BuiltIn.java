@@ -15,6 +15,14 @@ public class BuiltIn {
     public static SMPLPair testPair = new SMPLPair(SMPLValue.make(5), SMPLValue.make(10));
 
     //  Procedures
+    public static SMPLProc pair(Environment env) {
+        List<String> id = Arrays.asList("pObj1", "pObj2");
+
+        ExpProc procExp = new ExpProcN(id, new ExpPair(new ExpVar("pObj1"), new ExpVar("pObj2")));
+        SMPLProc value = new SMPLProc(procExp, env);
+        return value;
+    }
+
     public static SMPLProc cdr(Environment env) {
         List<String> id = Arrays.asList("pair");
 
@@ -22,6 +30,30 @@ public class BuiltIn {
         // SMPLValue<?> value = new SMPLProc(new ExpProcN(id, new ExpCDR(new ExpVar("pair"))), );
         ExpProc procExp = new ExpProcN(id, new ExpCDR(new ExpVar("pair")));
         SMPLProc value = new SMPLProc(procExp, env );
+        return value;
+    }
+
+    public static SMPLProc car(Environment env) {
+        List<String> id = Arrays.asList("pair");
+
+        ExpProc procExp = new ExpProcN(id, new ExpCAR(new ExpVar("pair")));
+        SMPLProc value = new SMPLProc(procExp, env);
+        return value;
+    }
+
+    public static SMPLProc isPair(Environment env) {
+        List<String> id = Arrays.asList("pair");
+
+        ExpProc procExp = new ExpProcN(id, new ExpIsPair(new ExpVar("pair")));
+        SMPLProc value = new SMPLProc(procExp, env);
+        return value;
+    }
+
+    public static SMPLProc list(Environment env) {
+        List<String> id = Arrays.asList("list");
+
+        ExpProc procExp = new ExpProcN(id, new ExpList(new ExpVar("list")));
+        SMPLProc value = new SMPLProc(procExp, env);
         return value;
     }
 

@@ -326,9 +326,12 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpCAR(ExpCAR exp, Environment arg) throws VisitException {
-        SMPLValue<?> left;
-        // left =((SMPLPair)exp.getPair()).getLeft();
-        return  null;
+        SMPLValue<?> pair = exp.getPair().visit(this, arg);
+        if (pair.isPair()) {
+            result = ((SMPLPair)pair).getLeft();
+        } else throw new TypeException(SMPLType.PAIR, pair.getType());
+        
+        return result;
     }
 
     @Override
@@ -339,6 +342,30 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         } else throw new TypeException(SMPLType.PAIR, pair.getType());
         // right = exp.getPair().getRight();
         return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpIsPair(ExpIsPair exp, Environment arg) throws VisitException {
+        SMPLValue<?> pair = exp.getPair().visit(this, arg);
+        return SMPLValue.make(pair.isPair());
+    }
+
+    @Override
+    public SMPLValue<?> visitExpMakeList(ExpMakeList exp, Environment arg) throws VisitException {
+        List<Exp> elements = exp.getElements();
+        Iterator<Exp> iter = elements.iterator();
+        Exp i;
+        SMPLPair head = new SMPLPair();
+        SMPLPair temp = head;
+        SMPLPair next = new SMPLPair();
+        while(iter.hasNext()) {
+            i = (Exp) iter.next();
+            temp.setLeft(i.visit(this,arg));
+            temp.setRight(next);
+            temp = next;
+            next = new SMPLPair();
+        }
+        return head;
     }
 
     @Override

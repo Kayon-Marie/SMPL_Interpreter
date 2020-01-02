@@ -81,7 +81,11 @@ public class Environment<T extends SMPLValue<?>>{
         // add definitions for any primitive procedures or
         // constants here
         result.put("tp", (T)BuiltIn.testPair);
+        result.put("pair", (T)BuiltIn.pair(result));
         result.put("cdr", (T)BuiltIn.cdr(result));
+        result.put("car", (T)BuiltIn.car(result));
+        result.put("Ispair", (T)BuiltIn.isPair(result));
+        result.put("list", (T)BuiltIn.list(result));
 
         return result;
     }

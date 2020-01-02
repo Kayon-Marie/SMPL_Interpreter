@@ -81,6 +81,8 @@ public interface Visitor<S, T> {
     public T visitExpEqual(ExpEqual exp, S arg) throws VisitException;
     public T visitExpEq(ExpEq exp, S arg) throws VisitException;
     public T visitExpSize(ExpSize exp, S arg) throws VisitException;
+    public T visitExpIsPair(ExpIsPair exp, S arg) throws VisitException;
+    public T visitMakeList(ExpMakeList exp, S arg) throws VisitException;
 
     public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
 

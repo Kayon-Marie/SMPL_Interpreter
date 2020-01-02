@@ -246,6 +246,18 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
+    public String visitExpIsPair(ExpIsPair exp, Void arg) throws VisitException {
+        // String pair = exp.getPair().visit(this, arg);
+        // return "pair?("+pair+")";
+        return null;
+    }
+
+    @Override
+    public String visitExpMakeList(ExpMakeList exp, Void arg) throws VisitException {
+        return null;
+    }
+
+    @Override
     public String visitExpSubstring(ExpSubstring exp, Void arg) throws VisitException {
         String exp1 = exp.getString();
         String start = Integer.toString(exp.getStart());
