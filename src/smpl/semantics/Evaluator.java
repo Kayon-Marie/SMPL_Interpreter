@@ -82,14 +82,21 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitStmtIO(StmtIO IO, Environment env)
 	throws VisitException {
         String operation = IO.getOperation();
-        String output = IO.getOutput().visit(this,env).toString();
         Scanner scanner = new Scanner(System.in); 
         if(operation.equals( "print")){
-            System.out.print(output);
-            return null;
+            if(IO.getOutput().size()==1){
+                String output = IO.getOutput().get(0).visit(this,env).toString();
+                System.out.print(output);
+            }else{
+                throw new ArgumentException(1,IO.getOutput().size());
+            }
         }else if (operation.equals("println")){
-            System.out.println(output);
-            return null;
+            if(IO.getOutput().size()==1){
+                String output = IO.getOutput().get(0).visit(this,env).toString();
+                System.out.println(output);
+            }else{
+                throw new ArgumentException(1,IO.getOutput().size());
+            }
         }else if (operation.equals("read")){
             return SMPLValue.make(scanner.next());
         }else if (operation.equals("readint")){

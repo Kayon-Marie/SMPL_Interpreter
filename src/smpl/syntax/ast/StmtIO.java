@@ -9,9 +9,9 @@ import smpl.syntax.ast.core.Exp;
 
 public class StmtIO extends Statement {
     String operation;
-    ArrayList<Exp> output;
+    List<Exp> output;
 
-    public StmtIO(String operation, Exp output) {
+    public StmtIO(String operation, List<Exp> output) {
         this.operation = operation;
         this.output = output;
     }
@@ -20,7 +20,7 @@ public class StmtIO extends Statement {
 	    return operation;
     }
 
-    public Exp getOutput() {
+    public List<Exp> getOutput() {
 	    return output;
     }
     
