@@ -1,6 +1,7 @@
 package smpl.values;
 
-import smpl.exceptions.SMPLException;
+import smpl.exceptions.RuntimeException;
+import smpl.exceptions.TypeException;
 
 public class SMPLReal extends SMPLValue<SMPLReal> {
 
@@ -18,83 +19,83 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
     }
 
     @Override
-    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> add(SMPLValue<?> arg) throws RuntimeException {
         System.out.println(arg);
         if (arg.isReal()) { // SMPLReal + SMPLReal
             return make(this.value + arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal + SMPLInt
             return make(this.value + arg.intValue());
         } else {
-            throw new SMPLException("Cannot add " + arg + " to " + this);
+            throw new TypeException("Cannot add " + arg + " to " + this);
         }        
     }
 
     @Override
-    public SMPLValue<?> sub(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> sub(SMPLValue<?> arg) throws RuntimeException {
         if (arg.isReal()) { // SMPLReal - SMPLReal
             return make(this.value - arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal - SMPLInt
             return make(this.value - arg.intValue());
         } else {
-            throw new SMPLException("Cannot subtract " + arg + " from " + this);
+            throw new TypeException("Cannot subtract " + arg + " from " + this);
         }     
     }
 
     @Override
-    public SMPLValue<?> neg() throws SMPLException {
+    public SMPLValue<?> neg() throws RuntimeException {
         return make(this.value * -1);
     }
 
     @Override
-    public SMPLValue<?> mul(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> mul(SMPLValue<?> arg) throws RuntimeException {
         if (arg.isReal()) { // SMPLReal * SMPLReal
             return make(this.value * arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal * SMPLInt
             return make(this.value * arg.intValue());
         } else {
-            throw new SMPLException("Cannot multiply " + this + " by " + arg);
+            throw new TypeException("Cannot multiply " + this + " by " + arg);
         }     
     }
 
     @Override
-    public SMPLValue<?> div(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> div(SMPLValue<?> arg) throws RuntimeException {
         if (arg.isReal()) { // SMPLReal / SMPLReal
             return make(this.value / arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal / SMPLInt
             return make(this.value / arg.intValue());
         } else {
-            throw new SMPLException("Cannot divide " + this + " by " + arg);
+            throw new TypeException("Cannot divide " + this + " by " + arg);
         }     
     }
 
     @Override
-    public SMPLValue<?> mod(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> mod(SMPLValue<?> arg) throws RuntimeException {
         if (arg.isReal()) { // SMPLReal % SMPLReal
             return make(this.value % arg.doubleValue());
         } else if (arg.isInteger()) {   // SMPLReal % SMPLInt
             return make(this.value % arg.intValue());
         } else {
-            throw new SMPLException("Cannot mod " + this + " by " + arg);
+            throw new TypeException("Cannot mod " + this + " by " + arg);
         }     
     }
 
     @Override
-    public SMPLValue<?> pow(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> pow(SMPLValue<?> arg) throws RuntimeException {
         if (arg.isReal()) { // SMPLReal ^ SMPLReal
             return make(Math.pow(this.value, arg.doubleValue()));
         } else if (arg.isInteger()) {   // SMPLReal ^ SMPLInt
             return make(Math.pow(this.value, arg.intValue()));
         } else {
-            throw new SMPLException("Cannot raise " + this + " to a power: " + arg);
+            throw new TypeException("Cannot raise " + this + " to a power: " + arg);
         }     
     }
 
     /* Comparisons based on sign */
     @Override
-    public SMPLBool cmp(SMPLValue<?> arg, String sign) throws SMPLException {
+    public SMPLBool cmp(SMPLValue<?> arg, String sign) throws RuntimeException {
         SMPLBool result = make(false);
-        class Exc { void raise(SMPLValue<?> left, SMPLValue<?> right, String sign) throws SMPLException{ 
-            throw new SMPLException("Cannot compare " + left + " and " + right + " using " + sign + " operator"); 
+        class Exc { void raise(SMPLValue<?> left, SMPLValue<?> right, String sign) throws RuntimeException{ 
+            throw new TypeException("Cannot compare " + left + " and " + right + " using " + sign + " operator"); 
         }}
         
         switch (sign) {
@@ -135,19 +136,19 @@ public class SMPLReal extends SMPLValue<SMPLReal> {
                 break;
             
             default:
-                throw new SMPLException("Illegal comparison for data types: " + this.getType() + " and " + arg.getType());
+                throw new TypeException("Illegal comparison for data types: " + this.getType() + " and " + arg.getType());
         }
 
         return result;
     }
 
     @Override
-    public int intValue() throws SMPLException {
+    public int intValue() throws RuntimeException {
         return (int)this.value;
     }
 
     @Override
-    public double doubleValue() throws SMPLException {
+    public double doubleValue() throws RuntimeException {
         return this.value;
     }
 

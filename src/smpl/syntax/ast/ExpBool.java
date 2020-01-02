@@ -1,6 +1,6 @@
 package smpl.syntax.ast;
 
-import smpl.exceptions.SMPLException;
+import smpl.exceptions.RuntimeException;
 import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
@@ -18,7 +18,7 @@ public class ExpBool extends Exp {
      * Experimental constructor if we want to implement truthy/falsy data types
      * @param val
      */
-    public ExpBool(SMPLValue<?> val) throws SMPLException {
+    public ExpBool(SMPLValue<?> val) throws RuntimeException {
         /* suggested pattern:
         To return false (#f):
 

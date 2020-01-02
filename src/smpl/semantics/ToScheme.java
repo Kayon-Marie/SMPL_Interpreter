@@ -110,6 +110,19 @@ public class ToScheme implements Visitor<Void, String> {
 	throws VisitException {
        return "";
     }
+    
+    public String visitStmtIf(StmtIf ifStmt, Void arg)
+	throws VisitException {
+        String pred = (String) ifStmt.getPredicate().visit(this,arg);
+        String clause1 = (String) ifStmt.getClause1().visit(this,arg);
+        String clause2;
+        if(ifStmt.getClause2()==null){
+            clause2 = "";
+        }else{
+            clause2 = (String)ifStmt.getClause2().visit(this,arg);
+        }
+        return "(if "+ pred +" "+ clause1 + " " + clause2;
+    }
 
     // expressions
     public String visitExpAdd(ExpAdd exp, Void arg)
@@ -236,16 +249,48 @@ public class ToScheme implements Visitor<Void, String> {
 
     @Override
     public String visitExpCAR(ExpCAR exp, Void arg) throws VisitException {
-        String left = ((SMPLPair)exp.getPair()).getLeft().toString();
-        String right = ((SMPLPair)exp.getPair()).getRight().toString();
-        return "(" + "CAR" + " " + left + " " + right + ")";
+        // String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        // String right = ((SMPLPair)exp.getPair()).getRight().toString();
+        // return "(" + "CAR" + " " + left + " " + right + ")";
+        return null;
     }
     
     @Override
     public String visitExpCDR(ExpCDR exp, Void arg) throws VisitException {
-        String left = ((SMPLPair)exp.getPair()).getLeft().toString();
-        String right = ((SMPLPair)exp.getPair()).getRight().toString();
-        return "(" + "CDR" + " " + left + " " + right + ")";
+        // String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        // String right = ((SMPLPair)exp.getPair()).getRight().toString();
+        // return "(" + "CDR" + " " + left + " " + right + ")";
+        return null;
+    }
+
+    @Override
+    public String visitExpIsPair(ExpIsPair exp, Void arg) throws VisitException {
+        // String pair = exp.getPair().visit(this, arg);
+        // return "pair?("+pair+")";
+        return null;
+    }
+
+    @Override
+    public String visitExpSubstring(ExpSubstring exp, Void arg) throws VisitException {
+        // String exp1 = exp.getString();
+        // String start = Integer.toString(exp.getStart());
+        // String end = Integer.toString(exp.getEnd());
+        // return "substr("+exp1+","+start+","+end+")";
+        return null;
+    }
+
+    @Override
+    public String visitExpEq(ExpEq exp, Void arg) throws VisitException {
+        // String exp1 = exp.getArg1();
+        // String exp2 = exp.getArg2();
+        // return "eqv?("+exp1+","+exp2+")";
+        return null;
+    }
+
+    @Override
+    public String visitExpSize(ExpSize exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg();
+        return "size("+exp1+")";
     }
 
     @Override

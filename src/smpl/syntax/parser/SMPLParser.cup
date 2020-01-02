@@ -57,7 +57,7 @@ terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD, COLON;
 terminal LSQUARE, RSQUARE;
 
 // keywords
-terminal DEF, PROC, LET;
+terminal DEF, PROC, LET,IF,THEN,ELSE;
 
 // arithmetic operators
 terminal PLUS, MINUS, MUL, DIV, MOD, POWER;
@@ -91,6 +91,7 @@ non terminal StmtAssignment assignment;
 non terminal StmtDefinition definition;
 non terminal Statement letStmt;
 non terminal Statement IOStmt;
+non terminal Statement ifStmt;
 
 //expressions
 non terminal Exp expression;
@@ -103,7 +104,7 @@ non terminal Exp factor;
 non terminal Exp power;
 non terminal Exp value;
 non terminal Exp arithExp;
-non terminal Exp relop;
+non terminal ExpRelOps relop;
 non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
@@ -116,10 +117,10 @@ non terminal ArrayList<Binding> bindingsAux;
 non terminal Binding binding;
 
 // vectors
-non terminal Exp vectorExp;
-non terminal ArrayList<Exp> subVectorListE;
-non terminal ArrayList<Exp> subVectorList;
-non terminal Exp subVector;
+// non terminal Exp vectorExp;
+// non terminal ArrayList<Exp> subVectorListE;
+// non terminal ArrayList<Exp> subVectorList;
+// non terminal Exp subVector;
 
 // procedures
 non terminal Exp procDefn;
@@ -144,13 +145,18 @@ stmtList ::=	stmtList:lst stmt:s {:
 					RESULT = new StmtSequence(s);
 				:};
 
-stmt ::=	definition:d {: RESULT = d; :} |
+stmt ::=	definition:d  {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			letStmt:lS SEMI {: RESULT = lS; :}|
+			ifStmt: is SEMI {: RESULT = is; :} |
 			IOStmt:io SEMI {: RESULT = io; :};
 
 IOStmt ::= IO:io LPAREN expListE:e RPAREN {: RESULT = new StmtIO(io,e); :};
+			
+
+ifStmt ::= IF expression:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
+			IF expression:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
@@ -159,7 +165,7 @@ assignment ::= 	vars:v ASSIGN expListE:e {:
 definition ::=	DEF VAR: v expression: e SEMI {:
 					RESULT = new StmtDefinition(v, e);
 				:};
-								
+					
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
@@ -245,6 +251,8 @@ letStmt ::= LET LPAREN bindings:bs RPAREN expression:body {:
 			RESULT = new StmtLet(bs, body);
            :};
 
+//if Stmt
+
 binding ::= VAR:v ASSIGN expression:e {:
 		RESULT = new Binding(v, e);
 	    :};
@@ -275,11 +283,12 @@ negation ::= 	NOT relop: r {: RESULT = new ExpNot(r); :} |
 				relop: r {: RESULT = r; :};
 
 // relational operations
-relop ::= 	relop:r  RELOP:sign arithExp: ae {:
-				RESULT = new ExpRelOp(r,ae,sign);
+relop ::= 	relop: r RELOP: sign bitOp: ae {:
+				r.add(ae, sign);
+				RESULT = r;
 			:} |
-			bitOp: b {:
-				RESULT = b;
+			bitOp: ae {:
+				RESULT = new ExpRelOps(ae);
 			:};
 
 // bitwise operations
