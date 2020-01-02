@@ -101,7 +101,7 @@ non terminal Exp factor;
 non terminal Exp power;
 non terminal Exp value;
 non terminal Exp arithExp;
-non terminal Exp relop;
+non terminal ExpRelOps relop;
 non terminal Exp negation;
 non terminal Exp logop;
 non terminal Exp bool;
@@ -268,11 +268,12 @@ negation ::= 	NOT relop: r {: RESULT = new ExpNot(r); :} |
 				relop: r {: RESULT = r; :};
 
 // relational operations
-relop ::= 	relop:r  RELOP:sign arithExp: ae {:
-				RESULT = new ExpRelOp(r,ae,sign);
+relop ::= 	relop: r RELOP: sign bitOp: ae {:
+				r.add(ae, sign);
+				RESULT = r;
 			:} |
-			bitOp: b {:
-				RESULT = b;
+			bitOp: ae {:
+				RESULT = new ExpRelOps(ae);
 			:};
 
 // bitwise operations
