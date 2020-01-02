@@ -41,7 +41,7 @@ public class ExpSubstring extends Exp {
 
     @Override
     public String toString() {
-        return "substr("+this.exp1+","+this.exp2+","+this.exp3+")";
+        return "substr("+this.exp1+","+Integer.toString(this.exp2)+","+Integer.toString(this.exp3)+")";
     }
 
 }

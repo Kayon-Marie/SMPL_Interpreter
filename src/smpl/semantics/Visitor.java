@@ -68,6 +68,12 @@ public interface Visitor<S, T> {
     public T visitExpCAR(ExpCAR exp, S arg) throws VisitException ;
     public T visitExpCDR(ExpCDR exp, S arg) throws VisitException ;
 
+    //builtin operations
+    public T visitExpSubstring(ExpSubstring exp, S arg) throws VisitException;
+    public T visitExpEqual(ExpEqual exp, S arg) throws VisitException;
+    public T visitExpEq(ExpEq exp, S arg) throws VisitException;
+    public T visitExpSize(ExpSize exp, S arg) throws VisitException;
+    
     //List operations
     public T visitExpList(ExpList exp, S arg) throws VisitException ;
 
