@@ -6,7 +6,7 @@ import java.util.List;
 
 import smpl.exceptions.UnboundVarException;
 import smpl.values.SMPLValue;
-import smpl.builtIn.BuiltIn;
+import smpl.builtIn.*;
 
 /**
  * An instance of class <code>Environment</code> maintains a
@@ -80,8 +80,8 @@ public class Environment<T extends SMPLValue<?>>{
         Environment<T> result =  new Environment<>();
         // add definitions for any primitive procedures or
         // constants here
-        
-        result.put("cdr", BuiltIn.cdr(result));
+        result.put("tp", (T)BuiltIn.testPair);
+        result.put("cdr", (T)BuiltIn.cdr(result));
 
         return result;
     }

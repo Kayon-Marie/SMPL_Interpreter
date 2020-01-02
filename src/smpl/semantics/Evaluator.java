@@ -333,9 +333,12 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpCDR(ExpCDR exp, Environment arg) throws VisitException {
-        SMPLValue<?> right;
+        SMPLValue<?> pair = exp.getPair().visit(this, arg);
+        if (pair.isPair()) {
+            result = ((SMPLPair)pair).getRight();
+        } else throw new TypeException(SMPLType.PAIR, pair.getType());
         // right = exp.getPair().getRight();
-        return null;
+        return result;
     }
 
     @Override
@@ -364,20 +367,23 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpEqual(ExpEqual exp, Environment arg) throws VisitException {
-        SMPLValue<?> result = new ExpEqual();
-        return result;
+        // SMPLValue<?> result = new ExpEqual();
+        // return result;
+        return null;
     }
 
     @Override
     public SMPLValue<?> visitExpEq(ExpEq exp, Environment arg) throws VisitException {
-        SMPLValue<?> result = new ExpEq();
-        return result;
+        // SMPLValue<?> result = new ExpEq();
+        // return result;
+        return null;
     }
 
     @Override
     public SMPLValue<?> visitExpSize(ExpSize exp, Environment arg) throws VisitException {
-        SMPLValue<?> result = new ExpSize();
-        return result;
+        // SMPLValue<?> result = new ExpSize();
+        // return result;
+        return null;
     }
     
     public SMPLValue<?> visitExpVector(ExpVector exp, Environment arg) throws VisitException {
