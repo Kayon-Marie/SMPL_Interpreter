@@ -357,4 +357,28 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         }
         return head;
     }
+
+    @Override
+    public SMPLValue<?> visitExpSubstring(ExpSubstring exp, Environment arg) throws VisitException {
+        SMPLValue<?> result = new SMPLString();
+        return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpEqual(ExpEqual exp, Environment arg) throws VisitException {
+        SMPLValue<?> result = new ExpEqual();
+        return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpEq(ExpEq exp, Environment arg) throws VisitException {
+        SMPLValue<?> result = new ExpEq();
+        return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpSize(ExpSize exp, Environment arg) throws VisitException {
+        SMPLValue<?> result = new ExpSize();
+        return result;
+    }
 }

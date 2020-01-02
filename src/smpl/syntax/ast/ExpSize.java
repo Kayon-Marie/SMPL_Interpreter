@@ -9,6 +9,10 @@ public class ExpSize extends Exp {
 
     String exp1;
 
+    public ExpSize(){
+
+    }
+    
     public ExpSize(String exp1) {
         this.exp1 = exp1;
     }
@@ -24,7 +28,7 @@ public class ExpSize extends Exp {
 
     @Override
     public String toString() {
-        return "size("+this.exp+")";
+        return "size("+this.exp1+")";
     }
 
 }
