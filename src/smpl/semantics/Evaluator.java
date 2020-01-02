@@ -3,12 +3,10 @@ package smpl.semantics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
-import smpl.exceptions.ArgumentException;
-import smpl.exceptions.VisitException;
-import smpl.syntax.ast.core.Exp;
-import smpl.syntax.ast.core.SMPLProgram;
-import smpl.syntax.ast.core.Statement;
+import smpl.exceptions.*;
+import smpl.syntax.ast.core.*;
 import smpl.values.*;
 import smpl.syntax.ast.*;
 
@@ -256,13 +254,13 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         // deal with id (can be variable or expression)
         SMPLProc proc = (SMPLProc) exp.getIdentifier().visit(this, env);
         ExpProc defn = proc.getProcExp();
-        ArrayList<Exp> args = exp.getArgs();
+        List<Exp> args = exp.getArgs();
         Environment<SMPLValue<?>> procEnv = defn.call(this, args, env, proc.getClosingEnv());
         return defn.getBody().visit(this, procEnv);
     }
 
     @Override
-    public Environment visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Environment env, Environment closingEnv) 
+    public Environment visitExpProcNCall(ExpProcN exp, List<Exp> args, Environment env, Environment closingEnv) 
         throws VisitException {
         ArrayList<String> params = new ArrayList<>(exp.getParams());
         int paramSize = params.size();
@@ -278,9 +276,9 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     }
 
     @Override
-    public Environment visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Environment env,
+    public Environment visitExpProcMulitCall(ExpProcMulti exp, List<Exp> args, Environment env,
             Environment closingEnv) throws VisitException {
-        ArrayList<String> params = new ArrayList<>(exp.getParams());
+        List<String> params = new ArrayList<>(exp.getParams());
         int paramSize = params.size();
         int argSize = args.size();
         List<SMPLValue<?>> values = new ArrayList<>();
@@ -307,7 +305,7 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     }
 
     @Override
-    public Environment visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Environment env,
+    public Environment visitExpProcSingleCall(ExpProcSingle exp, List<Exp> args, Environment env,
             Environment closingEnv) throws VisitException {
         ArrayList<String> params = new ArrayList<>(exp.getParams());
         List<SMPLValue<?>> values = new ArrayList<>();
@@ -356,5 +354,43 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
             next = new SMPLPair();
         }
         return head;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpVector(ExpVector exp, Environment arg) throws VisitException {
+        SMPLVector vector = new SMPLVector();
+        SMPLValue<?> value;
+        for (Exp e: exp.getExpList()) {
+            value = e.visit(this, arg);
+            vector.add(value);
+        }
+        return vector;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpSubVector(ExpSubVector exp, Environment arg) throws VisitException {
+        SMPLVector subVector = new SMPLVector();
+        SMPLValue<?> value;
+        SMPLValue<?> size = exp.getSize().visit(this, arg);
+        SMPLValue<?> proc = exp.getProc().visit(this, arg);
+
+        if (size.isInteger()) {
+            if (proc.isProcedure()) { 
+            // size must be SMPLInteger and proc must be SMPLProcedure
+                ExpProc defn = ((SMPLProc)proc).getProcExp();
+                int paramSize = defn.getParams().size();    // # of parameters
+                List<Exp> args = new ArrayList<>(paramSize);    // arguments to be bound to params
+                Environment<SMPLValue<?>> procEnv;
+                for (int i = 0; i < size.intValue(); i++) {
+                    Collections.fill(args, new ExpLit(i)); // make all arguments the value of i (which should be an Integer)
+
+                    // Proc call code. Using the actual Proc Call visit would create unnecessary processing and repetitive evaluation
+                    procEnv = defn.call(this, args, arg, ((SMPLProc)proc).getClosingEnv());
+                    value = defn.getBody().visit(this, procEnv);
+                    subVector.add(value);
+                }
+            } throw new TypeException(SMPLType.PROCEDURE, proc.getType());
+        } else throw new TypeException(SMPLType.INTEGER, size.getType());
+        
     }
 }

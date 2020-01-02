@@ -12,7 +12,8 @@ public enum SMPLType {
     STRING("string"),
     FUNCTION("function"),
     PROCEDURE("procedure"),
-    PAIR("pair");
+    PAIR("pair"),
+    VECTOR("vector");
 
     private final String docString;
 

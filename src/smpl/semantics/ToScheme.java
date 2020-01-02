@@ -1,6 +1,7 @@
 package smpl.semantics;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
@@ -263,6 +264,18 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
+    public String visitExpVector(ExpVector exp, Void arg) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visitExpSubVector(ExpSubVector exp, Void arg) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public String visitExpProcDefn(ExpProc exp, Void arg) throws VisitException {
         return "";
     }
@@ -274,20 +287,20 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
-    public Void visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Void env, Void env2)
+    public Void visitExpProcMulitCall(ExpProcMulti exp, List<Exp> args, Void env, Void env2)
             throws VisitException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Void visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Void env, Void env2) throws VisitException {
+    public Void visitExpProcNCall(ExpProcN exp, List<Exp> args, Void env, Void env2) throws VisitException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Void visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Void env, Void env2)
+    public Void visitExpProcSingleCall(ExpProcSingle exp, List<Exp> args, Void env, Void env2)
             throws VisitException {
         // TODO Auto-generated method stub
         return null;
