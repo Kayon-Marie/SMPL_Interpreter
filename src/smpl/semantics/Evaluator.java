@@ -3,6 +3,7 @@ package smpl.semantics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
 import smpl.exceptions.*;
 import smpl.syntax.ast.core.*;
@@ -365,14 +366,22 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         SMPLValue<?> size = exp.getSize().visit(this, arg);
         SMPLValue<?> proc = exp.getProc().visit(this, arg);
 
-        if (size.isInteger() && proc.isProcedure()) { 
+        if (size.isInteger()) {
+            if (proc.isProcedure()) { 
             // size must be SMPLInteger and proc must be SMPLProcedure
-            int paramSize = ((SMPLProc)proc).getProcExp().getParams().size();
-            List<Exp> args;
-            for (int i = 0; i < size.intValue(); i++) {
-                args = new ArrayList<>();
-                value = 
-            }
+                ExpProc defn = ((SMPLProc)proc).getProcExp();
+                int paramSize = defn.getParams().size();    // # of parameters
+                List<Exp> args = new ArrayList<>(paramSize);    // arguments to be bound to params
+                Environment<SMPLValue<?>> procEnv;
+                for (int i = 0; i < size.intValue(); i++) {
+                    Collections.fill(args, new ExpLit(i)); // make all arguments the value of i (which should be an Integer)
+
+                    // Proc call code. Using the actual Proc Call visit would create unnecessary processing and repetitive evaluation
+                    procEnv = defn.call(this, args, arg, ((SMPLProc)proc).getClosingEnv());
+                    value = defn.getBody().visit(this, procEnv);
+                    subVector.add(value);
+                }
+            } throw new TypeException(SMPLType.PROCEDURE, proc.getType());
         } else throw new TypeException(SMPLType.INTEGER, size.getType());
         
     }

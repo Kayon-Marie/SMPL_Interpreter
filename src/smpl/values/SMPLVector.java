@@ -3,6 +3,8 @@ package smpl.values;
 import java.util.ArrayList;
 import java.util.List;
 
+import smpl.exceptions.SMPLException;
+
 public class SMPLVector extends SMPLValue<SMPLVector> {
 
     List<SMPLValue<?>> elements;
@@ -20,6 +22,16 @@ public class SMPLVector extends SMPLValue<SMPLVector> {
      */
     public List<SMPLValue<?>> getElements() {
         return elements;
+    }
+
+    @Override
+    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
+        if (arg.isVector()) {
+            this.elements.addAll(((SMPLVector)arg).getElements());
+        } else {
+            this.elements.add(arg);
+        }
+        return this;
     }
 
     @Override
