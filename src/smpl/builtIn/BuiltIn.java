@@ -14,6 +14,7 @@ public class BuiltIn {
     // Constants
     public static SMPLPair testPair = new SMPLPair(SMPLValue.make(5), SMPLValue.make(10));
 
+    //  Procedures
     public static SMPLProc cdr(Environment env) {
         List<String> id = Arrays.asList("pair");
 
