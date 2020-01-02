@@ -1,6 +1,6 @@
 package smpl.syntax.ast;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
@@ -9,9 +9,9 @@ import smpl.syntax.ast.core.Exp;
 public class ExpProcCall extends Exp {
 
     Exp identifier;
-    ArrayList<Exp> args;
+    List<Exp> args;
 
-    public ExpProcCall (Exp id, ArrayList<Exp> args) {
+    public ExpProcCall (Exp id, List<Exp> args) {
         this.identifier = id;
         this.args = args;
     }
@@ -26,7 +26,7 @@ public class ExpProcCall extends Exp {
     /**
      * @return the args
      */
-    public ArrayList<Exp> getArgs() {
+    public List<Exp> getArgs() {
         return args;
     }
 

@@ -6,24 +6,32 @@ import smpl.syntax.ast.core.Exp;
 
 import java.util.ArrayList;
 
-public class ExpVector extends Exp {
+public class ExpSubVector extends Exp {
 
-    ArrayList<Exp> expList;
+    Exp size, proc;
 
-    public ExpVector(ArrayList<Exp> expList) {
-        this.expList = expList;
+    public ExpSubVector(Exp size, Exp proc) {
+        this.size = size;
+        this.proc = proc;
     }
 
     /**
-     * @return the expList
+     * @return the size exp
      */
-    public ArrayList<Exp> getExpList() {
-        return expList;
+    public Exp getSize() {
+        return size;
+    }
+
+    /**
+     * @return the procedure exp
+     */
+    public Exp getProc() {
+        return this.proc;
     }
 
     @Override
     public <S, T> T visit(Visitor<S, T> v, S arg) throws VisitException {
-        return v.visitExpVector(this, arg);
+        return v.visitExpSubVector(this, arg);
     }
 
     @Override

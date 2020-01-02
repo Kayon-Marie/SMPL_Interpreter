@@ -9,7 +9,8 @@ public enum SMPLType {
     REAL("real"),
     BOOLEAN("bool"),
     PROCEDURE("procedure"),
-    PAIR("pair");
+    PAIR("pair"),
+    VECTOR("vector");
 
     private final String docString;
 

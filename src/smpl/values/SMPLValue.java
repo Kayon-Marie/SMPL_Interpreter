@@ -83,6 +83,21 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
         return getType() == SMPLType.PAIR;
     }
 
+    /**
+     * @return <code>true</code> if and only if this value is a vector
+     */
+    public boolean isVector() {
+        return getType() == SMPLType.VECTOR;
+    }
+
+    /**
+     * @return <code>true</code> if and only if this value is a procedure
+     */
+    public boolean isProcedure() {
+        return getType() == SMPLType.PROCEDURE;
+    }
+
+
     // =========================== //
     // == ARITHMETIC OPERATIONS == //
     // =========================== //
