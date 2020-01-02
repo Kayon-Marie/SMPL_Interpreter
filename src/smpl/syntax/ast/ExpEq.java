@@ -7,22 +7,18 @@ import smpl.values.*;
 
 public class ExpEq extends Exp {
 
-    String exp1, exp2;
-
-    public ExpEq() {
-
-    }
+    Exp exp1, exp2;
     
-    public ExpEq(String exp1, String exp2) {
+    public ExpEq(Exp exp1, Exp exp2) {
         this.exp1 = exp1;
         this.exp2 = exp2;
     }
 
-    public String getArg1(){
+    public Exp getArg1(){
         return this.exp1;
     }
 
-    public String getArg2(){
+    public Exp getArg2(){
         return this.exp2;
     }
 
@@ -33,7 +29,7 @@ public class ExpEq extends Exp {
 
     @Override
     public String toString() {
-        return "eqv?("+this.exp1+","+this.exp2+")";
+        return "eqv?("+this.exp1.toString()+","+this.exp2.toString()+")";
     }
 
 }

@@ -50,9 +50,33 @@ public class BuiltIn {
     }
 
     public static SMPLProc list(Environment env) {
-        List<String> id = Arrays.asList("list");
+        String id = "list";
 
-        ExpProc procExp = new ExpProcN(id, new ExpList(new ExpVar("list")));
+        ExpProc procExp = new ExpProcSingle(id, new ExpVar("list"));
+        SMPLProc value = new SMPLProc(procExp, env);
+        return value;
+    }
+
+    public static SMPLProc isEqv(Environment env) {
+        List<String> id = Arrays.asList("obj1", "obj2");
+
+        ExpProc procExp = new ExpProcN(id, new ExpEq(new ExpVar("obj1"), new ExpVar("obj2")));
+        SMPLProc value = new SMPLProc(procExp, env);
+        return value;
+    }
+
+    public static SMPLProc isEqual(Environment env) {
+        List<String> id = Arrays.asList("obj1", "obj2");
+
+        ExpProc procExp = new ExpProcN(id, new ExpRelOp(new ExpVar("obj1"), new ExpVar("obj2"), "="));
+        SMPLProc value = new SMPLProc(procExp, env);
+        return value;
+    }
+
+    public static SMPLProc substr(Environment env) {
+        List<String> id = Arrays.asList("obj1", "obj2", "obj3");
+
+        ExpProc procExp = new ExpProcN(id, new ExpSubstring(new ExpVar("obj1"), new ExpVar("obj2"), new ExpVar("obj3")));
         SMPLProc value = new SMPLProc(procExp, env);
         return value;
     }

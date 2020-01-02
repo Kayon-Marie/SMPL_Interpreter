@@ -351,24 +351,6 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     }
 
     @Override
-    public SMPLValue<?> visitExpMakeList(ExpMakeList exp, Environment arg) throws VisitException {
-        List<Exp> elements = exp.getElements();
-        Iterator<Exp> iter = elements.iterator();
-        Exp i;
-        SMPLPair head = new SMPLPair();
-        SMPLPair temp = head;
-        SMPLPair next = new SMPLPair();
-        while(iter.hasNext()) {
-            i = (Exp) iter.next();
-            temp.setLeft(i.visit(this,arg));
-            temp.setRight(next);
-            temp = next;
-            next = new SMPLPair();
-        }
-        return head;
-    }
-
-    @Override
     public SMPLValue<?> visitExpList(ExpList exp, Environment arg) throws VisitException {
         List<Exp> elements = exp.getElements();
         Iterator<Exp> iter = elements.iterator();
@@ -388,20 +370,20 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpSubstring(ExpSubstring exp, Environment arg) throws VisitException {
-        result = new SMPLString();
-        return result;
-    }
+        String str = exp.getString().visit(this, arg).strValue();
+        int start = exp.getStart().visit(this, arg).intValue();
+        int end = exp.getEnd().visit(this, arg).intValue();
 
-    @Override
-    public SMPLValue<?> visitExpEqual(ExpEqual exp, Environment arg) throws VisitException {
-        result = new SMPLString();
-        return result;
+        String substr = str.substring(start, end);
+        return SMPLValue.make(substr);
     }
 
     @Override
     public SMPLValue<?> visitExpEq(ExpEq exp, Environment arg) throws VisitException {
-        result = new SMPLString();
-        return result;
+        SMPLValue<?> obj1 = exp.getArg1().visit(this, arg);
+        SMPLValue<?> obj2 = exp.getArg2().visit(this, arg);
+
+        return SMPLValue.make(obj1==obj2);
     }
 
     @Override

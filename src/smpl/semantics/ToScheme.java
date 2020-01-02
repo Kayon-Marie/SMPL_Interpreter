@@ -253,30 +253,20 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
-    public String visitExpMakeList(ExpMakeList exp, Void arg) throws VisitException {
+    public String visitExpSubstring(ExpSubstring exp, Void arg) throws VisitException {
+        // String exp1 = exp.getString();
+        // String start = Integer.toString(exp.getStart());
+        // String end = Integer.toString(exp.getEnd());
+        // return "substr("+exp1+","+start+","+end+")";
         return null;
     }
 
     @Override
-    public String visitExpSubstring(ExpSubstring exp, Void arg) throws VisitException {
-        String exp1 = exp.getString();
-        String start = Integer.toString(exp.getStart());
-        String end = Integer.toString(exp.getEnd());
-        return "substr("+exp1+","+start+","+end+")";
-    }
-
-    @Override
-    public String visitExpEqual(ExpEqual exp, Void arg) throws VisitException {
-        String exp1 = exp.getArg1();
-        String exp2 = exp.getArg2();
-        return "equal?("+exp1+","+exp2+")";
-    }
-
-    @Override
     public String visitExpEq(ExpEq exp, Void arg) throws VisitException {
-        String exp1 = exp.getArg1();
-        String exp2 = exp.getArg2();
-        return "eqv?("+exp1+","+exp2+")";
+        // String exp1 = exp.getArg1();
+        // String exp2 = exp.getArg2();
+        // return "eqv?("+exp1+","+exp2+")";
+        return null;
     }
 
     @Override

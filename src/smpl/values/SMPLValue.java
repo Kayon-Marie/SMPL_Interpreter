@@ -280,6 +280,15 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     }
 
     /**
+     * 
+     * @return
+     * @throws SMPLException
+     */
+    public String strValue() throws RuntimeException {
+        throw new TypeException(SMPLType.STRING, getType());
+    }
+
+    /**
      *
      * @return The user defined function wrapped in this FnPlot value.
      * @throws smpl.exceptions.TypeException if there is no such function

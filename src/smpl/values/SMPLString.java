@@ -13,6 +13,11 @@ public class SMPLString extends SMPLValue<SMPLString>{
     }
 
     @Override
+    public String strValue() throws RuntimeException {
+        return this.value;
+    }
+
+    @Override
     public SMPLType getType() {
         return SMPLType.STRING;
     }

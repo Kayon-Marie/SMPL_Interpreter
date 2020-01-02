@@ -8,29 +8,27 @@ import smpl.values.SMPLString;
 public class ExpSubstring extends Exp {
 
     
-    String exp1;
-    int exp2;
-    int exp3;
+    Exp exp1, exp2, exp3;
 
     public ExpSubstring() {
 
     }
 
-    public ExpSubstring(String exp1, int exp2, int exp3 ) {
+    public ExpSubstring(Exp exp1, Exp exp2, Exp exp3 ) {
         this.exp1 = exp1;
         this.exp2 = exp2;
         this.exp3 = exp3;
     }
 
-    public String getString(){
+    public Exp getString(){
         return this.exp1;
     }
 
-    public int getStart(){
+    public Exp getStart(){
         return this.exp2;
     }
 
-    public int getEnd(){
+    public Exp getEnd(){
         return this.exp3;
     }
 
@@ -41,7 +39,7 @@ public class ExpSubstring extends Exp {
 
     @Override
     public String toString() {
-        return "substr("+this.exp1+","+Integer.toString(this.exp2)+","+Integer.toString(this.exp3)+")";
+        return "substr("+this.exp1.toString()+","+this.exp2.toString()+","+this.exp3.toString()+")";
     }
 
 }
