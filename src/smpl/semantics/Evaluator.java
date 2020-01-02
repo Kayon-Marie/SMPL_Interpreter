@@ -119,6 +119,14 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return result;
     }
 
+    public SMPLValue<?> visitStmtCase(StmtCase caseStmt, Environment env) 
+    throws VisitException{
+        List<Clause> clauses = caseStmt.getClauses();
+        for(int i =0; i< clauses.size(); i++){
+            
+        }
+    }
+
 
 
     public SMPLValue<?> visitExpAdd(ExpAdd exp, Environment arg)

@@ -125,6 +125,7 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> "if" {return new Symbol(sym.IF);}
 <YYINITIAL> "else" {return new Symbol(sym.ELSE);}
 <YYINITIAL> "then" {return new Symbol(sym.THEN);}
+<YYINITIAL> "case" {return new Symbol(sym.CASE);}
 
 
 // Special symbols
