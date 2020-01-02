@@ -9,6 +9,10 @@ public class ExpEqual extends Exp {
 
     String exp1, exp2;
 
+    public ExpEqual(){
+
+    }
+    
     public ExpEqual(String exp1, String exp2) {
         this.exp1 = exp1;
         this.exp2 = exp2;
