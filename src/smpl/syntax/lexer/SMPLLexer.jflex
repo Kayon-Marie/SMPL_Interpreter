@@ -62,8 +62,6 @@ ws = {cc}|[\t ]
 
 alpha = [a-zA-Z_]
 
-alphanum = {alpha}|[0-9]
-
 num = [0-9]
 
 var = [^\"\'\[\]\(\)\{\}\;\,\:#\s][^\"\'\[\]\(\)\{\}\;\,\:\s]*
@@ -80,6 +78,15 @@ real = {num}*\.{num} | {num}+\.{num}*
 
 // relational operators - excluding "=" AKA sym.ASSIGN
 rel_op = "<"|"<="|">"|">="|"!="|"="
+
+//comments from jflex manual
+LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r\n]
+
+Comment = {TraditionalComment} | {EndOfLineComment}
+
+EndOfLineComment = "//"{InputCharacter}*{LineTerminator}?
+TraditionalComment = "/*"[^*]~"*/" | "/*" "*"+"/"
 
 // error handling
 // special cases to permit the non use of spaces
@@ -126,6 +133,7 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> "if" {return new Symbol(sym.IF);}
 <YYINITIAL> "else" {return new Symbol(sym.ELSE);}
 <YYINITIAL> "then" {return new Symbol(sym.THEN);}
+<YYINITIAL> {Comment} {/* ignore */}
 
 
 // Special symbols
