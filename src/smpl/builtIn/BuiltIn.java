@@ -49,14 +49,6 @@ public class BuiltIn {
         return value;
     }
 
-    public static SMPLProc list(Environment env) {
-        List<String> id = Arrays.asList("list");
-
-        ExpProc procExp = new ExpProcN(id, new ExpList(new ExpVar("list")));
-        SMPLProc value = new SMPLProc(procExp, env);
-        return value;
-    }
-
 
 }
 

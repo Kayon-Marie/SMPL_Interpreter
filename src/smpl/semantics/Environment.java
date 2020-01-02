@@ -85,7 +85,6 @@ public class Environment<T extends SMPLValue<?>>{
         result.put("cdr", (T)BuiltIn.cdr(result));
         result.put("car", (T)BuiltIn.car(result));
         result.put("Ispair", (T)BuiltIn.isPair(result));
-        result.put("list", (T)BuiltIn.list(result));
 
         return result;
     }

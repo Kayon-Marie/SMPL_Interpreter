@@ -222,7 +222,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * Performs lgoical op "and" on two Boolean-resolvable SMPLValues
      * @param arg
      * @return
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public SMPLValue<?> and(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation 'and' performed on non SMPLBoolean resolvalble value");
@@ -232,7 +232,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * Performs lgoical op "or" on two Boolean-resolvable SMPLValues
      * @param arg
      * @return
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public SMPLValue<?> or(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Operation 'or' performed on non SMPLBoolean resolvalble value");
@@ -242,7 +242,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * Performs lgoical op "not" on a Boolean-resolvable SMPLValue
      * @param arg
      * @return
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public SMPLValue<?> not() throws RuntimeException {
         throw new TypeException("Operation 'not' performed on non SMPLBoolean resolvalble value");
@@ -273,10 +273,28 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
     /**
      * 
      * @return
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public boolean boolValue() throws RuntimeException {
         throw new TypeException(SMPLType.BOOLEAN, getType());
+    }
+
+    /**
+     * 
+     * @return
+     * @throws RuntimeException
+     */
+    public char charValue() throws RuntimeException {
+        throw new TypeException(SMPLType.CHAR, getType());
+    }
+
+    /**
+     * 
+     * @return
+     * @throws SMPLException
+     */
+    public String strValue() throws RuntimeException {
+        throw new TypeException(SMPLType.STRING, getType());
     }
 
     /**
@@ -284,7 +302,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @return The user defined function wrapped in this FnPlot value.
      * @throws smpl.exceptions.TypeException if there is no such function
      */
-    // public SMPLFunction funValue() throws SMPLException {
+    // public SMPLFunction funValue() throws RuntimeException {
     //     throw new TypeException(SMPLType.FUNCTION, getType());
     // }
 
@@ -297,7 +315,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @param arg
      * @param sign
      * @return boolean of successful comparison btw 2 SMPLValues
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public SMPLValue<?> cmp(SMPLValue<?> arg, String sign) throws RuntimeException{
         throw new TypeException("Data type is valid in no comparisons");
@@ -312,7 +330,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @param arg
      * @param sign
      * @return int rep of result
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public SMPLValue<?> BAnd(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Incorrect type used");
@@ -323,7 +341,7 @@ public abstract class SMPLValue<T extends SMPLValue<T>> {
      * @param arg
      * @param sign
      * @return int rep of result
-     * @throws SMPLException
+     * @throws RuntimeException
      */
     public SMPLValue<?> BOr(SMPLValue<?> arg) throws RuntimeException {
         throw new TypeException("Incorrect type used");
