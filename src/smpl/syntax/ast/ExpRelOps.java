@@ -1,6 +1,7 @@
 package smpl.syntax.ast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
@@ -9,14 +10,14 @@ import smpl.syntax.ast.core.Exp;
 public class ExpRelOps extends Exp {
 
     Exp exp;
-    ArrayList<ExpRelOp> ops;
+    List<ExpRelOp> ops;
 
     public ExpRelOps(Exp exp) {
         this.exp = exp;
         this.ops = new ArrayList<>();
     }
 
-    public ExpRelOps(ArrayList<ExpRelOp> ops) {
+    public ExpRelOps(List<ExpRelOp> ops) {
         this.ops = ops;
     }
     
@@ -30,7 +31,7 @@ public class ExpRelOps extends Exp {
     /**
      * @return the relational operations
      */
-    public ArrayList<ExpRelOp> getOps() {
+    public List<ExpRelOp> getOps() {
         return ops;
     }
 

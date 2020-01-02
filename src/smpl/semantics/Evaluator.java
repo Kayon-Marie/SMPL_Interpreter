@@ -81,7 +81,7 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public SMPLValue<?> visitStmtLet(StmtLet let, Environment env) 
 	throws VisitException{
-	ArrayList<Binding> bindings = let.getBindings();
+	List<Binding> bindings = let.getBindings();
 	Exp body = let.getBody();
 
 	int size = bindings.size();
@@ -191,7 +191,7 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public SMPLValue<?> visitExpRelOps(ExpRelOps exp, Environment arg) throws VisitException {
         SMPLValue<?> status = SMPLValue.make(true);
-        ArrayList<ExpRelOp> operations = exp.getOps();
+        List<ExpRelOp> operations = exp.getOps();
 
         if (operations.size() < 1)
             return exp.getExp().visit(this, arg);
@@ -327,14 +327,14 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public SMPLValue<?> visitExpCAR(ExpCAR exp, Environment arg) throws VisitException {
         SMPLValue<?> left;
-        left = exp.getPair().getLeft();
+        left =((SMPLPair)exp.getPair()).getLeft();
         return  left;
     }
 
     @Override
     public SMPLValue<?> visitExpCDR(ExpCDR exp, Environment arg) throws VisitException {
         SMPLValue<?> right;
-        right = exp.getPair().getRight();
+        right = ((SMPLPair)exp.getPair()).getRight();
         return right;
     }
 

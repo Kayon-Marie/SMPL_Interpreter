@@ -10,6 +10,7 @@ import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.*;
+import smpl.values.*;
 
 
 public class ToScheme implements Visitor<Void, String> {
@@ -93,7 +94,7 @@ public class ToScheme implements Visitor<Void, String> {
 
     public String visitStmtLet(StmtLet sl, Void arg)
 	throws VisitException {
-        ArrayList<Binding> bindings = sl.getBindings();
+        List<Binding> bindings = sl.getBindings();
         Exp body = sl.getBody();
         String x = "";
         for (int i =0; i< bindings.size();i++){
@@ -230,15 +231,15 @@ public class ToScheme implements Visitor<Void, String> {
 
     @Override
     public String visitExpCAR(ExpCAR exp, Void arg) throws VisitException {
-        String left = exp.getPair().getLeft().toString();
-        String right = exp.getPair().getRight().toString();
+        String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        String right = ((SMPLPair)exp.getPair()).getRight().toString();
         return "(" + "CAR" + " " + left + " " + right + ")";
     }
     
     @Override
     public String visitExpCDR(ExpCDR exp, Void arg) throws VisitException {
-        String left = exp.getPair().getLeft().toString();
-        String right = exp.getPair().getRight().toString();
+        String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        String right = ((SMPLPair)exp.getPair()).getRight().toString();
         return "(" + "CDR" + " " + left + " " + right + ")";
     }
 
