@@ -25,7 +25,7 @@ public class SMPLVector extends SMPLValue<SMPLVector> {
     }
 
     @Override
-    public SMPLValue<?> add(SMPLValue<?> arg) throws SMPLException {
+    public SMPLValue<?> add(SMPLValue<?> arg) throws RuntimeException {
         if (arg.isVector()) {
             this.elements.addAll(((SMPLVector)arg).getElements());
         } else {
