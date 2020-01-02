@@ -378,6 +378,8 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitExpSize(ExpSize exp, Environment arg) throws VisitException {
         SMPLValue<?> result = new ExpSize();
         return result;
+    }
+    
     public SMPLValue<?> visitExpVector(ExpVector exp, Environment arg) throws VisitException {
         SMPLVector vector = new SMPLVector();
         SMPLValue<?> value;
