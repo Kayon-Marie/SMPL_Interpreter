@@ -78,6 +78,24 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         return result;
     }
 
+    public SMPLValue<?> visitStmtIO(StmtIO IO, Environment env)
+	throws VisitException {
+        String operation = IO.getOperation();
+        String output = IO.getOutput().visit(this,env).toString();
+        Scanner scanner = new Scanner(System.in); 
+        if(operation == "print"){
+            System.out.print(output);
+            return null;
+        }else if (operation == "println"){
+            System.out.println(output);
+            return null;
+        }else if (operation == "read"){
+            return SMPLValue.make(scanner.next());
+        }else if (operation == "readint"){
+            return SMPLValue.make(scanner.nextInt());
+        }
+    }
+
     @Override
     public SMPLValue<?> visitStmtLet(StmtLet let, Environment env) 
 	throws VisitException{
@@ -103,8 +121,13 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitExpAdd(ExpAdd exp, Environment arg)
 	throws VisitException {
         SMPLValue<?> val1, val2;
-        val1 = exp.getExpL().visit(this, arg);
-        val2 = exp.getExpR().visit(this, arg);
+        if(exp.getConcatBool()){
+            val1 = SMPLValue.make(exp.getExpL().visit(this, arg).toString());
+            val2 = SMPLValue.make(exp.getExpR().visit(this, arg).toString());
+        }else{
+            val1 = exp.getExpL().visit(this, arg);
+            val2 = exp.getExpR().visit(this, arg);
+        }
         return val1.add(val2);
     }
 

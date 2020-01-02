@@ -77,6 +77,9 @@ public interface Visitor<S, T> {
     public T visitExpSubVector(ExpSubVector exp, S arg) throws VisitException;
 
     public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
+    
+    public T visitStmtIO(StmtIO IO, S arg) throws VisitException;
+    
 
 
 

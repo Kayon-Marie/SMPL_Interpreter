@@ -106,6 +106,11 @@ public class ToScheme implements Visitor<Void, String> {
             body.visit(this,arg).toString() + ")";
     }
 
+    public String visitStmtIO(StmtIO sl, Void arg)
+	throws VisitException {
+       return "";
+    }
+
     // expressions
     public String visitExpAdd(ExpAdd exp, Void arg)
 	throws VisitException {

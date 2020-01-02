@@ -9,6 +9,7 @@ import smpl.semantics.Visitor;
 public class ExpAdd extends Exp {
 
     Exp exp1, exp2;
+    Boolean i=false;
 
     public ExpAdd(Exp e1, Exp e2) {
         exp1 = e1;
@@ -21,6 +22,10 @@ public class ExpAdd extends Exp {
 
     public Exp getExpR() {
 	    return exp2;
+    }
+
+    public Boolean getConcatBool(){
+      return i;
     }
 
     public <S, T> T visit(Visitor<S,T> v, S arg) throws VisitException {

@@ -119,6 +119,7 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> "def" {return new Symbol(sym.DEF);}
 <YYINITIAL> "proc" {return new Symbol(sym.PROC);}
 <YYINITIAL> "let" {return new Symbol(sym.LET);}
+<YYINITIAL> "println"|"print"|"read"|"readint" {return new Symbol(sym.IO, yytext());}
 
 
 // Special symbols

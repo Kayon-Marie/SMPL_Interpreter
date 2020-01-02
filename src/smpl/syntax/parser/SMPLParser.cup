@@ -145,7 +145,10 @@ stmtList ::=	stmtList:lst stmt:s {:
 stmt ::=	definition:d {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
-			letStmt:lS SEMI {: RESULT = lS; :};
+			letStmt:lS SEMI {: RESULT = lS; :}|
+			IOStmt:io SEMI {: RESULT = io; :};
+
+IOStmt ::= IO:io LPAREN expression:e RPAREN {: RESULT = StmtIO(io,e); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
