@@ -6,7 +6,7 @@ import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
 import smpl.values.SMPLValue;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ExpProc extends Exp {
 
@@ -20,9 +20,9 @@ public abstract class ExpProc extends Exp {
         return this.body;
     }
 
-    public abstract ArrayList<String> getParams();
+    public abstract List<String> getParams();
 
-    public abstract Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, ArrayList<Exp> args, 
+    public abstract Environment<SMPLValue<?>> call(Visitor<Environment, SMPLValue<?>> v, List<Exp> args, 
         Environment<SMPLValue<?>> env, Environment<SMPLValue<?>> closingEnv) throws VisitException;
 
     @Override

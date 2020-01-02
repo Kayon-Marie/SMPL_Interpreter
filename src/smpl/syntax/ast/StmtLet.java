@@ -1,6 +1,6 @@
 package smpl.syntax.ast;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import smpl.syntax.ast.core.Statement;
 import smpl.exceptions.VisitException;
@@ -12,15 +12,15 @@ import smpl.syntax.ast.core.Exp;
  * @author newts
  */
 public class StmtLet extends Statement {
-    ArrayList<Binding> bindings;
+    List<Binding> bindings;
     Exp body;
 
-    public StmtLet(ArrayList<Binding> bs, Exp bod) {
+    public StmtLet(List<Binding> bs, Exp bod) {
 	bindings = bs;
 	body = bod;
     }
 
-    public ArrayList<Binding> getBindings() {
+    public List<Binding> getBindings() {
 	return bindings;
     }
 
