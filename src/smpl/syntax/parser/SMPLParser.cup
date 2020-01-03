@@ -174,7 +174,7 @@ vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 				:};
 */
 
-forExp ::= FOR LPAREN expression:size RPAREN expression: body {: RESULT = new ExpFor(size, body); :};
+forExp ::= FOR LPAREN VAR:v COLON expression:size RPAREN expression: body {: RESULT = new ExpFor(v, size, body); :};
 
 whileExp ::= WHILE LPAREN relop:cond RPAREN expression: body {: RESULT = new ExpWhile(cond, body); :};
 

@@ -374,10 +374,17 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
 
     @Override
     public SMPLValue<?> visitExpFor(ExpFor exp, Environment arg) throws VisitException {
+        String var = exp.getVar();
         int size = exp.getSize().visit(this, arg).intValue();
         SMPLValue<?> result = null;
+
+        String[] id = new String[]{var};
+        SMPLValue<?>[] val = new SMPLValue<?>[]{SMPLValue.make(0)};
+
+        Environment env = new Environment(id, val, arg);
         for(int i = 0; i < size; i++){
-            result = exp.getBody().visit(this, arg);
+            env.put(var, SMPLValue.make(i));
+            result = exp.getBody().visit(this, env);
         }
         return result;
     }
