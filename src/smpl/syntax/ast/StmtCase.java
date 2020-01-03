@@ -28,7 +28,7 @@ public class StmtCase extends Statement {
     public String toString() {
         String result ="";
         for (int i =0; i<clauses.size();i++){
-            result += clauses.get(i).getPredicate().toString();
+            result += clauses.get(i).getPred().toString();
             result += " : ";
             result +=  clauses.get(i).getAction().toString();
             result += ",";
