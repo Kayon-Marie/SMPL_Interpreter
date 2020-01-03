@@ -113,7 +113,15 @@ public class ToScheme implements Visitor<Void, String> {
     
     public String visitStmtCase(StmtCase sc, Void arg)
 	throws VisitException {
-       return "";
+        List<Clause> clauses = sc.getClauses();
+        String x = "";
+        for (int i =0; i<clauses.size();i++){
+            x += clauses.get(i).getPred().toString();
+            x += " : ";
+            x +=  clauses.get(i).getAction().toString();
+            x += ",";
+        }
+        return x;
     }
 
     public String visitStmtIf(StmtIf ifStmt, Void arg)

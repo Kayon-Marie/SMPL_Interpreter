@@ -198,6 +198,7 @@ expression ::=	logop: l {: RESULT = l; :} |
 				procDefn: proc {: RESULT = proc; :}|
 				listExp: le {: RESULT = le; :} |
 				IOStmt:io {: RESULT = io; :} |
+				caseStmt: e {: RESULT = e; :} |
 				vectorExp: ve {: RESULT = ve; :};
 
 vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
