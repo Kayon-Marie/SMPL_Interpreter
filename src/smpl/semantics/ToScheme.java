@@ -358,6 +358,13 @@ public class ToScheme implements Visitor<Void, String> {
         return "while("+cond.toString()+") "+body.toString();
     }
 
+    @Override
+    public String visitExpRepeat(ExpRepeat exp, Void arg) throws VisitException {
+        Exp size = exp.getSize();
+        Exp body = exp.getBody();
+        return "repeat("+size.toString()+") "+body.toString();
+    }
+
     // @Override
     // public String visitExpLogOp(ExpLogOp exp, Void arg) throws VisitException {
     //     String left = exp.getLeft().visit(this, arg);

@@ -388,6 +388,17 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
         }
         return result;
     }
+
+    @Override
+    public SMPLValue<?> visitExpRepeat(ExpRepeat exp, Environment arg) throws VisitException {
+        int size = exp.getSize().visit(this, arg).intValue();
+        SMPLValue<?> result = null;
+
+        for(int i = 0; i < size; i++){
+            result = exp.getBody().visit(this, arg);
+        }
+        return result;
+    }
     
     public SMPLValue<?> visitExpSubstring(ExpSubstring exp, Environment arg) throws VisitException {
         result = new SMPLString();

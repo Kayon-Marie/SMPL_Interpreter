@@ -101,6 +101,7 @@ non terminal ArrayList<Exp> expList;
 non terminal Exp compoundExp;
 non terminal Exp forExp;
 non terminal Exp whileExp;
+non terminal Exp repeatExp;
 non terminal Exp term;
 non terminal Exp factor;
 non terminal Exp power;
@@ -152,6 +153,7 @@ stmt ::=	definition:d {: RESULT = d; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			forExp: f SEMI {: RESULT = new StmtExp(f); :} |
 			whileExp: w SEMI {: RESULT = new StmtExp(w); :} |
+			repeatExp: r SEMI {: RESULT = new StmtExp(r); :} |
 			letStmt:lS SEMI {: RESULT = lS; :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
@@ -177,6 +179,8 @@ vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 forExp ::= FOR LPAREN VAR:v COLON expression:size RPAREN expression: body {: RESULT = new ExpFor(v, size, body); :};
 
 whileExp ::= WHILE LPAREN relop:cond RPAREN expression: body {: RESULT = new ExpWhile(cond, body); :};
+
+repeatExp ::= REPEAT LPAREN expression:size RPAREN expression: body {: RESULT = new ExpRepeat(size, body); :};
 
 vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
 					RESULT = new ExpVector(list);

@@ -88,6 +88,7 @@ public interface Visitor<S, T> {
     //Iteration operations
     public T visitExpFor(ExpFor exp, S arg) throws VisitException;
     public T visitExpWhile(ExpWhile exp, S arg) throws VisitException;
+    public T visitExpRepeat(ExpRepeat exp, S arg) throws VisitException;
 
 
 }
