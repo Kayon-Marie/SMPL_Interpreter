@@ -154,8 +154,7 @@ stmtList ::=	stmtList:lst stmt:s {:
 					RESULT = new StmtSequence(s);
 				:};
 
-stmt ::=	definition:d  {: RESULT = d; :} |
-			assignment: a SEMI {: RESULT = a; :} |
+stmt ::=	assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			letStmt:lS SEMI {: RESULT = lS; :}|
 			ifStmt: is SEMI {: RESULT = is; :} |
@@ -163,7 +162,6 @@ stmt ::=	definition:d  {: RESULT = d; :} |
 			whileExp: w SEMI {: RESULT = new StmtExp(w); :};
 
 IOStmt ::= IO:io LPAREN expListE:e RPAREN {: RESULT = new StmtIO(io,e); :};
-			
 
 ifStmt ::= IF expression:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
 			IF expression:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
@@ -189,7 +187,7 @@ assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
 				:}; 
 
-definition ::=	DEF VAR: v expression: e SEMI {:
+definition ::=	DEF VAR: v expression: e {:
 					RESULT = new StmtDefinition(v, e);
 				:};
 					
@@ -199,6 +197,7 @@ expression ::=	logop: l {: RESULT = l; :} |
 				listExp: le {: RESULT = le; :} |
 				IOStmt:io {: RESULT = io; :} |
 				caseStmt: e {: RESULT = e; :} |
+				definition:d  {: RESULT = d; :} |
 				vectorExp: ve {: RESULT = ve; :};
 
 vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
