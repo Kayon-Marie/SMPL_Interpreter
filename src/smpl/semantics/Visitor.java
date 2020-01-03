@@ -5,6 +5,7 @@ import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The generic Visitor interface for the Arithmetic parser
@@ -59,17 +60,28 @@ public interface Visitor<S, T> {
     // procedures
     public T visitExpProcDefn(ExpProc exp, S arg) throws VisitException;
     public T visitExpProcCall(ExpProcCall exp, S env) throws VisitException;
-    public S visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
-    public S visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
-    public S visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcNCall(ExpProcN exp, List<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcSingleCall(ExpProcSingle exp, List<Exp> args, S env, S closingEnv) throws VisitException;
+    public S visitExpProcMulitCall(ExpProcMulti exp, List<Exp> args, S env, S closingEnv) throws VisitException;
    
-    //pair operations
+    // pair operations
     public T visitExpPair(ExpPair exp, S arg) throws VisitException ;
     public T visitExpCAR(ExpCAR exp, S arg) throws VisitException ;
     public T visitExpCDR(ExpCDR exp, S arg) throws VisitException ;
 
-    //List operations
-    public T visitExpList(ExpList exp, S arg) throws VisitException ;
+    // List operations
+    public T visitExpList(ExpList exp, S arg) throws VisitException;
+
+    // Vectors
+    public T visitExpVector(ExpVector exp, S arg) throws VisitException;
+    public T visitExpSubVector(ExpSubVector exp, S arg) throws VisitException;
+
+    //builtin operations
+    public T visitExpSubstring(ExpSubstring exp, S arg) throws VisitException;
+    public T visitExpEqual(ExpEqual exp, S arg) throws VisitException;
+    public T visitExpEq(ExpEq exp, S arg) throws VisitException;
+    public T visitExpSize(ExpSize exp, S arg) throws VisitException;
+    public T visitExpIsPair(ExpIsPair exp, S arg) throws VisitException;
 
     public T visitStmtLet(StmtLet letExp, S arg) throws VisitException;
 

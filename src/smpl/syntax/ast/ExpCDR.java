@@ -3,17 +3,17 @@ package smpl.syntax.ast;
 import smpl.exceptions.VisitException;
 import smpl.semantics.Visitor;
 import smpl.syntax.ast.core.Exp;
-import smpl.values.SMPLPair;
+import smpl.values.SMPLValue;
 
 public class ExpCDR extends Exp {
 
-    SMPLPair pair;
+    Exp pair;
 
-    public ExpCDR(SMPLPair pair) {
+    public ExpCDR(Exp pair) {
         this.pair = pair;
     }
 
-    public SMPLPair getPair(){
+    public Exp getPair(){
         return this.pair;
     }
 

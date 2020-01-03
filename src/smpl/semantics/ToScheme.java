@@ -1,6 +1,7 @@
 package smpl.semantics;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 import smpl.exceptions.VisitException;
@@ -9,6 +10,7 @@ import smpl.syntax.ast.core.SMPLProgram;
 import smpl.syntax.ast.core.Statement;
 import smpl.syntax.ast.core.Exp;
 import smpl.syntax.ast.*;
+import smpl.values.*;
 
 
 public class ToScheme implements Visitor<Void, String> {
@@ -92,7 +94,7 @@ public class ToScheme implements Visitor<Void, String> {
 
     public String visitStmtLet(StmtLet sl, Void arg)
 	throws VisitException {
-        ArrayList<Binding> bindings = sl.getBindings();
+        List<Binding> bindings = sl.getBindings();
         Exp body = sl.getBody();
         String x = "";
         for (int i =0; i< bindings.size();i++){
@@ -229,16 +231,53 @@ public class ToScheme implements Visitor<Void, String> {
 
     @Override
     public String visitExpCAR(ExpCAR exp, Void arg) throws VisitException {
-        String left = exp.getPair().getLeft().toString();
-        String right = exp.getPair().getRight().toString();
-        return "(" + "CAR" + " " + left + " " + right + ")";
+        // String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        // String right = ((SMPLPair)exp.getPair()).getRight().toString();
+        // return "(" + "CAR" + " " + left + " " + right + ")";
+        return null;
     }
     
     @Override
     public String visitExpCDR(ExpCDR exp, Void arg) throws VisitException {
-        String left = exp.getPair().getLeft().toString();
-        String right = exp.getPair().getRight().toString();
-        return "(" + "CDR" + " " + left + " " + right + ")";
+        // String left = ((SMPLPair)exp.getPair()).getLeft().toString();
+        // String right = ((SMPLPair)exp.getPair()).getRight().toString();
+        // return "(" + "CDR" + " " + left + " " + right + ")";
+        return null;
+    }
+
+    @Override
+    public String visitExpIsPair(ExpIsPair exp, Void arg) throws VisitException {
+        // String pair = exp.getPair().visit(this, arg);
+        // return "pair?("+pair+")";
+        return null;
+    }
+
+    @Override
+    public String visitExpSubstring(ExpSubstring exp, Void arg) throws VisitException {
+        String exp1 = exp.getString();
+        String start = Integer.toString(exp.getStart());
+        String end = Integer.toString(exp.getEnd());
+        return "substr("+exp1+","+start+","+end+")";
+    }
+
+    @Override
+    public String visitExpEqual(ExpEqual exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg1();
+        String exp2 = exp.getArg2();
+        return "equal?("+exp1+","+exp2+")";
+    }
+
+    @Override
+    public String visitExpEq(ExpEq exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg1();
+        String exp2 = exp.getArg2();
+        return "eqv?("+exp1+","+exp2+")";
+    }
+
+    @Override
+    public String visitExpSize(ExpSize exp, Void arg) throws VisitException {
+        String exp1 = exp.getArg();
+        return "size("+exp1+")";
     }
 
     @Override
@@ -263,6 +302,18 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
+    public String visitExpVector(ExpVector exp, Void arg) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visitExpSubVector(ExpSubVector exp, Void arg) throws VisitException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public String visitExpProcDefn(ExpProc exp, Void arg) throws VisitException {
         return "";
     }
@@ -274,20 +325,20 @@ public class ToScheme implements Visitor<Void, String> {
     }
 
     @Override
-    public Void visitExpProcMulitCall(ExpProcMulti exp, ArrayList<Exp> args, Void env, Void env2)
+    public Void visitExpProcMulitCall(ExpProcMulti exp, List<Exp> args, Void env, Void env2)
             throws VisitException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Void visitExpProcNCall(ExpProcN exp, ArrayList<Exp> args, Void env, Void env2) throws VisitException {
+    public Void visitExpProcNCall(ExpProcN exp, List<Exp> args, Void env, Void env2) throws VisitException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Void visitExpProcSingleCall(ExpProcSingle exp, ArrayList<Exp> args, Void env, Void env2)
+    public Void visitExpProcSingleCall(ExpProcSingle exp, List<Exp> args, Void env, Void env2)
             throws VisitException {
         // TODO Auto-generated method stub
         return null;

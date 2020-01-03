@@ -128,15 +128,16 @@ end_symbol = [^\;\)\]\}]
 
 // Special symbols
 <YYINITIAL>	":=" {return new Symbol(sym.ASSIGN, yytext());}
-<YYINITIAL>	"("	 {return new Symbol(sym.LPAREN);}
-<YYINITIAL>	")"	 {return new Symbol(sym.RPAREN);}
-<YYINITIAL>	"{"	 {return new Symbol(sym.LBRACE);}
-<YYINITIAL>	"}"	 {return new Symbol(sym.RBRACE);}
-<YYINITIAL> ","  {return new Symbol(sym.COMMA);}
-<YYINITIAL> ";"  {return new Symbol(sym.SEMI);}
-<YYINITIAL> "."  {return new Symbol(sym.PERIOD);}
-<YYINITIAL> "["  {return new Symbol(sym.LSQUARE); }
-<YYINITIAL> "]"  {return new Symbol(sym.RSQUARE); }
+<YYINITIAL>	"("	{return new Symbol(sym.LPAREN);}
+<YYINITIAL>	")"	{return new Symbol(sym.RPAREN);}
+<YYINITIAL>	"{"	{return new Symbol(sym.LBRACE);}
+<YYINITIAL>	"}"	{return new Symbol(sym.RBRACE);}
+<YYINITIAL> "," {return new Symbol(sym.COMMA);}
+<YYINITIAL> ":" {return new Symbol(sym.COLON);}
+<YYINITIAL> ";" {return new Symbol(sym.SEMI);}
+<YYINITIAL> "." {return new Symbol(sym.PERIOD);}
+<YYINITIAL> "[" {return new Symbol(sym.LSQUARE); }
+<YYINITIAL> "]" {return new Symbol(sym.RSQUARE); }
 
 // Numerical Values
 <YYINITIAL>    {num}+ {

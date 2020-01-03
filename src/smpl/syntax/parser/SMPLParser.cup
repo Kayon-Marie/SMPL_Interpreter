@@ -53,7 +53,7 @@ scan with {:
 /* Terminals (tokens returned by the scanner). */
 
 // special symbols
-terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD;
+terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD, COLON;
 terminal LSQUARE, RSQUARE;
 
 // keywords
@@ -118,6 +118,12 @@ non terminal ArrayList<Binding> bindings;
 non terminal ArrayList<Binding> bindingsAux;
 non terminal Binding binding;
 
+// vectors
+non terminal Exp vectorExp;
+non terminal ArrayList<Exp> subVectorListE;
+non terminal ArrayList<Exp> subVectorList;
+non terminal Exp subVector;
+
 // procedures
 non terminal Exp procDefn;
 non terminal Exp procCall;
@@ -160,11 +166,40 @@ expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
 				listExp: le {: RESULT = le; :};
+				// vectorExp: ve {: RESULT = ve; :};
+
+/*
+vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
+					RESULT = new ExpVector(list);
+				:};
+*/
 
 forExp ::= FOR LPAREN expression:size RPAREN expression: body {: RESULT = new ExpFor(size, body); :};
 
 whileExp ::= WHILE LPAREN relop:cond RPAREN expression: body {: RESULT = new ExpWhile(cond, body); :};
 
+vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
+					RESULT = new ExpVector(list);
+				:};
+
+subVectorListE ::=	subVectorList: list {: RESULT = list; :} |
+					empty {: RESULT = new ArrayList<>(); :};				
+
+subVectorList ::=	subVectorList: list COMMA subVector: sv {:
+						list.add(sv); 
+						RESULT = list; 
+					:} |
+					subVector: sv {:
+						ArrayList<Exp> ls = new ArrayList<>(); 
+						ls.add(sv);
+						RESULT = ls; 
+					:};
+
+subVector ::=	arithExp: size COLON expression: proc {:
+					RESULT = new ExpSubVector(size, proc);
+				:} |
+				expression: e {: RESULT = e; :};
+				
 compoundExp ::= LBRACE stmtList: body RBRACE {: RESULT = body; :};
 
 procDefn ::=	PROC LPAREN paramListE: params RPAREN expression: body {:
