@@ -305,11 +305,17 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     @Override
     public SMPLValue<?> visitExpProcCall(ExpProcCall exp, Environment env) throws VisitException {
         // deal with id (can be variable or expression)
-        SMPLProc proc = (SMPLProc) exp.getIdentifier().visit(this, env);
-        ExpProc defn = proc.getProcExp();
-        List<Exp> args = exp.getArgs();
-        Environment<SMPLValue<?>> procEnv = defn.call(this, args, env, proc.getClosingEnv());
-        return defn.getBody().visit(this, procEnv);
+        SMPLValue<?> value = exp.getIdentifier().visit(this, env);
+        if (value.isProcedure()){
+            SMPLProc proc = (SMPLProc)value;
+            ExpProc defn = proc.getProcExp();
+            List<Exp> args = exp.getArgs();
+            Environment<SMPLValue<?>> procEnv = defn.call(this, args, env, proc.getClosingEnv());
+            return defn.getBody().visit(this, procEnv);
+        } else {
+            throw new TypeException("Procedure call made with non procedure value of type " + value.getType().toString());
+        }
+        
     }
 
     @Override
@@ -479,6 +485,33 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
                 }
             } throw new TypeException(SMPLType.PROCEDURE, proc.getType());
         } else throw new TypeException(SMPLType.INTEGER, size.getType());
+    }
         
+    public SMPLValue<?> visitExpFor(ExpFor exp, Environment arg) throws VisitException {
+        int size = exp.getSize().visit(this, arg).intValue();
+        SMPLValue<?> result = null;
+        for(int i = 0; i < size; i++){
+            result = exp.getBody().visit(this, arg);
+        }
+        return result;
+    }
+
+    @Override
+    public SMPLValue<?> visitExpWhile(ExpWhile exp, Environment arg) throws VisitException {
+        Exp cond = exp.getCond();
+        SMPLValue<?> result = null;
+        while(true){
+            SMPLValue<?> value = cond.visit(this, arg);
+            if(value.isBool()){
+                if(value.boolValue()){
+                    result = exp.getBody().visit(this, arg);
+                }else{
+                    break;
+                }
+            }else{
+                break;
+            }
+        }
+        return result;
     }
 }

@@ -88,6 +88,9 @@ public interface Visitor<S, T> {
     
     public T visitStmtIf(StmtIf ifStmt, S arg) throws VisitException;
 
+    //Iteration operations
+    public T visitExpFor(ExpFor exp, S arg) throws VisitException;
+    public T visitExpWhile(ExpWhile exp, S arg) throws VisitException;
 
 
 }

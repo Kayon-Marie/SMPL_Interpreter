@@ -105,12 +105,17 @@ end_symbol = [^\;\)\]\}]
 			 // skip whitespace
 			}
 	
-			
+
+// Iteration operators
+<YYINITIAL> "for" 	   {return new Symbol(sym.FOR);}
+<YYINITIAL> "while"    {return new Symbol(sym.WHILE);}
+<YYINITIAL> "repeat"   {return new Symbol(sym.REPEAT);}
+
 // Relational and Logical operators
 <YYINITIAL> {rel_op} {return new Symbol(sym.RELOP, yytext());}
-<YYINITIAL> "and"	{return new Symbol(sym.AND);}
-<YYINITIAL> "or"	{return new Symbol(sym.OR);}
-<YYINITIAL> "not"	{return new Symbol(sym.NOT);}
+<YYINITIAL> "and"	 {return new Symbol(sym.AND);}
+<YYINITIAL> "or"	 {return new Symbol(sym.OR);}
+<YYINITIAL> "not"	 {return new Symbol(sym.NOT);}
 
 //Bitwise operators
 <YYINITIAL> "&"	{return new Symbol(sym.BAND);}
@@ -126,7 +131,7 @@ end_symbol = [^\;\)\]\}]
 <YYINITIAL> "^" {return new Symbol(sym.POWER);}
 
 // keywords
-<YYINITIAL> "def" {return new Symbol(sym.DEF);}
+<YYINITIAL> "def"  {return new Symbol(sym.DEF);}
 <YYINITIAL> "proc" {return new Symbol(sym.PROC);}
 <YYINITIAL> "let" {return new Symbol(sym.LET);}
 <YYINITIAL> "println"|"print"|"read"|"readint" {return new Symbol(sym.IO, yytext());}
