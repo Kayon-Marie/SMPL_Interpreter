@@ -149,8 +149,7 @@ stmt ::=	definition:d  {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			letStmt:lS SEMI {: RESULT = lS; :}|
-			ifStmt: is SEMI {: RESULT = is; :} |
-			IOStmt:io SEMI {: RESULT = io; :};
+			ifStmt: is SEMI {: RESULT = is; :};
 
 IOStmt ::= IO:io LPAREN expListE:e RPAREN {: RESULT = new StmtIO(io,e); :};
 			
@@ -169,7 +168,8 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
-				listExp: le {: RESULT = le; :};
+				listExp: le {: RESULT = le; :} |
+				IOStmt:io {: RESULT = io; :};
 
 
 				// vectorExp: ve {: RESULT = ve; :};
