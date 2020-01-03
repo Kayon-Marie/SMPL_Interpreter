@@ -21,12 +21,19 @@ public class StmtCase extends Statement {
 
     @Override
     public <S, T> T visit(Visitor<S, T> v, S arg) throws VisitException {
-        return v.visitStmtClause(this, arg);
+        return v.visitStmtCase(this, arg);
     }
 
     @Override
     public String toString() {
-        return "";
+        String result ="";
+        for (int i =0; i<clauses.size();i++){
+            result += clauses.get(i).getPredicate().toString();
+            result += " : ";
+            result +=  clauses.get(i).getAction().toString();
+            result += ",";
+        }
+        return result;
     }
 
 

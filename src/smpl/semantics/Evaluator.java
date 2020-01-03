@@ -122,9 +122,13 @@ public class Evaluator implements Visitor<Environment, SMPLValue<?>> {
     public SMPLValue<?> visitStmtCase(StmtCase caseStmt, Environment env) 
     throws VisitException{
         List<Clause> clauses = caseStmt.getClauses();
-        for(int i =0; i< clauses.size(); i++){
-            
+        for(int i =0; i<clauses.size(); i++){
+            SMPLValue<?> pred = clauses.get(i).getPred().visit(this,env);
+            if(pred.boolValue()){
+                return clauses.get(i).getAction().visit(this,env);
+            }
         }
+        return null;
     }
 
 

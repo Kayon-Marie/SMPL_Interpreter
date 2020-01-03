@@ -1,11 +1,12 @@
 package smpl.syntax.ast;
 
 import smpl.syntax.ast.core.Exp;
+import smpl.syntax.ast.core.Statement;
 
-public class Clause extends Exp {
+public class Clause{
 
     Exp pred;
-    Statement action;
+    Exp action;
 
     public Clause(Exp pred, Exp action) {
 	    this.pred = pred;
@@ -16,7 +17,7 @@ public class Clause extends Exp {
 	    return pred;
     }
 
-    public Statement getAction() {
+    public Exp getAction() {
 	    return action;
     }
 

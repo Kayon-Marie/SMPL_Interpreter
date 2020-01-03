@@ -106,6 +106,11 @@ public class ToScheme implements Visitor<Void, String> {
             body.visit(this,arg).toString() + ")";
     }
 
+    public String visitStmtCase(StmtCase sc, Void arg)
+	throws VisitException {
+       return "";
+    }
+
     public String visitStmtIf(StmtIf ifStmt, Void arg)
 	throws VisitException {
         String pred = (String) ifStmt.getPredicate().visit(this,arg);

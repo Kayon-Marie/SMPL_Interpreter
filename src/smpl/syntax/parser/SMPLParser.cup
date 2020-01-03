@@ -99,9 +99,9 @@ non terminal ArrayList<Exp> expListE;
 non terminal ArrayList<Exp> expList;  
 non terminal Exp compoundExp;
 non terminal Exp term;
-non terminal Exp clause;
-non terminal Exp clauseAux;
-non terminal Exp clauseList;
+non terminal Clause clause;
+non terminal ArrayList<Clause> clauseAux;
+non terminal ArrayList<Clause> clauseList;
 non terminal Exp factor;
 non terminal Exp power;
 non terminal Exp value;
@@ -151,8 +151,7 @@ stmt ::=	definition:d  {: RESULT = d; :} |
 			assignment: a SEMI {: RESULT = a; :} |
 	 		expression:e SEMI {: RESULT = new StmtExp(e); :}|
 			letStmt:lS SEMI {: RESULT = lS; :}|
-			ifStmt:is SEMI {: RESULT = is; :}|
-			caseStmt:cs SEMI {: RESULT = cs; :};
+			ifStmt:is SEMI {: RESULT = is; :};
 
 ifStmt ::= IF expression:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
 			IF expression:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
@@ -171,7 +170,8 @@ clauseAux ::= COMMA clause:v clauseAux:vl {:
 		:} |
 		empty {: RESULT = new ArrayList(); :};
 
-clause ::= expression:e COLON stmt:e2 {: RESULT = new Clause(e,e2); :};
+clause ::= expression:e COLON expression:e2 {: RESULT = new Clause(e,e2); :}|
+			ELSE COLON expression:s {: RESULT = new Clause (new ExpBool(true),s); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);
@@ -185,7 +185,8 @@ definition ::=	DEF VAR: v expression: e SEMI {:
 expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
-				listExp: le {: RESULT = le; :};
+				listExp: le {: RESULT = le; :}|
+				caseStmt:cs {: RESULT = cs; :};
 				// vectorExp: ve {: RESULT = ve; :};
 
 /*
