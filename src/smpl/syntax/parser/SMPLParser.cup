@@ -57,7 +57,7 @@ terminal LPAREN, RPAREN, LBRACE, RBRACE, COMMA, SEMI, PERIOD, COLON;
 terminal LSQUARE, RSQUARE;
 
 // keywords
-terminal DEF, PROC, LET,IF,THEN,ELSE;
+terminal DEF, PROC, LET,IF,THEN,ELSE,CASE;
 
 // iteration operators
 terminal FOR, WHILE, REPEAT;
@@ -95,6 +95,7 @@ non terminal StmtDefinition definition;
 non terminal Statement letStmt;
 non terminal Statement IOStmt;
 non terminal Statement ifStmt;
+non terminal Statement caseStmt;
 
 //expressions
 non terminal Exp expression;
@@ -105,6 +106,9 @@ non terminal Exp compoundExp;
 non terminal Exp forExp;
 non terminal Exp whileExp;
 non terminal Exp term;
+non terminal Clause clause;
+non terminal ArrayList<Clause> clauseAux;
+non terminal ArrayList<Clause> clauseList;
 non terminal Exp factor;
 non terminal Exp power;
 non terminal Exp value;
@@ -163,6 +167,23 @@ IOStmt ::= IO:io LPAREN expListE:e RPAREN {: RESULT = new StmtIO(io,e); :};
 
 ifStmt ::= IF expression:p THEN expression:e ELSE expression:e2 {: RESULT = new StmtIf(p,e,e2); :}|
 			IF expression:p THEN expression:e {: RESULT = new StmtIf(p,e,null); :};
+
+caseStmt ::= CASE LBRACE clauseList:c RBRACE {: RESULT = new StmtCase(c); :};
+
+clauseList ::= clause:v clauseAux:vl {:
+		vl.add(0,v);
+		RESULT = vl;
+	     :} |
+		empty {: RESULT = new ArrayList(); :};
+
+clauseAux ::= COMMA clause:v clauseAux:vl {:
+		  vl.add(0,v);
+		  RESULT = vl;
+		:} |
+		empty {: RESULT = new ArrayList(); :};
+
+clause ::= expression:e COLON expression:e2 {: RESULT = new Clause(e,e2); :}|
+			ELSE COLON expression:s {: RESULT = new Clause (new ExpBool(true),s); :};
 
 assignment ::= 	vars:v ASSIGN expListE:e {:
 		   			RESULT = new StmtAssignment(v, e);

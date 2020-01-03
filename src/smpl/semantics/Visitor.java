@@ -87,6 +87,7 @@ public interface Visitor<S, T> {
     public T visitStmtIO(StmtIO IO, S arg) throws VisitException;
     
     public T visitStmtIf(StmtIf ifStmt, S arg) throws VisitException;
+    public T visitStmtCase(StmtCase caseStmt, S arg) throws VisitException;
 
     //Iteration operations
     public T visitExpFor(ExpFor exp, S arg) throws VisitException;
