@@ -1,0 +1,27 @@
+
+def mkStream proc(h, lazy t) pair(h, proc() t);
+
+def head proc(str)
+    car(str);
+
+def tail proc(str)
+    cdr(str)();
+
+def emptyStream #e;
+
+def addStreams proc(str1, str2) 
+    if str1 = #e then
+       #e
+    else
+       if str2 = #e then
+ 	  #e
+       else
+	  mkStream(head(str1) + head(str2),
+		   addStreams(tail(str1), tail(str2)));
+
+def streamPrefix proc(stream, n)
+    if n = 0
+    then #e
+    else pair(head(stream), streamPrefix(tail(stream), n - 1));
+
+streamPrefix

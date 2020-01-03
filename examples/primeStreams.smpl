@@ -1,0 +1,24 @@
+// Using streams to implement the Sieve of Eratosthenes
+
+// import streams   //(not in language, make sure to load first)
+
+def ones mkStream(1, ones);     // infinite stream of ones
+
+def ints mkStream(1, addStreams(ones, ints)); // infinite stream of +ve integers
+
+def sieve proc(str)
+    let (p = head(str)) {
+        mkStream(p, sieve(filterStream(proc(v) v % p > 0, str)))
+    };
+
+def filterStream proc(pred, str)
+   if str = emptyStream
+   then emptyStream
+   else if pred(head(str))
+        then mkStream(head(str), filterStream(pred, tail(str)))
+	else filterStream(pred, tail(str));
+
+def primes sieve(tail(ints));
+
+// return the first 10 primes
+streamPrefix(primes, 10)

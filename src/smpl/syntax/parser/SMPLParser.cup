@@ -122,10 +122,10 @@ non terminal ArrayList<Binding> bindingsAux;
 non terminal Binding binding;
 
 // vectors
-// non terminal Exp vectorExp;
-// non terminal ArrayList<Exp> subVectorListE;
-// non terminal ArrayList<Exp> subVectorList;
-// non terminal Exp subVector;
+non terminal Exp vectorExp;
+non terminal ArrayList<Exp> subVectorListE;
+non terminal ArrayList<Exp> subVectorList;
+non terminal Exp subVector;
 
 // procedures
 non terminal Exp procDefn;
@@ -176,14 +176,12 @@ expression ::=	logop: l {: RESULT = l; :} |
 				compoundExp: e {: RESULT = e; :} |
 				procDefn: proc {: RESULT = proc; :}|
 				listExp: le {: RESULT = le; :} |
-				IOStmt:io {: RESULT = io; :};
-				// vectorExp: ve {: RESULT = ve; :};
+				IOStmt:io {: RESULT = io; :} |
+				vectorExp: ve {: RESULT = ve; :};
 
-/*
 vectorExp ::= 	LSQUARE COLON expListE: list COLON RSQUARE {:
 					RESULT = new ExpVector(list);
 				:};
-*/
 
 // vectorExp ::= 	LSQUARE COLON subVectorListE: list COLON RSQUARE {:
 // 					RESULT = new ExpVector(list);

@@ -1,0 +1,11 @@
+// Using streams to implement the set of positive integers
+
+// import streams  // (not in language, make sure to load first)
+
+
+def ones mkStream(1, ones);     // infinite stream of ones
+
+def ints mkStream(1, addStreams(ones, ints)); // infinite stream of +ve integers
+
+// The first 10 positive integers
+streamPrefix(ints, 10)
